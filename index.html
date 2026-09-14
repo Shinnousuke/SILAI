@@ -1,0 +1,769 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>SUI — AI Tailoring</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<!-- =========================================================
+     NAVBAR
+========================================================= -->
+
+<nav class="navbar">
+
+    <div class="logo">
+        <span class="logo-icon">✦</span>
+        SUI
+    </div>
+
+    <div class="location">
+        <span>📍</span>
+        <div>
+            <small>Deliver to</small>
+            <strong>Bangalore</strong>
+        </div>
+    </div>
+
+    <div class="nav-search">
+        <span>⌕</span>
+        <input
+            type="text"
+            id="searchInput"
+            placeholder="Search stitching, alteration, tailors..."
+        >
+    </div>
+
+    <div class="nav-links">
+        <a href="#services">Services</a>
+        <a href="#tailors">Tailors</a>
+        <a href="#orders">Orders</a>
+    </div>
+
+    <button class="profile-btn">
+        <span>👤</span>
+    </button>
+
+</nav>
+
+
+<!-- =========================================================
+     HERO
+========================================================= -->
+
+<section class="hero">
+
+    <div class="hero-content">
+
+        <div class="hero-badge">
+            <span>✦</span>
+            AI-POWERED TAILORING
+        </div>
+
+        <h1>
+            Your clothes.
+            <br>
+            <em>Perfectly fitted.</em>
+        </h1>
+
+        <p>
+            Find trusted tailors, get alterations and create
+            custom outfits — all from one place.
+        </p>
+
+        <div class="hero-buttons">
+
+            <button class="primary-btn" onclick="openAI()">
+                <span>✦</span>
+                Ask AI Tailor
+            </button>
+
+            <button class="secondary-btn" onclick="scrollToServices()">
+                Explore services
+                <span>→</span>
+            </button>
+
+        </div>
+
+        <div class="hero-stats">
+
+            <div>
+                <strong>500+</strong>
+                <span>Tailors</span>
+            </div>
+
+            <div>
+                <strong>4.8★</strong>
+                <span>Average rating</span>
+            </div>
+
+            <div>
+                <strong>2 hrs</strong>
+                <span>Fastest delivery</span>
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div class="hero-visual">
+
+        <div class="floating-card card-one">
+            <span class="floating-icon">✂</span>
+            <div>
+                <strong>Alteration</strong>
+                <small>From ₹99</small>
+            </div>
+        </div>
+
+        <div class="fashion-card">
+
+            <div class="fashion-pattern">
+                <div class="thread-line"></div>
+
+                <div class="dress-shape">
+                    <div class="dress-neck"></div>
+                    <div class="dress-body"></div>
+                </div>
+            </div>
+
+            <div class="fashion-label">
+                <span>AI STYLE MATCH</span>
+                <strong>98% Match</strong>
+            </div>
+
+        </div>
+
+        <div class="floating-card card-two">
+            <span class="check">✓</span>
+            <div>
+                <strong>Tailor found</strong>
+                <small>1.2 km away</small>
+            </div>
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =========================================================
+     AI BANNER
+========================================================= -->
+
+<section class="ai-section">
+
+    <div class="ai-box">
+
+        <div class="ai-left">
+
+            <div class="ai-symbol">✦</div>
+
+            <div>
+                <span class="section-label">MEET YOUR AI TAILOR</span>
+
+                <h2>
+                    Don't know what you need?
+                    <br>
+                    <em>Just tell us.</em>
+                </h2>
+
+                <p>
+                    Describe your outfit or upload a reference.
+                    SUI's AI recommends the right service and tailor.
+                </p>
+            </div>
+
+        </div>
+
+        <button class="white-btn" onclick="openAI()">
+            Try AI Tailor
+            <span>→</span>
+        </button>
+
+    </div>
+
+</section>
+
+
+<!-- =========================================================
+     SERVICES
+========================================================= -->
+
+<section class="section" id="services">
+
+    <div class="section-heading">
+
+        <div>
+            <span class="section-label">WHAT DO YOU NEED?</span>
+
+            <h2>
+                Tailoring,
+                <em>made simple.</em>
+            </h2>
+        </div>
+
+        <button class="view-btn">
+            View all →
+        </button>
+
+    </div>
+
+
+    <div class="service-grid">
+
+        <div class="service-card" onclick="selectService('Stitching')">
+            <div class="service-image stitching">
+                <span>🧵</span>
+            </div>
+
+            <div class="service-info">
+                <h3>New Stitching</h3>
+                <p>Custom outfits from scratch</p>
+                <strong>From ₹399</strong>
+            </div>
+        </div>
+
+
+        <div class="service-card" onclick="selectService('Alteration')">
+            <div class="service-image alteration">
+                <span>✂️</span>
+            </div>
+
+            <div class="service-info">
+                <h3>Alterations</h3>
+                <p>Perfect fit, every time</p>
+                <strong>From ₹99</strong>
+            </div>
+        </div>
+
+
+        <div class="service-card" onclick="selectService('Blouse')">
+            <div class="service-image blouse">
+                <span>👗</span>
+            </div>
+
+            <div class="service-info">
+                <h3>Blouse Stitching</h3>
+                <p>Traditional to contemporary</p>
+                <strong>From ₹499</strong>
+            </div>
+        </div>
+
+
+        <div class="service-card" onclick="selectService('Repair')">
+            <div class="service-image repair">
+                <span>🪡</span>
+            </div>
+
+            <div class="service-info">
+                <h3>Repairs</h3>
+                <p>Fix, restore & refresh</p>
+                <strong>From ₹79</strong>
+            </div>
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =========================================================
+     TAILORS
+========================================================= -->
+
+<section class="section tailor-section" id="tailors">
+
+    <div class="section-heading">
+
+        <div>
+            <span class="section-label">TOP TAILORS NEAR YOU</span>
+
+            <h2>
+                Meet your
+                <em>stitching experts.</em>
+            </h2>
+        </div>
+
+        <button class="view-btn">
+            See all →
+        </button>
+
+    </div>
+
+
+    <div class="tailor-grid">
+
+        <!-- Tailor 1 -->
+
+        <div class="tailor-card">
+
+            <div class="tailor-photo photo-one">
+                <span class="verified">✓</span>
+            </div>
+
+            <div class="tailor-content">
+
+                <div class="tailor-title">
+                    <div>
+                        <h3>Meera Studio</h3>
+                        <span>Women's tailoring</span>
+                    </div>
+
+                    <div class="rating">
+                        ★ 4.9
+                    </div>
+                </div>
+
+                <div class="tailor-tags">
+                    <span>Blouses</span>
+                    <span>Alterations</span>
+                    <span>Ethnic</span>
+                </div>
+
+                <div class="tailor-bottom">
+                    <span>📍 1.2 km away</span>
+                    <strong>From ₹150</strong>
+                </div>
+
+                <button class="book-btn" onclick="bookTailor('Meera Studio')">
+                    Book Tailor
+                </button>
+
+            </div>
+
+        </div>
+
+
+        <!-- Tailor 2 -->
+
+        <div class="tailor-card">
+
+            <div class="tailor-photo photo-two">
+                <span class="verified">✓</span>
+            </div>
+
+            <div class="tailor-content">
+
+                <div class="tailor-title">
+                    <div>
+                        <h3>Thread & Co.</h3>
+                        <span>Custom clothing</span>
+                    </div>
+
+                    <div class="rating">
+                        ★ 4.8
+                    </div>
+                </div>
+
+                <div class="tailor-tags">
+                    <span>Shirts</span>
+                    <span>Suits</span>
+                    <span>Western</span>
+                </div>
+
+                <div class="tailor-bottom">
+                    <span>📍 2.1 km away</span>
+                    <strong>From ₹299</strong>
+                </div>
+
+                <button class="book-btn" onclick="bookTailor('Thread & Co.')">
+                    Book Tailor
+                </button>
+
+            </div>
+
+        </div>
+
+
+        <!-- Tailor 3 -->
+
+        <div class="tailor-card">
+
+            <div class="tailor-photo photo-three">
+                <span class="verified">✓</span>
+            </div>
+
+            <div class="tailor-content">
+
+                <div class="tailor-title">
+                    <div>
+                        <h3>Needle House</h3>
+                        <span>Premium tailoring</span>
+                    </div>
+
+                    <div class="rating">
+                        ★ 4.9
+                    </div>
+                </div>
+
+                <div class="tailor-tags">
+                    <span>Bridal</span>
+                    <span>Embroidery</span>
+                    <span>Designer</span>
+                </div>
+
+                <div class="tailor-bottom">
+                    <span>📍 3.4 km away</span>
+                    <strong>From ₹699</strong>
+                </div>
+
+                <button class="book-btn" onclick="bookTailor('Needle House')">
+                    Book Tailor
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =========================================================
+     HOW IT WORKS
+========================================================= -->
+
+<section class="how-section">
+
+    <div class="how-header">
+
+        <span class="section-label">HOW SUI WORKS</span>
+
+        <h2>
+            From idea to
+            <em>perfect fit.</em>
+        </h2>
+
+    </div>
+
+
+    <div class="steps">
+
+        <div class="step">
+
+            <div class="step-number">01</div>
+
+            <div>
+                <h3>Tell us what you need</h3>
+                <p>
+                    Choose a service or simply describe
+                    your requirement to our AI.
+                </p>
+            </div>
+
+        </div>
+
+
+        <div class="step">
+
+            <div class="step-number">02</div>
+
+            <div>
+                <h3>Get matched</h3>
+                <p>
+                    Our system finds the best tailor
+                    based on your needs and location.
+                </p>
+            </div>
+
+        </div>
+
+
+        <div class="step">
+
+            <div class="step-number">03</div>
+
+            <div>
+                <h3>Book & relax</h3>
+                <p>
+                    Schedule pickup and delivery.
+                    Your outfit comes back perfectly fitted.
+                </p>
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =========================================================
+     ORDERS
+========================================================= -->
+
+<section class="section order-section" id="orders">
+
+    <div class="order-card">
+
+        <div class="order-left">
+
+            <span class="section-label">YOUR LATEST ORDER</span>
+
+            <h2>
+                Your clothes are
+                <em>on their way.</em>
+            </h2>
+
+            <p>Order #SUI28491 · Meera Studio</p>
+
+        </div>
+
+
+        <div class="tracking">
+
+            <div class="track-step active">
+                <span>✓</span>
+                <small>Booked</small>
+            </div>
+
+            <div class="track-line active"></div>
+
+            <div class="track-step active">
+                <span>✓</span>
+                <small>Picked up</small>
+            </div>
+
+            <div class="track-line"></div>
+
+            <div class="track-step">
+                <span>03</span>
+                <small>Stitching</small>
+            </div>
+
+            <div class="track-line"></div>
+
+            <div class="track-step">
+                <span>04</span>
+                <small>Delivered</small>
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =========================================================
+     FOOTER
+========================================================= -->
+
+<footer>
+
+    <div class="footer-top">
+
+        <div class="footer-brand">
+
+            <div class="logo">
+                <span class="logo-icon">✦</span>
+                SUI
+            </div>
+
+            <p>
+                AI-powered tailoring,
+                made effortless.
+            </p>
+
+        </div>
+
+
+        <div class="footer-column">
+
+            <h4>Explore</h4>
+
+            <a href="#services">Services</a>
+            <a href="#tailors">Tailors</a>
+            <a href="#orders">Orders</a>
+
+        </div>
+
+
+        <div class="footer-column">
+
+            <h4>For Tailors</h4>
+
+            <a href="#">Join SUI</a>
+            <a href="#">Tailor Login</a>
+            <a href="#">Partner with us</a>
+
+        </div>
+
+
+        <div class="footer-column">
+
+            <h4>Help</h4>
+
+            <a href="#">Support</a>
+            <a href="#">FAQs</a>
+            <a href="#">Contact</a>
+
+        </div>
+
+    </div>
+
+
+    <div class="footer-bottom">
+
+        <span>© 2026 SUI</span>
+
+        <span>Made with ✦ for better fits.</span>
+
+    </div>
+
+</footer>
+
+
+<!-- =========================================================
+     AI MODAL
+========================================================= -->
+
+<div class="modal-overlay" id="aiModal">
+
+    <div class="ai-modal">
+
+        <button class="close-btn" onclick="closeAI()">×</button>
+
+        <div class="modal-icon">✦</div>
+
+        <span class="section-label">SUI AI</span>
+
+        <h2>
+            What can I help you
+            <em>stitch?</em>
+        </h2>
+
+        <p>
+            Tell me about your outfit, alteration
+            or design idea.
+        </p>
+
+
+        <div class="chat-area" id="chatArea">
+
+            <div class="ai-message">
+                Hi! 👋 I'm your AI Tailor.
+                What would you like to get stitched or altered?
+            </div>
+
+        </div>
+
+
+        <div class="ai-input">
+
+            <input
+                type="text"
+                id="aiInput"
+                placeholder="e.g. My kurti is too loose..."
+                onkeydown="handleAIKey(event)"
+            >
+
+            <button onclick="sendAI()">
+                →
+            </button>
+
+        </div>
+
+
+        <div class="ai-suggestions">
+
+            <button onclick="quickAI('I need a blouse stitched')">
+                👗 Blouse
+            </button>
+
+            <button onclick="quickAI('I need alteration')">
+                ✂️ Alteration
+            </button>
+
+            <button onclick="quickAI('I want a custom outfit')">
+                ✨ Custom outfit
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- =========================================================
+     BOOKING MODAL
+========================================================= -->
+
+<div class="modal-overlay" id="bookingModal">
+
+    <div class="booking-modal">
+
+        <button class="close-btn" onclick="closeBooking()">×</button>
+
+        <span class="section-label">BOOK YOUR TAILOR</span>
+
+        <h2 id="bookingTitle">
+            Book Tailor
+        </h2>
+
+        <p>
+            Select your preferred service.
+        </p>
+
+
+        <div class="booking-options">
+
+            <button onclick="chooseBooking('Alteration', 150)">
+                <span>✂️</span>
+                <div>
+                    <strong>Alteration</strong>
+                    <small>From ₹150</small>
+                </div>
+            </button>
+
+            <button onclick="chooseBooking('New Stitching', 399)">
+                <span>🧵</span>
+                <div>
+                    <strong>New Stitching</strong>
+                    <small>From ₹399</small>
+                </div>
+            </button>
+
+            <button onclick="chooseBooking('Custom Design', 699)">
+                <span>✨</span>
+                <div>
+                    <strong>Custom Design</strong>
+                    <small>From ₹699</small>
+                </div>
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- =========================================================
+     TOAST
+========================================================= -->
+
+<div class="toast" id="toast">
+    <span>✓</span>
+    <p id="toastText">Done!</p>
+</div>
+
+
+<script src="script.js"></script>
+
+</body>
+</html>
