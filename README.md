@@ -1,5 +1,10 @@
 # 🧵 SILAI – AI-Powered Tailoring Marketplace
 
+## Project Update
+
+SILAI is an AI-powered tailoring platform that connects users
+with customized tailoring solutions.
+
 > **From your idea to the perfect fit.**
 
 SILAI is an AI-powered tailoring marketplace designed to modernize the traditional tailoring experience. Inspired by on-demand platforms such as Swiggy and Blinkit, SILAI connects customers with tailoring services through a convenient digital platform.
