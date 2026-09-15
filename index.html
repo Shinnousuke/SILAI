@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>SILAI — AI Tailoring</title>
+    <title>SILAI</title>
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -50,9 +50,27 @@
         <a href="#orders">Orders</a>
     </div>
 
-    <button class="profile-btn">
-        <span>👤</span>
-    </button>
+    <!--Logged OUT-->
+    <div class="nav-auth" id="navAuth">
+        <button class="nav-login-btn" onclick="openAuth('login')">Log in</button>
+        <button class="nav-signup-btn" onclick="openAuth('signup')">Sign up</button>
+    </div>
+
+    <!-- Logged IN-->
+    <div class="nav-user" id="navUser" style="display:none;">
+        <span class="nav-role-badge" id="navRoleBadge"></span>
+        <button class="profile-btn" id="profileBtn" onclick="toggleUserMenu()">
+            <span id="navInitial">👤</span>
+        </button>
+        <div class="user-menu" id="userMenu">
+            <div class="user-menu-info">
+                <strong id="menuName"></strong>
+                <small id="menuEmail"></small>
+            </div>
+            <hr class="menu-divider">
+            <button class="menu-item" onclick="handleLogout()">Log out</button>
+        </div>
+    </div>
 
 </nav>
 
@@ -440,7 +458,7 @@
 
     <div class="how-header">
 
-        <span class="section-label">HOW SILAI WORKS</span>
+        <span class="section-label">HOW SUI WORKS</span>
 
         <h2>
             From idea to
@@ -518,7 +536,7 @@
                 <em>on their way.</em>
             </h2>
 
-            <p>Order #SIL28491 · Meera Studio</p>
+            <p>Order #SUI28491 · Meera Studio</p>
 
         </div>
 
@@ -570,7 +588,7 @@
 
             <div class="logo">
                 <span class="logo-icon">✦</span>
-                SILAI
+                SUI
             </div>
 
             <p>
@@ -596,7 +614,7 @@
 
             <h4>For Tailors</h4>
 
-            <a href="#">Join SILAI</a>
+            <a href="#">Join SUI</a>
             <a href="#">Tailor Login</a>
             <a href="#">Partner with us</a>
 
@@ -618,7 +636,7 @@
 
     <div class="footer-bottom">
 
-        <span>© 2026 SILAI</span>
+        <span>© 2026 SUI</span>
 
         <span>Made with ✦ for better fits.</span>
 
@@ -762,6 +780,428 @@
     <p id="toastText">Done!</p>
 </div>
 
+
+<!-- =========================================================
+     AUTH MODAL
+========================================================= -->
+
+<div class="modal-overlay" id="authModal">
+    <div class="auth-modal">
+
+        <button class="close-btn" onclick="closeAuth()">×</button>
+
+        <!-- ROLE SELECTOR -->
+        <div class="auth-step" id="stepRole">
+
+            <div class="modal-icon">✦</div>
+            <span class="section-label">WELCOME TO SILAI</span>
+            <h2>Who are <em>you?</em></h2>
+            <p>Choose how you'd like to continue.</p>
+
+            <div class="role-cards">
+                <button class="role-card" onclick="selectRole('customer')">
+                    <span class="role-icon">🛍️</span>
+                    <strong>I'm a Customer</strong>
+                    <small>Order tailoring services</small>
+                </button>
+                <button class="role-card" onclick="selectRole('tailor')">
+                    <span class="role-icon">✂️</span>
+                    <strong>I'm a Tailor</strong>
+                    <small>Offer my tailoring services</small>
+                </button>
+            </div>
+
+        </div>
+
+        <!-- LOGIN FORM -->
+        <div class="auth-step" id="stepLogin" style="display:none;">
+
+            <button class="back-btn" onclick="goBack()">← Back</button>
+            <div class="modal-icon">✦</div>
+            <span class="section-label" id="loginRoleLabel">CUSTOMER LOGIN</span>
+            <h2>Welcome <em>back.</em></h2>
+
+            <div class="auth-tabs">
+                <button class="auth-tab active" onclick="switchTab('login')">Log in</button>
+                <button class="auth-tab" onclick="switchTab('signup')">Sign up</button>
+            </div>
+
+            <!-- LOGIN FIELDS -->
+            <div id="loginFields">
+                <div class="field-group">
+                    <label>Email</label>
+                    <input type="email" id="loginEmail" placeholder="you@email.com">
+                </div>
+                <div class="field-group">
+                    <label>Password</label>
+                    <input type="password" id="loginPassword" placeholder="Your password">
+                </div>
+                <div class="auth-error" id="loginError"></div>
+                <button class="primary-btn auth-submit-btn" onclick="handleLogin()">
+                    Log in →
+                </button>
+            </div>
+
+            <!-- SIGNUP FIELDS -->
+            <div id="signupFields" style="display:none;">
+                <div class="field-group">
+                    <label>Full Name</label>
+                    <input type="text" id="signupName" placeholder="Your name">
+                </div>
+                <div class="field-group">
+                    <label>Email</label>
+                    <input type="email" id="signupEmail" placeholder="you@email.com">
+                </div>
+                <div class="field-group">
+                    <label>Phone</label>
+                    <input type="tel" id="signupPhone" placeholder="10-digit number">
+                </div>
+
+                <!-- Tailor-only fields -->
+                <div id="tailorFields" style="display:none;">
+                    <div class="field-group">
+                        <label>Shop / Studio Name</label>
+                        <input type="text" id="signupShop" placeholder="e.g. Meera Studio">
+                    </div>
+                    <div class="field-group">
+                        <label>Specialty</label>
+                        <select id="signupSpecialty">
+                            <option value="">Select specialty</option>
+                            <option>Women's Tailoring</option>
+                            <option>Men's Tailoring</option>
+                            <option>Bridal & Ethnic</option>
+                            <option>Alterations</option>
+                            <option>Custom Design</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="field-group">
+                    <label>Password</label>
+                    <input type="password" id="signupPassword" placeholder="Min. 6 characters">
+                </div>
+                <div class="auth-error" id="signupError"></div>
+                <button class="primary-btn auth-submit-btn" onclick="handleSignup()">
+                    Create account →
+                </button>
+            </div>
+
+            <div class="auth-divider"><span>or</span></div>
+
+            <button class="google-btn" onclick="handleGoogleAuth()">
+                <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google" width="18">
+                Continue with Google
+            </button>
+
+        </div>
+
+    </div>
+</div>
+
+
+<!-- =========================================================
+     SCRIPTS
+========================================================= -->
+
+<script type="module">
+
+    /* =====================================================
+       FIREBASE INIT
+    ===================================================== */
+
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+    import {
+        getAuth,
+        createUserWithEmailAndPassword,
+        signInWithEmailAndPassword,
+        signInWithPopup,
+        GoogleAuthProvider,
+        signOut,
+        onAuthStateChanged
+    } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+    import {
+        getFirestore,
+        doc,
+        setDoc,
+        getDoc
+    } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+    const firebaseConfig = {
+        apiKey: "AIzaSyDMmAyMoN2PTo9iEoEeDDz20hMkXVEf9pc",
+        authDomain: "silai-455c4.firebaseapp.com",
+        projectId: "silai-455c4",
+        storageBucket: "silai-455c4.firebasestorage.app",
+        messagingSenderId: "331357923395",
+        appId: "1:331357923395:web:c096d633f70a30be34ccf6"
+    };
+
+    const app        = initializeApp(firebaseConfig);
+    const auth       = getAuth(app);
+    const db         = getFirestore(app);
+    const provider   = new GoogleAuthProvider();
+
+    /* =====================================================
+       STATE
+    ===================================================== */
+
+    let currentRole = "customer"; // "customer" | "tailor"
+
+    /* =====================================================
+       MODAL OPEN / CLOSE
+    ===================================================== */
+
+    window.openAuth = function(tab = "login") {
+        document.getElementById("authModal").classList.add("show");
+        document.getElementById("stepRole").style.display   = "block";
+        document.getElementById("stepLogin").style.display  = "none";
+        if (tab === "signup") {
+            // pre-select role step first, user picks role then lands on signup tab
+            window._pendingTab = "signup";
+        } else {
+            window._pendingTab = "login";
+        }
+    };
+
+    window.closeAuth = function() {
+        document.getElementById("authModal").classList.remove("show");
+    };
+
+    window.selectRole = function(role) {
+        currentRole = role;
+        document.getElementById("stepRole").style.display  = "none";
+        document.getElementById("stepLogin").style.display = "block";
+        document.getElementById("loginRoleLabel").textContent =
+            role === "tailor" ? "TAILOR LOGIN" : "CUSTOMER LOGIN";
+
+        // show/hide tailor-specific signup fields
+        document.getElementById("tailorFields").style.display =
+            role === "tailor" ? "block" : "none";
+
+        // go to the pending tab
+        switchTab(window._pendingTab || "login");
+    };
+
+    window.goBack = function() {
+        document.getElementById("stepLogin").style.display = "none";
+        document.getElementById("stepRole").style.display  = "block";
+    };
+
+    window.switchTab = function(tab) {
+        const tabs = document.querySelectorAll(".auth-tab");
+        tabs[0].classList.toggle("active", tab === "login");
+        tabs[1].classList.toggle("active", tab === "signup");
+        document.getElementById("loginFields").style.display  = tab === "login"  ? "block" : "none";
+        document.getElementById("signupFields").style.display = tab === "signup" ? "block" : "none";
+        clearErrors();
+    };
+
+    function clearErrors() {
+        document.getElementById("loginError").textContent  = "";
+        document.getElementById("signupError").textContent = "";
+    }
+
+    function showError(id, msg) {
+        document.getElementById(id).textContent = msg;
+    }
+
+    /* =====================================================
+       AUTH — EMAIL LOGIN
+    ===================================================== */
+
+    window.handleLogin = async function() {
+        const email    = document.getElementById("loginEmail").value.trim();
+        const password = document.getElementById("loginPassword").value;
+
+        if (!email || !password) {
+            showError("loginError", "Please fill in all fields.");
+            return;
+        }
+
+        try {
+            const cred = await signInWithEmailAndPassword(auth, email, password);
+
+            // verify role matches
+            const snap = await getDoc(doc(db, "users", cred.user.uid));
+            if (snap.exists() && snap.data().role !== currentRole) {
+                await signOut(auth);
+                showError("loginError",
+                    `This account is registered as a ${snap.data().role}. Please select the correct role.`);
+                return;
+            }
+
+            closeAuth();
+            showToast(`Welcome back! Logged in as ${currentRole}.`);
+
+        } catch (err) {
+            showError("loginError", friendlyError(err.code));
+        }
+    };
+
+    /* =====================================================
+       AUTH — EMAIL SIGNUP
+    ===================================================== */
+
+    window.handleSignup = async function() {
+        const name     = document.getElementById("signupName").value.trim();
+        const email    = document.getElementById("signupEmail").value.trim();
+        const phone    = document.getElementById("signupPhone").value.trim();
+        const password = document.getElementById("signupPassword").value;
+        const shop     = document.getElementById("signupShop")?.value.trim();
+        const specialty= document.getElementById("signupSpecialty")?.value;
+
+        if (!name || !email || !phone || !password) {
+            showError("signupError", "Please fill in all required fields.");
+            return;
+        }
+        if (password.length < 6) {
+            showError("signupError", "Password must be at least 6 characters.");
+            return;
+        }
+        if (currentRole === "tailor" && !shop) {
+            showError("signupError", "Please enter your shop name.");
+            return;
+        }
+
+        try {
+            const cred = await createUserWithEmailAndPassword(auth, email, password);
+
+            const userData = {
+                name,
+                email,
+                phone,
+                role: currentRole,
+                createdAt: new Date().toISOString()
+            };
+
+            if (currentRole === "tailor") {
+                userData.shop      = shop;
+                userData.specialty = specialty;
+            }
+
+            await setDoc(doc(db, "users", cred.user.uid), userData);
+
+            closeAuth();
+            showToast(`Account created! Welcome, ${name} 🎉`);
+
+        } catch (err) {
+            showError("signupError", friendlyError(err.code));
+        }
+    };
+
+    /* =====================================================
+       AUTH — GOOGLE
+    ===================================================== */
+
+    window.handleGoogleAuth = async function() {
+        try {
+            const cred = await signInWithPopup(auth, provider);
+            const uid  = cred.user.uid;
+            const snap = await getDoc(doc(db, "users", uid));
+
+            if (!snap.exists()) {
+                // first-time Google sign-in — save profile
+                await setDoc(doc(db, "users", uid), {
+                    name:      cred.user.displayName || "",
+                    email:     cred.user.email || "",
+                    phone:     "",
+                    role:      currentRole,
+                    createdAt: new Date().toISOString()
+                });
+            } else if (snap.data().role !== currentRole) {
+                await signOut(auth);
+                showError("loginError",
+                    `This Google account is registered as a ${snap.data().role}.`);
+                return;
+            }
+
+            closeAuth();
+            showToast(`Signed in with Google as ${currentRole}!`);
+
+        } catch (err) {
+            if (err.code !== "auth/popup-closed-by-user") {
+                showError("loginError", friendlyError(err.code));
+            }
+        }
+    };
+
+    /* =====================================================
+       AUTH STATE OBSERVER — update navbar
+    ===================================================== */
+
+    onAuthStateChanged(auth, async (user) => {
+        const navAuth = document.getElementById("navAuth");
+        const navUser = document.getElementById("navUser");
+
+        if (user) {
+            const snap = await getDoc(doc(db, "users", user.uid));
+            const data = snap.exists() ? snap.data() : {};
+            const name = data.name || user.displayName || user.email;
+
+            navAuth.style.display = "none";
+            navUser.style.display = "flex";
+
+            document.getElementById("navInitial").textContent =
+                name ? name.charAt(0).toUpperCase() : "U";
+            document.getElementById("navRoleBadge").textContent =
+                data.role === "tailor" ? "✂️ Tailor" : "🛍️ Customer";
+            document.getElementById("menuName").textContent  = name;
+            document.getElementById("menuEmail").textContent = user.email;
+
+        } else {
+            navAuth.style.display = "flex";
+            navUser.style.display = "none";
+        }
+    });
+
+    /* =====================================================
+       LOGOUT
+    ===================================================== */
+
+    window.handleLogout = async function() {
+        await signOut(auth);
+        document.getElementById("userMenu").classList.remove("show");
+        showToast("Logged out successfully.");
+    };
+
+    window.toggleUserMenu = function() {
+        document.getElementById("userMenu").classList.toggle("show");
+    };
+
+    // close menu when clicking outside
+    document.addEventListener("click", (e) => {
+        const menu = document.getElementById("userMenu");
+        const btn  = document.getElementById("profileBtn");
+        if (menu && !menu.contains(e.target) && e.target !== btn) {
+            menu.classList.remove("show");
+        }
+    });
+
+    /* =====================================================
+       CLOSE MODAL ON OVERLAY CLICK
+    ===================================================== */
+
+    document.getElementById("authModal").addEventListener("click", function(e) {
+        if (e.target === this) closeAuth();
+    });
+
+    /* =====================================================
+       HELPER — friendly error messages
+    ===================================================== */
+
+    function friendlyError(code) {
+        const map = {
+            "auth/user-not-found":       "No account found with this email.",
+            "auth/wrong-password":       "Incorrect password.",
+            "auth/email-already-in-use": "An account with this email already exists.",
+            "auth/invalid-email":        "Please enter a valid email address.",
+            "auth/weak-password":        "Password must be at least 6 characters.",
+            "auth/too-many-requests":    "Too many attempts. Please try again later.",
+            "auth/invalid-credential":   "Incorrect email or password."
+        };
+        return map[code] || "Something went wrong. Please try again.";
+    }
+
+</script>
 
 <script src="script.js"></script>
 
