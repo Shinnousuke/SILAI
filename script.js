@@ -99,124 +99,323 @@ function sendAI() {
 /* =========================================================
    BASIC AI CLASSIFICATION
 ========================================================= */
+/* =========================================================
+   AI TAILOR REQUIREMENT CLASSIFICATION
+========================================================= */
 
 function generateAIResponse(message) {
 
     const text = message.toLowerCase();
 
 
-    /* ALTERATION */
+    /* =====================================================
+       ALTERATION
+    ===================================================== */
 
     if (
+        text.includes("alter") ||
         text.includes("loose") ||
         text.includes("tight") ||
-        text.includes("alter") ||
-        text.includes("fit") ||
+        text.includes("shorten") ||
         text.includes("shorter") ||
-        text.includes("longer")
+        text.includes("length") ||
+        text.includes("fit") ||
+        text.includes("adjust") ||
+        text.includes("waist")
     ) {
 
         return `
-            ✂️ <strong>I'd recommend an alteration.</strong>
+            ✂️ <strong>Alteration Service</strong>
             <br><br>
-            Based on what you described, you probably need
-            a fitting or length adjustment.
+
+            Based on your requirement, SILAI recommends
+            an <strong>alteration service</strong> for fitting
+            or length adjustments.
             <br><br>
+
+            <strong>Suitable for:</strong>
+            <br>
+            • Length adjustment
+            <br>
+            • Waist fitting
+            <br>
+            • Sleeve adjustment
+            <br>
+            • Size correction
+            <br><br>
+
             <strong>Estimated price:</strong> ₹99–₹250
             <br>
             <strong>Estimated time:</strong> 2–4 hours
-            <br><br>
-            I can find the best-rated alteration tailor near you.
         `;
 
     }
 
 
-    /* BLOUSE */
+    /* =====================================================
+       STITCHING
+    ===================================================== */
 
     if (
+        text.includes("stitch") ||
+        text.includes("stitching") ||
+        text.includes("sew") ||
+        text.includes("tailor") ||
+        text.includes("make a") ||
+        text.includes("make me") ||
         text.includes("blouse") ||
-        text.includes("saree")
+        text.includes("kurti") ||
+        text.includes("shirt")
     ) {
 
         return `
-            👗 <strong>Blouse stitching sounds perfect.</strong>
+            🧵 <strong>Stitching Service</strong>
             <br><br>
-            I recommend a tailor who specializes in
-            ethnic and blouse designs.
+
+            Your requirement sounds like a
+            <strong>custom stitching</strong> request.
             <br><br>
-            <strong>Starting price:</strong> ₹499
+
+            SILAI can help you find a tailor based on
+            garment type, expertise, price and ratings.
+            <br><br>
+
+            <strong>Estimated price:</strong> ₹299–₹999
             <br>
-            <strong>Typical time:</strong> 1–2 days
+            <strong>Typical time:</strong> 1–3 days
             <br><br>
-            You can also upload a reference design
-            for a style match.
+
+            You can also provide a reference design
+            for better customization.
         `;
 
     }
 
 
-    /* CUSTOM */
+    /* =====================================================
+       REPAIR
+    ===================================================== */
+
+    if (
+        text.includes("repair") ||
+        text.includes("tear") ||
+        text.includes("torn") ||
+        text.includes("broken") ||
+        text.includes("zip") ||
+        text.includes("zipper") ||
+        text.includes("rip") ||
+        text.includes("hole") ||
+        text.includes("damage")
+    ) {
+
+        return `
+            🪡 <strong>Repair Service</strong>
+            <br><br>
+
+            This looks like a <strong>clothing repair</strong>
+            requirement.
+            <br><br>
+
+            Suitable for:
+            <br>
+            • Torn fabric
+            <br>
+            • Broken zippers
+            <br>
+            • Loose seams
+            <br>
+            • Small holes
+            <br><br>
+
+            <strong>Starting price:</strong> ₹79
+            <br>
+            <strong>Estimated time:</strong> 1–4 hours
+        `;
+
+    }
+
+
+    /* =====================================================
+       EMBROIDERY
+    ===================================================== */
+
+    if (
+        text.includes("embroidery") ||
+        text.includes("embroider") ||
+        text.includes("thread work") ||
+        text.includes("embellish") ||
+        text.includes("embellishment") ||
+        text.includes("handwork")
+    ) {
+
+        return `
+            ✨ <strong>Embroidery & Handwork</strong>
+            <br><br>
+
+            Your requirement appears to involve
+            <strong>embroidery or decorative handwork</strong>.
+            <br><br>
+
+            SILAI can help you find specialists in:
+            <br>
+            • Embroidery
+            <br>
+            • Thread work
+            <br>
+            • Custom patterns
+            <br>
+            • Garment embellishments
+            <br><br>
+
+            <strong>Starting price:</strong> ₹299
+        `;
+
+    }
+
+
+    /* =====================================================
+       CUSTOM DESIGN
+    ===================================================== */
 
     if (
         text.includes("custom") ||
         text.includes("design") ||
         text.includes("new outfit") ||
-        text.includes("dress")
+        text.includes("new dress") ||
+        text.includes("create") ||
+        text.includes("outfit") ||
+        text.includes("reference")
     ) {
 
         return `
-            ✨ <strong>Let's create something custom.</strong>
+            ✨ <strong>Custom Design</strong>
             <br><br>
-            Upload a reference image and I'll help identify
-            the garment style, fabric and stitching requirements.
+
+            Let's create something personalized.
             <br><br>
+
+            You can provide a reference image or describe
+            the style you want. SILAI can then help identify
+            the suitable tailoring service.
+            <br><br>
+
             <strong>Next step:</strong>
-            Find a tailor based on your design.
+            <br>
+            Upload a reference design and find a
+            tailor who specializes in it.
         `;
 
     }
 
 
-    /* REPAIR */
+    /* =====================================================
+       MEASUREMENT
+    ===================================================== */
 
     if (
-        text.includes("repair") ||
-        text.includes("tear") ||
-        text.includes("broken")
+        text.includes("measurement") ||
+        text.includes("measure") ||
+        text.includes("size") ||
+        text.includes("body measurement") ||
+        text.includes("my size")
     ) {
 
         return `
-            🪡 <strong>That sounds like a repair job.</strong>
+            📏 <strong>Measurement Assistance</strong>
             <br><br>
-            We can help with torn fabric, broken zippers,
-            loose seams and other clothing repairs.
+
+            I can help you understand the measurements
+            required for your garment.
             <br><br>
-            <strong>Starting price:</strong> ₹79
+
+            Common measurements include:
+            <br>
+            • Shoulder
+            <br>
+            • Chest
+            <br>
+            • Waist
+            <br>
+            • Hip
+            <br>
+            • Sleeve length
+            <br>
+            • Garment length
+            <br><br>
+
+            <strong>Future SILAI feature:</strong>
+            AI-based measurement estimation using
+            computer vision.
         `;
 
     }
 
 
-    /* DEFAULT */
+    /* =====================================================
+       BLOUSE / SAREE SPECIAL CASE
+    ===================================================== */
+
+    if (
+        text.includes("saree") ||
+        text.includes("lehenga") ||
+        text.includes("ethnic")
+    ) {
+
+        return `
+            👗 <strong>Ethnic Wear Tailoring</strong>
+            <br><br>
+
+            Your requirement appears to involve
+            <strong>ethnic wear tailoring</strong>.
+            <br><br>
+
+            SILAI can help you find specialists in
+            blouse, saree and traditional outfit tailoring.
+            <br><br>
+
+            <strong>Starting price:</strong> ₹499
+            <br>
+            <strong>Typical time:</strong> 1–2 days
+            <br><br>
+
+            You can also upload a reference design
+            for a better style match.
+        `;
+
+    }
+
+
+    /* =====================================================
+       DEFAULT RESPONSE
+    ===================================================== */
 
     return `
-        ✦ I understand!
+        ✦ <strong>Let's understand your requirement.</strong>
         <br><br>
-        I'd recommend starting with one of these:
+
+        I can help identify the right tailoring service
+        based on what you describe.
         <br><br>
-        <strong>✂️ Alteration</strong> — fix the fit
+
+        Try something like:
+        <br><br>
+
+        <strong>✂️ "I need to shorten my jeans"</strong>
         <br>
-        <strong>👗 Stitching</strong> — create something new
+        <strong>🧵 "I want a blouse stitched"</strong>
         <br>
-        <strong>🪡 Repair</strong> — fix damaged clothing
+        <strong>🪡 "My dress has a broken zip"</strong>
+        <br>
+        <strong>✨ "I want embroidery on my saree"</strong>
+        <br>
+        <strong>📏 "How do I take my measurements?"</strong>
         <br><br>
-        Tell me a little more about your outfit
-        and I'll recommend the best option.
+
+        Tell me what you need and I'll recommend
+        the most suitable service.
     `;
 
 }
-
 
 /* =========================================================
    BOOKING
