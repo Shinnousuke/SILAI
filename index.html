@@ -48,6 +48,7 @@
         <a href="#services">Services</a>
         <a href="#tailors">Tailors</a>
         <a href="#orders">Orders</a>
+        <!-- a href="tailor-dashboard.html" class="nav-tailor-link">✂️ Tailor Dashboard</a -->
     </div>
 
     <!--Logged OUT-->
@@ -458,7 +459,7 @@
 
     <div class="how-header">
 
-        <span class="section-label">HOW SILAI WORKS</span>
+        <span class="section-label">HOW SUI WORKS</span>
 
         <h2>
             From idea to
@@ -536,7 +537,7 @@
                 <em>on their way.</em>
             </h2>
 
-            <p>Order #SILAI28491 · Meera Studio</p>
+            <p>Order #SUI28491 · Meera Studio</p>
 
         </div>
 
@@ -588,7 +589,7 @@
 
             <div class="logo">
                 <span class="logo-icon">✦</span>
-                SILAI
+                SUI
             </div>
 
             <p>
@@ -614,8 +615,8 @@
 
             <h4>For Tailors</h4>
 
-            <a href="#">Join SILAI</a>
-            <a href="#">Tailor Login</a>
+            <a href="tailor-dashboard.html">Tailor Dashboard</a>
+            <a href="#">Join SUI</a>
             <a href="#">Partner with us</a>
 
         </div>
@@ -636,7 +637,7 @@
 
     <div class="footer-bottom">
 
-        <span>© 2026 SILAI</span>
+        <span>© 2026 SUI</span>
 
         <span>Made with ✦ for better fits.</span>
 
@@ -1030,6 +1031,10 @@
             }
 
             closeAuth();
+            if (currentRole === "tailor") {
+                window.location.href = "tailor-dashboard.html";
+                return;
+            }
             showToast(`Welcome back! Logged in as ${currentRole}.`);
 
         } catch (err) {
@@ -1081,6 +1086,10 @@
             await setDoc(doc(db, "users", cred.user.uid), userData);
 
             closeAuth();
+            if (currentRole === "tailor") {
+                window.location.href = "tailor-dashboard.html";
+                return;
+            }
             showToast(`Account created! Welcome, ${name} 🎉`);
 
         } catch (err) {
@@ -1115,6 +1124,10 @@
             }
 
             closeAuth();
+            if (currentRole === "tailor") {
+                window.location.href = "tailor-dashboard.html";
+                return;
+            }
             showToast(`Signed in with Google as ${currentRole}!`);
 
         } catch (err) {
@@ -1137,13 +1150,18 @@
             const data = snap.exists() ? snap.data() : {};
             const name = data.name || user.displayName || user.email;
 
+            // Redirect tailors to their dashboard automatically
+            if (data.role === "tailor") {
+                window.location.href = "tailor-dashboard.html";
+                return;
+            }
+
             navAuth.style.display = "none";
             navUser.style.display = "flex";
 
             document.getElementById("navInitial").textContent =
                 name ? name.charAt(0).toUpperCase() : "U";
-            document.getElementById("navRoleBadge").textContent =
-                data.role === "tailor" ? "✂️ Tailor" : "🛍️ Customer";
+            document.getElementById("navRoleBadge").textContent = "🛍️ Customer";
             document.getElementById("menuName").textContent  = name;
             document.getElementById("menuEmail").textContent = user.email;
 
