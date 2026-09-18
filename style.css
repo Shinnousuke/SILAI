@@ -1252,3 +1252,376 @@ footer {
     }
 
 }
+.form_container {
+   position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    height: 400px;
+    background: #ccb377;
+    padding: 81px;
+    padding-left: 123px;
+    border-radius: 15px;
+    color: white;
+    font-size: 20px;
+    font-family: "Playfair Display", serif;
+}
+.form_container button{
+    background: #7b7b25;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    font-size: 15px;
+}
+
+
+/* =========================================================
+   NAVBAR — AUTH BUTTONS & USER STATE
+========================================================= */
+
+.nav-auth {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.nav-login-btn {
+    background: transparent;
+    border: 1px solid #cfc9be;
+    color: #24231f;
+    border-radius: 9px;
+    padding: 9px 18px;
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.nav-login-btn:hover {
+    background: #eeece6;
+}
+
+.nav-signup-btn {
+    background: #171715;
+    color: white;
+    border: none;
+    border-radius: 9px;
+    padding: 9px 18px;
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.nav-signup-btn:hover {
+    opacity: 0.85;
+}
+
+.nav-user {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    position: relative;
+}
+
+.nav-role-badge {
+    font-size: 11px;
+    font-weight: 700;
+    background: #f0ede5;
+    padding: 5px 10px;
+    border-radius: 20px;
+    color: #5a5650;
+}
+
+.profile-btn {
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    border: 2px solid #171715;
+    background: #171715;
+    color: white;
+    font-size: 15px;
+    font-weight: 700;
+    display: grid;
+    place-items: center;
+}
+
+.user-menu {
+    position: absolute;
+    top: 54px;
+    right: 0;
+    background: white;
+    border: 1px solid #e7e3da;
+    border-radius: 14px;
+    padding: 14px;
+    min-width: 200px;
+    box-shadow: 0 10px 30px rgba(20,18,14,.12);
+    z-index: 200;
+    display: none;
+    flex-direction: column;
+    gap: 4px;
+    animation: modalIn .2s ease;
+}
+
+.user-menu.show {
+    display: flex;
+}
+
+.user-menu-info {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    padding: 4px 6px 10px;
+}
+
+.user-menu-info strong {
+    font-size: 13px;
+}
+
+.user-menu-info small {
+    font-size: 10px;
+    color: #89857e;
+}
+
+.menu-divider {
+    border: none;
+    border-top: 1px solid #eee;
+    margin: 0;
+}
+
+.menu-item {
+    background: transparent;
+    border: none;
+    text-align: left;
+    padding: 9px 6px;
+    font-size: 12px;
+    font-weight: 600;
+    color: #c0392b;
+    border-radius: 7px;
+    width: 100%;
+}
+
+.menu-item:hover {
+    background: #fff0ee;
+}
+
+
+/* =========================================================
+   AUTH MODAL
+========================================================= */
+
+.auth-modal {
+    background: #f7f5f0;
+    width: 100%;
+    max-width: 480px;
+    border-radius: 20px;
+    padding: 38px;
+    position: relative;
+    animation: modalIn .3s ease;
+    max-height: 90vh;
+    overflow-y: auto;
+}
+
+.auth-modal h2 {
+    font-family: "Playfair Display", serif;
+    font-size: 34px;
+    line-height: 1.1;
+    margin: 10px 0 6px;
+}
+
+.auth-modal h2 em {
+    color: #9a6846;
+    font-style: italic;
+}
+
+.auth-modal > .auth-step > p,
+.auth-modal p {
+    color: #858179;
+    font-size: 12px;
+    margin-bottom: 22px;
+}
+
+.auth-step {
+    animation: modalIn .25s ease;
+}
+
+.back-btn {
+    background: none;
+    border: none;
+    font-size: 11px;
+    font-weight: 700;
+    color: #89857e;
+    padding: 0;
+    margin-bottom: 18px;
+    display: block;
+}
+
+.back-btn:hover {
+    color: #171715;
+}
+
+/* Role cards */
+
+.role-cards {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-top: 8px;
+}
+
+.role-card {
+    background: white;
+    border: 1.5px solid #e7e2d9;
+    border-radius: 14px;
+    padding: 22px 16px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    text-align: center;
+    transition: border-color .2s, box-shadow .2s;
+}
+
+.role-card:hover {
+    border-color: #171715;
+    box-shadow: 0 6px 20px rgba(20,18,14,.1);
+}
+
+.role-icon {
+    font-size: 32px;
+    display: block;
+    margin-bottom: 4px;
+}
+
+.role-card strong {
+    font-size: 13px;
+    display: block;
+}
+
+.role-card small {
+    font-size: 10px;
+    color: #89857e;
+    display: block;
+}
+
+/* Tabs */
+
+.auth-tabs {
+    display: flex;
+    background: #eeece6;
+    border-radius: 10px;
+    padding: 3px;
+    gap: 3px;
+    margin-bottom: 20px;
+}
+
+.auth-tab {
+    flex: 1;
+    border: none;
+    background: transparent;
+    border-radius: 8px;
+    padding: 9px;
+    font-size: 12px;
+    font-weight: 700;
+    color: #89857e;
+    transition: .2s;
+}
+
+.auth-tab.active {
+    background: white;
+    color: #171715;
+    box-shadow: 0 2px 8px rgba(20,18,14,.08);
+}
+
+/* Fields */
+
+.field-group {
+    margin-bottom: 14px;
+}
+
+.field-group label {
+    display: block;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: .8px;
+    color: #6b6860;
+    margin-bottom: 6px;
+    text-transform: uppercase;
+}
+
+.field-group input,
+.field-group select {
+    width: 100%;
+    background: white;
+    border: 1px solid #ddd8ce;
+    border-radius: 10px;
+    padding: 12px 14px;
+    font-size: 13px;
+    outline: none;
+    transition: border-color .2s;
+    font-family: "DM Sans", sans-serif;
+    color: #171715;
+}
+
+.field-group input:focus,
+.field-group select:focus {
+    border-color: #171715;
+}
+
+/* Error */
+
+.auth-error {
+    font-size: 11px;
+    color: #c0392b;
+    margin-bottom: 10px;
+    min-height: 16px;
+    font-weight: 600;
+}
+
+/* Submit button */
+
+.auth-submit-btn {
+    width: 100%;
+    padding: 14px;
+    font-size: 13px;
+    border-radius: 10px;
+    justify-content: center;
+    margin-bottom: 4px;
+}
+
+/* Divider */
+
+.auth-divider {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 16px 0;
+    color: #bbb7b0;
+    font-size: 11px;
+}
+
+.auth-divider::before,
+.auth-divider::after {
+    content: "";
+    flex: 1;
+    height: 1px;
+    background: #e7e2d9;
+}
+
+/* Google button */
+
+.google-btn {
+    width: 100%;
+    background: white;
+    border: 1px solid #ddd8ce;
+    border-radius: 10px;
+    padding: 12px 16px;
+    font-size: 13px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    transition: box-shadow .2s;
+}
+
+.google-btn:hover {
+    box-shadow: 0 4px 12px rgba(20,18,14,.1);
+}
