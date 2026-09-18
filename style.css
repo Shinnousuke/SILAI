@@ -1625,3 +1625,178 @@ footer {
 .google-btn:hover {
     box-shadow: 0 4px 12px rgba(20,18,14,.1);
 }
+
+
+/* =========================================================
+   TAILOR DASHBOARD NAV LINK
+========================================================= */
+
+.nav-tailor-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 7px 14px;
+    background: #171715;
+    color: #f7f5f0 !important;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 600;
+    transition: background 0.2s, transform 0.15s;
+}
+
+.nav-tailor-link:hover {
+    background: #2b2b28;
+    transform: translateY(-1px);
+}
+
+
+/* =========================================================
+   BOOKING MODAL — ORDER FORM
+========================================================= */
+
+.booking-modal {
+    background: #fff;
+    border-radius: 22px;
+    padding: 38px 36px 32px;
+    width: 90%;
+    max-width: 520px;
+    position: relative;
+    animation: modalIn 0.25s ease;
+    max-height: 90vh;
+    overflow-y: auto;
+}
+
+.booking-modal h2 {
+    font-family: "Playfair Display", serif;
+    font-size: 26px;
+    font-weight: 700;
+    color: #171715;
+    margin: 8px 0 0;
+}
+
+.bk-section-label {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    color: #858179;
+    margin-bottom: 10px;
+}
+
+.bk-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 4px;
+}
+
+.bk-service-chip {
+    padding: 8px 16px;
+    border-radius: 20px;
+    border: 1.5px solid #e7e3da;
+    background: #fff;
+    font-size: 13px;
+    font-weight: 500;
+    color: #5a5750;
+    cursor: pointer;
+    transition: all 0.18s;
+    font-family: inherit;
+}
+
+.bk-service-chip:hover {
+    border-color: #c8c2b8;
+    background: #f7f5f0;
+}
+
+.bk-service-chip.active {
+    background: #171715;
+    color: #f7f5f0;
+    border-color: #171715;
+}
+
+.bk-submit-btn {
+    width: 100%;
+    margin-top: 8px;
+    padding: 14px;
+    font-size: 15px;
+}
+
+.booking-modal .field-group label {
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: #858179;
+    display: block;
+    margin-bottom: 6px;
+}
+
+.booking-modal .field-group textarea {
+    width: 100%;
+    padding: 12px 14px;
+    border: 1.5px solid #e7e3da;
+    border-radius: 12px;
+    font-size: 14px;
+    font-family: inherit;
+    color: #171715;
+    background: #faf9f6;
+    resize: vertical;
+    outline: none;
+    transition: border-color 0.2s;
+    min-height: 72px;
+}
+
+.booking-modal .field-group textarea:focus {
+    border-color: #2b6be6;
+    background: #fff;
+}
+
+/* =========================================================
+   SERVICE FILTER BANNER
+========================================================= */
+
+.filter-banner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: #171715;
+    color: #f7f5f0;
+    padding: 10px 20px;
+    border-radius: 12px;
+    font-size: 13px;
+    margin-bottom: 20px;
+    width: 100%;
+}
+
+.filter-banner strong {
+    font-weight: 700;
+}
+
+.filter-banner button {
+    background: rgba(247, 245, 240, 0.15);
+    border: none;
+    color: #f7f5f0;
+    font-size: 12px;
+    font-weight: 600;
+    padding: 5px 12px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-family: inherit;
+    transition: background 0.2s;
+}
+
+.filter-banner button:hover {
+    background: rgba(247, 245, 240, 0.25);
+}
+
+/* =========================================================
+   TAILOR EMPTY STATE
+========================================================= */
+
+.tailor-empty {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 48px;
+    color: #858179;
+    font-size: 15px;
+}
