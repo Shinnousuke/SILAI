@@ -46,10 +46,10 @@
 
     <div class="td-sidebar-footer">
         <div class="td-profile-pill">
-            <div class="td-profile-avatar">M</div>
+            <div class="td-profile-avatar" id="sidebarAvatar">T</div>
             <div class="td-profile-info">
-                <strong id="sidebarName">Meera Studio</strong>
-                <small>Women's Tailoring</small>
+                <strong id="sidebarName">Tailor</strong>
+                <small id="sidebarSpecialty">Tailoring</small>
             </div>
         </div>
         <button class="td-logout-btn" onclick="handleLogout()">
@@ -81,7 +81,7 @@
         <div class="td-section-header">
             <div>
                 <span class="section-label">TAILOR DASHBOARD</span>
-                <h1>Good morning, <em id="tailorGreeting">Meera</em> ✦</h1>
+                <h1>Good morning, <em id="tailorGreeting">Tailor</em> ✦</h1>
             </div>
             <div class="td-date-badge" id="todayDate"></div>
         </div>
@@ -296,8 +296,8 @@
 
             <div class="td-card td-profile-card">
                 <div class="td-profile-big-avatar" id="profileBigAvatar">M</div>
-                <h2 id="profileShopName">Meera Studio</h2>
-                <p id="profileSpecialty">Women's Tailoring</p>
+                <h2 id="profileShopName">Tailor</h2>
+                <p id="profileSpecialty">Tailoring</p>
                 <div class="td-profile-badges">
                     <span class="td-badge green">✓ Verified</span>
                     <span class="td-badge gold">★ 4.9</span>
@@ -311,24 +311,24 @@
                 <div class="td-form-grid">
                     <div class="field-group">
                         <label>Shop / Studio Name</label>
-                        <input type="text" id="pShopName" value="Meera Studio">
+                        <input type="text" id="pShopName" placeholder="Shop or studio name">
                     </div>
                     <div class="field-group">
                         <label>Owner Name</label>
-                        <input type="text" id="pOwnerName" value="Meera Patel">
+                        <input type="text" id="pOwnerName" placeholder="Your name">
                     </div>
                     <div class="field-group">
                         <label>Phone</label>
-                        <input type="tel" id="pPhone" value="+91 98765 43210">
+                        <input type="tel" id="pPhone" placeholder="Phone number">
                     </div>
                     <div class="field-group">
                         <label>Email</label>
-                        <input type="email" id="pEmail" value="meera@studio.com">
+                        <input type="email" id="pEmail" placeholder="Email address">
                     </div>
                     <div class="field-group">
                         <label>Specialty</label>
                         <select id="pSpecialty">
-                            <option selected>Women's Tailoring</option>
+                            <option value="">Select specialty</option>
                             <option>Men's Tailoring</option>
                             <option>Bridal & Ethnic</option>
                             <option>Alterations</option>
@@ -337,11 +337,11 @@
                     </div>
                     <div class="field-group">
                         <label>Location</label>
-                        <input type="text" id="pLocation" value="Koramangala, Bangalore">
+                        <input type="text" id="pLocation" placeholder="Area, city">
                     </div>
                     <div class="field-group" style="grid-column: 1 / -1;">
                         <label>About your shop</label>
-                        <textarea id="pBio" rows="3">Specialising in ethnic blouses, lehengas and alterations. 10+ years experience.</textarea>
+                        <textarea id="pBio" rows="3" placeholder="Tell customers about your shop"></textarea>
                     </div>
                 </div>
 
@@ -414,7 +414,9 @@ import {
     query,
     where,
     getDocs,
-    updateDoc
+    updateDoc,
+    setDoc,
+    deleteField
 } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
 const firebaseConfig = {
@@ -433,54 +435,92 @@ const db   = getFirestore(app);
 /* =========================================================
    MOCK DATA  (replace with real Firestore queries)
 ========================================================= */
-const MOCK_ORDERS = [
-    { id: "SUI28491", customer: "Priya Sharma",    service: "Blouse Stitching", amount: 549, status: "in-progress", date: "2026-09-14", rating: null },
-    { id: "SUI28480", customer: "Ananya Reddy",    service: "New Stitching",    amount: 799, status: "completed",   date: "2026-09-12", rating: 5 },
-    { id: "SUI28465", customer: "Kavitha Nair",    service: "Alteration",       amount: 199, status: "completed",   date: "2026-09-10", rating: 4 },
-    { id: "SUI28460", customer: "Sunita Mehta",    service: "Blouse Stitching", amount: 499, status: "completed",   date: "2026-09-09", rating: 5 },
-    { id: "SUI28451", customer: "Deepa Iyer",      service: "Repair",           amount: 149, status: "pending",     date: "2026-09-15", rating: null },
-    { id: "SUI28445", customer: "Rekha Das",       service: "Custom Design",    amount: 1299, status: "in-progress", date: "2026-09-13", rating: null },
-    { id: "SUI28430", customer: "Meena Pillai",    service: "Alteration",       amount: 149, status: "completed",   date: "2026-09-08", rating: 5 },
-    { id: "SUI28420", customer: "Shalini Verma",   service: "New Stitching",    amount: 699, status: "completed",   date: "2026-09-07", rating: 4 },
-    { id: "SUI28410", customer: "Pooja Agarwal",   service: "Blouse Stitching", amount: 549, status: "completed",   date: "2026-09-06", rating: 5 },
-    { id: "SUI28400", customer: "Nisha Bose",      service: "Repair",           amount: 99,  status: "completed",   date: "2026-09-05", rating: 4 },
-    { id: "SUI28495", customer: "Asha Krishnan",   service: "Blouse Stitching", amount: 499, status: "pending",     date: "2026-09-16", rating: null },
-    { id: "SUI28496", customer: "Fatima Sheikh",   service: "Custom Design",    amount: 999, status: "pending",     date: "2026-09-16", rating: null },
-];
-
-const WEEKLY_REVENUE = [
-    { day: "Mon", amount: 549  },
-    { day: "Tue", amount: 0    },
-    { day: "Wed", amount: 748  },
-    { day: "Thu", amount: 1299 },
-    { day: "Fri", amount: 499  },
-    { day: "Sat", amount: 1248 },
-    { day: "Sun", amount: 0    },
-];
-
-const MONTHLY_REVENUE = [
-    { day: "Sep 1",  amount: 699  },
-    { day: "Sep 3",  amount: 549  },
-    { day: "Sep 5",  amount: 248  },
-    { day: "Sep 7",  amount: 1298 },
-    { day: "Sep 9",  amount: 348  },
-    { day: "Sep 11", amount: 998  },
-    { day: "Sep 13", amount: 1848 },
-    { day: "Sep 15", amount: 2343 },
-];
+const DASHBOARD_ORDERS = [];
 
 /* =========================================================
    STATE
 ========================================================= */
 let currentFilter  = "all";
 let analyticsPeriod = "week";
-let tailorData     = { name: "Meera Studio", specialty: "Women's Tailoring" };
+let tailorData     = {};
+let currentUserId  = null;
+let pendingPhotoFile = null;
 
 /* =========================================================
    INIT
 ========================================================= */
 window.addEventListener("DOMContentLoaded", () => {
     setTodayDate();
+    buildDayChips();
+});
+
+onAuthStateChanged(auth, async (user) => {
+    if (!user) {
+        window.location.href = "index.html";
+        return;
+    }
+
+    const userSnap = await getDoc(doc(db, "users", user.uid));
+    const tailorSnap = await getDoc(doc(db, "tailors", user.uid));
+    const role = userSnap.exists() ? userSnap.data().role : tailorSnap.exists() ? "tailor" : "";
+    if (role !== "tailor") {
+        await signOut(auth);
+        window.location.href = "index.html";
+        return;
+    }
+
+    currentUserId = user.uid;
+    if (!userSnap.exists()) {
+        await setDoc(doc(db, "users", user.uid), {
+            email: user.email || "",
+            role: "tailor",
+            restoredAt: new Date().toISOString()
+        }, { merge: true });
+    }
+    tailorData = tailorSnap.exists()
+        ? { ...tailorSnap.data(), email: tailorSnap.data().email || user.email || "" }
+        : { ...userSnap.data(), email: userSnap.data().email || user.email || "" };
+    try {
+        await updateDoc(doc(db, "users", user.uid), {
+            name: deleteField(),
+            phone: deleteField(),
+            shop: deleteField(),
+            specialty: deleteField(),
+            location: deleteField(),
+            bio: deleteField(),
+            photoURL: deleteField(),
+            openingTime: deleteField(),
+            closingTime: deleteField(),
+            workingDays: deleteField()
+        });
+    } catch (cleanupError) {
+        console.warn("Legacy tailor fields could not be cleaned from users:", cleanupError);
+    }
+    try {
+        await setDoc(doc(db, "tailors", user.uid), {
+            uid: user.uid,
+            name: tailorData.name || "",
+            email: tailorData.email,
+            shop: tailorData.shop || tailorData.name || "Tailor",
+            specialty: tailorData.specialty || "Tailoring",
+            phone: tailorData.phone || "",
+            location: tailorData.location || "",
+            bio: tailorData.bio || "",
+            photoURL: tailorData.photoURL || "",
+            startingPrice: Number(tailorData.startingPrice || 150),
+            rating: Number(tailorData.rating || 0),
+            updatedAt: new Date().toISOString()
+        }, { merge: true });
+    } catch (listingError) {
+        console.error("Tailor listing sync failed:", listingError);
+        showToast("Profile loaded, but public listing sync was blocked by Firestore rules.");
+    }
+    applyTailorData(tailorData);
+    await loadTailorOrders(user);
+    renderDashboard();
+});
+
+function renderDashboard() {
     buildDayChips();
     renderStats();
     renderWeeklyChart();
@@ -489,28 +529,68 @@ window.addEventListener("DOMContentLoaded", () => {
     renderFullOrders();
     renderAnalytics();
     renderRatings();
-});
+}
 
-onAuthStateChanged(auth, async (user) => {
-    if (user) {
-        const snap = await getDoc(doc(db, "users", user.uid));
-        if (snap.exists()) {
-            const d = snap.data();
-            if (d.role !== "tailor") {
-                window.location.href = "dashboard.html";
-                return;
-            }
-            tailorData = d;
-            applyTailorData(d);
-        }
+async function loadTailorOrders(user) {
+    try {
+        const snapshot = await getDocs(collection(db, "orders"));
+        const loaded = snapshot.docs
+            .map(orderDoc => ({ id: orderDoc.id, ...orderDoc.data() }))
+            .filter(order => [order.tailorId, order.tailorUid, order.tailorID].includes(user.uid)
+                || order.tailorEmail === user.email
+                || order.tailor?.uid === user.uid);
+
+        DASHBOARD_ORDERS.splice(0, DASHBOARD_ORDERS.length, ...loaded.map(normalizeOrder));
+    } catch (error) {
+        DASHBOARD_ORDERS.splice(0, DASHBOARD_ORDERS.length);
+        showToast("Could not load your orders.");
+        console.error("Order loading failed:", error);
     }
-    // If not logged in, still show dashboard with mock data (demo mode)
-});
+}
+
+function normalizeOrder(order) {
+    return {
+        ...order,
+        id: order.id || order.orderId || "—",
+        customer: order.customer || order.customerName || "Customer",
+        service: order.service || order.serviceType || "Tailoring",
+        amount: Number(order.amount || order.price || 0),
+        status: order.status || "pending",
+        date: order.date || order.createdAt?.toDate?.()?.toISOString?.().slice(0, 10) || "—",
+        rating: order.rating || null
+    };
+}
+
+function getRevenueData(period) {
+    const days = period === "week" ? 7 : 8;
+    const now = new Date();
+    const points = [];
+
+    for (let index = days - 1; index >= 0; index--) {
+        const date = new Date(now);
+        date.setHours(0, 0, 0, 0);
+        date.setDate(now.getDate() - index * (period === "week" ? 1 : 4));
+        const key = date.toISOString().slice(0, 10);
+        const amount = DASHBOARD_ORDERS
+            .filter(order => order.date === key && order.status !== "cancelled")
+            .reduce((total, order) => total + order.amount, 0);
+
+        points.push({
+            day: period === "week"
+                ? date.toLocaleDateString("en-IN", { weekday: "short" })
+                : date.toLocaleDateString("en-IN", { month: "short", day: "numeric" }),
+            amount
+        });
+    }
+
+    return points;
+}
 
 function applyTailorData(d) {
     const firstName = (d.name || "Tailor").split(" ")[0];
     document.getElementById("tailorGreeting").textContent = firstName;
     document.getElementById("sidebarName").textContent    = d.shop || d.name || "Tailor";
+    document.getElementById("sidebarSpecialty").textContent = d.specialty || "Tailoring";
     document.getElementById("profileShopName").textContent = d.shop || d.name || "Tailor";
     document.getElementById("profileSpecialty").textContent = d.specialty || "Tailoring";
 
@@ -533,6 +613,13 @@ function applyTailorData(d) {
     if (document.getElementById("pOwnerName")) document.getElementById("pOwnerName").value = d.name || "";
     if (document.getElementById("pEmail"))     document.getElementById("pEmail").value     = d.email || "";
     if (document.getElementById("pPhone"))     document.getElementById("pPhone").value     = d.phone || "";
+    if (document.getElementById("pSpecialty")) document.getElementById("pSpecialty").value = d.specialty || "";
+    if (document.getElementById("pLocation"))  document.getElementById("pLocation").value  = d.location || "";
+    if (document.getElementById("pBio"))      document.getElementById("pBio").value      = d.bio || "";
+    if (document.getElementById("pOpen"))     document.getElementById("pOpen").value     = d.openingTime || "09:00";
+    if (document.getElementById("pClose"))    document.getElementById("pClose").value    = d.closingTime || "19:00";
+    activeDays = new Set(d.workingDays || DAYS.slice(0, 6));
+    buildDayChips();
 }
 
 /* =========================================================
@@ -591,14 +678,14 @@ window.toggleSidebar = function() {
    STATS
 ========================================================= */
 function renderStats() {
-    const totalEarnings = MOCK_ORDERS
+    const totalEarnings = DASHBOARD_ORDERS
         .filter(o => o.status === "completed")
         .reduce((s, o) => s + o.amount, 0);
 
-    const active    = MOCK_ORDERS.filter(o => o.status === "in-progress" || o.status === "pending").length;
-    const completed = MOCK_ORDERS.filter(o => o.status === "completed").length;
+    const active    = DASHBOARD_ORDERS.filter(o => o.status === "in-progress" || o.status === "pending").length;
+    const completed = DASHBOARD_ORDERS.filter(o => o.status === "completed").length;
 
-    const ratings = MOCK_ORDERS.filter(o => o.rating).map(o => o.rating);
+    const ratings = DASHBOARD_ORDERS.filter(o => o.rating).map(o => o.rating);
     const avgRating = ratings.length
         ? (ratings.reduce((a, b) => a + b, 0) / ratings.length).toFixed(1)
         : "—";
@@ -618,7 +705,7 @@ function renderStats() {
    WEEKLY BAR CHART
 ========================================================= */
 function renderWeeklyChart() {
-    const data = WEEKLY_REVENUE;
+    const data = getRevenueData("week");
     const max  = Math.max(...data.map(d => d.amount), 1);
     const total = data.reduce((s, d) => s + d.amount, 0);
 
@@ -650,7 +737,7 @@ function renderWeeklyChart() {
 ========================================================= */
 function renderDonut() {
     const services = {};
-    MOCK_ORDERS.forEach(o => {
+    DASHBOARD_ORDERS.forEach(o => {
         services[o.service] = (services[o.service] || 0) + 1;
     });
     const total   = Object.values(services).reduce((a, b) => a + b, 0);
@@ -715,7 +802,7 @@ function renderOrderRow(o, compact = false) {
 
 function renderRecentOrders() {
     const el = document.getElementById("recentOrdersTable");
-    const recent = [...MOCK_ORDERS].slice(0, 5);
+    const recent = [...DASHBOARD_ORDERS].slice(0, 5);
     el.innerHTML = `
         <div class="td-order-head">
             <span>Order ID</span>
@@ -738,8 +825,8 @@ window.filterOrders = function(filter, btn) {
 function renderFullOrders() {
     const el = document.getElementById("fullOrdersTable");
     const filtered = currentFilter === "all"
-        ? MOCK_ORDERS
-        : MOCK_ORDERS.filter(o => o.status === currentFilter);
+        ? DASHBOARD_ORDERS
+        : DASHBOARD_ORDERS.filter(o => o.status === currentFilter);
 
     el.innerHTML = `
         <div class="td-order-head full">
@@ -761,7 +848,7 @@ function renderFullOrders() {
    ORDER MODAL
 ========================================================= */
 window.openOrderModal = function(id) {
-    const order = MOCK_ORDERS.find(o => o.id === id);
+    const order = DASHBOARD_ORDERS.find(o => o.id === id);
     if (!order) return;
 
     document.getElementById("modalOrderId").textContent = "Order #" + order.id;
@@ -802,15 +889,21 @@ window.closeOrderModal = function() {
     document.getElementById("orderModal").classList.remove("show");
 };
 
-function updateOrderStatus(id, newStatus) {
-    const order = MOCK_ORDERS.find(o => o.id === id);
-    if (order) {
+async function updateOrderStatus(id, newStatus) {
+    const order = DASHBOARD_ORDERS.find(o => o.id === id);
+    if (!order || !currentUserId) return;
+
+    try {
+        await updateDoc(doc(db, "orders", id), { status: newStatus });
         order.status = newStatus;
         closeOrderModal();
         renderStats();
         renderRecentOrders();
         renderFullOrders();
         showToast(`Order #${id} marked as ${newStatus}.`);
+    } catch (error) {
+        showToast("Could not update this order.");
+        console.error("Order update failed:", error);
     }
 }
 
@@ -825,7 +918,7 @@ window.setAnalyticsPeriod = function(period, btn) {
 };
 
 function renderAnalytics() {
-    const data = analyticsPeriod === "week" ? WEEKLY_REVENUE : MONTHLY_REVENUE;
+    const data = getRevenueData(analyticsPeriod);
     const total = data.reduce((s, d) => s + d.amount, 0);
 
     document.getElementById("analyticsTotalBadge").textContent = fmt(total);
@@ -914,7 +1007,7 @@ function renderServiceRevenue() {
     const el = document.getElementById("serviceRevenueBars");
     el.innerHTML = "";
     const services = {};
-    MOCK_ORDERS.forEach(o => {
+    DASHBOARD_ORDERS.forEach(o => {
         if (o.status === "completed")
             services[o.service] = (services[o.service] || 0) + o.amount;
     });
@@ -940,7 +1033,7 @@ function renderRatings() {
     el.innerHTML = "";
 
     const counts = { 5: 0, 4: 0, 3: 0, 2: 0, 1: 0 };
-    MOCK_ORDERS.forEach(o => { if (o.rating) counts[o.rating]++; });
+    DASHBOARD_ORDERS.forEach(o => { if (o.rating) counts[o.rating]++; });
     const total = Object.values(counts).reduce((a, b) => a + b, 0);
     const avg   = total
         ? (Object.entries(counts).reduce((s, [k, v]) => s + (+k * v), 0) / total).toFixed(1)
@@ -983,8 +1076,62 @@ function buildDayChips() {
     });
 }
 
-window.saveProfile = function() {
-    showToast("Profile saved successfully ✦");
+window.saveProfile = async function() {
+    if (!currentUserId) {
+        showToast("Please log in again to save your profile.");
+        return;
+    }
+
+    const profile = {
+        shop: document.getElementById("pShopName").value.trim(),
+        name: document.getElementById("pOwnerName").value.trim(),
+        phone: document.getElementById("pPhone").value.trim(),
+        email: document.getElementById("pEmail").value.trim(),
+        specialty: document.getElementById("pSpecialty").value,
+        location: document.getElementById("pLocation").value.trim(),
+        bio: document.getElementById("pBio").value.trim(),
+        openingTime: document.getElementById("pOpen").value,
+        closingTime: document.getElementById("pClose").value,
+        workingDays: [...activeDays]
+    };
+
+    if (!profile.name || !profile.shop) {
+        showToast("Shop name and owner name are required.");
+        return;
+    }
+
+    try {
+        await setDoc(doc(db, "tailors", currentUserId), {
+            uid: currentUserId,
+            name: profile.name,
+            email: profile.email,
+            shop: profile.shop,
+            specialty: profile.specialty,
+            phone: profile.phone,
+            location: profile.location,
+            bio: profile.bio,
+            openingTime: profile.openingTime,
+            closingTime: profile.closingTime,
+            workingDays: profile.workingDays,
+            updatedAt: new Date().toISOString()
+        }, { merge: true });
+
+        let savedPhotoURL = tailorData.photoURL || "";
+        if (pendingPhotoFile) {
+            const photoURL = await uploadPhoto(pendingPhotoFile, currentUserId);
+            await setDoc(doc(db, "tailors", currentUserId), { photoURL }, { merge: true });
+            savedPhotoURL = photoURL;
+            pendingPhotoFile = null;
+        }
+
+        tailorData = { ...tailorData, ...profile };
+        tailorData.photoURL = savedPhotoURL;
+        applyTailorData(tailorData);
+        showToast("Profile saved successfully ✦");
+    } catch (error) {
+        showToast("Could not save your profile.");
+        console.error("Profile update failed:", error);
+    }
 };
 
 /* =========================================================
@@ -1032,11 +1179,8 @@ window.handlePhotoChange = function(event) {
 
         showToast("Photo updated ✦");
 
-        // Upload to Firebase Storage if user is logged in
-        const user = auth.currentUser;
-        if (user) {
-            uploadPhoto(file, user.uid);
-        }
+        pendingPhotoFile = file;
+        showToast("Photo ready. Click Save Changes to save it.");
     };
     reader.readAsDataURL(file);
 
@@ -1048,21 +1192,39 @@ async function uploadPhoto(file, uid) {
     try {
         const { getStorage, ref, uploadBytes, getDownloadURL } =
             await import("https://www.gstatic.com/firebasejs/10.12.0/firebase-storage.js");
-        const { updateDoc } =
-            await import("https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js");
 
         const storage  = getStorage(app);
         const photoRef = ref(storage, `avatars/${uid}`);
         await uploadBytes(photoRef, file);
         const url = await getDownloadURL(photoRef);
 
-        // Save URL to Firestore user doc
-        await updateDoc(doc(db, "users", uid), { photoURL: url });
-        showToast("Photo saved to your profile ✦");
+        return url;
     } catch (err) {
-        // Storage might not be configured — preview still works locally
-        console.warn("Photo upload skipped:", err.message);
+        try {
+            const dataURL = await resizeImage(file);
+            return dataURL;
+        } catch (fallbackError) {
+            console.error("Photo save failed:", fallbackError);
+            throw fallbackError;
+        }
     }
+}
+
+function resizeImage(file) {
+    return new Promise((resolve, reject) => {
+        const image = new Image();
+        image.onload = () => {
+            const size = 320;
+            const scale = Math.min(size / image.width, size / image.height, 1);
+            const canvas = document.createElement("canvas");
+            canvas.width = Math.max(1, Math.round(image.width * scale));
+            canvas.height = Math.max(1, Math.round(image.height * scale));
+            canvas.getContext("2d").drawImage(image, 0, 0, canvas.width, canvas.height);
+            resolve(canvas.toDataURL("image/jpeg", 0.78));
+        };
+        image.onerror = reject;
+        image.src = URL.createObjectURL(file);
+    });
 }
 
 /* =========================================================
