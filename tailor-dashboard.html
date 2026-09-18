@@ -386,7 +386,7 @@
     <div class="td-order-modal">
         <button class="close-btn" onclick="closeOrderModal()">×</button>
         <span class="section-label">ORDER DETAIL</span>
-        <h2 id="modalOrderId">Order #SUI00000</h2>
+        <h2 id="modalOrderId">Order #SILAI00000</h2>
         <div class="td-modal-body" id="modalBody"></div>
         <div class="td-modal-actions" id="modalActions"></div>
     </div>
@@ -434,18 +434,18 @@ const db   = getFirestore(app);
    MOCK DATA  (replace with real Firestore queries)
 ========================================================= */
 const MOCK_ORDERS = [
-    { id: "SUI28491", customer: "Priya Sharma",    service: "Blouse Stitching", amount: 549, status: "in-progress", date: "2026-09-14", rating: null },
-    { id: "SUI28480", customer: "Ananya Reddy",    service: "New Stitching",    amount: 799, status: "completed",   date: "2026-09-12", rating: 5 },
-    { id: "SUI28465", customer: "Kavitha Nair",    service: "Alteration",       amount: 199, status: "completed",   date: "2026-09-10", rating: 4 },
-    { id: "SUI28460", customer: "Sunita Mehta",    service: "Blouse Stitching", amount: 499, status: "completed",   date: "2026-09-09", rating: 5 },
-    { id: "SUI28451", customer: "Deepa Iyer",      service: "Repair",           amount: 149, status: "pending",     date: "2026-09-15", rating: null },
-    { id: "SUI28445", customer: "Rekha Das",       service: "Custom Design",    amount: 1299, status: "in-progress", date: "2026-09-13", rating: null },
-    { id: "SUI28430", customer: "Meena Pillai",    service: "Alteration",       amount: 149, status: "completed",   date: "2026-09-08", rating: 5 },
-    { id: "SUI28420", customer: "Shalini Verma",   service: "New Stitching",    amount: 699, status: "completed",   date: "2026-09-07", rating: 4 },
-    { id: "SUI28410", customer: "Pooja Agarwal",   service: "Blouse Stitching", amount: 549, status: "completed",   date: "2026-09-06", rating: 5 },
-    { id: "SUI28400", customer: "Nisha Bose",      service: "Repair",           amount: 99,  status: "completed",   date: "2026-09-05", rating: 4 },
-    { id: "SUI28495", customer: "Asha Krishnan",   service: "Blouse Stitching", amount: 499, status: "pending",     date: "2026-09-16", rating: null },
-    { id: "SUI28496", customer: "Fatima Sheikh",   service: "Custom Design",    amount: 999, status: "pending",     date: "2026-09-16", rating: null },
+    { id: "SILAI28491", customer: "Priya Sharma",    service: "Blouse Stitching", amount: 549, status: "in-progress", date: "2026-09-14", rating: null },
+    { id: "SILAI28480", customer: "Ananya Reddy",    service: "New Stitching",    amount: 799, status: "completed",   date: "2026-09-12", rating: 5 },
+    { id: "SILAI28465", customer: "Kavitha Nair",    service: "Alteration",       amount: 199, status: "completed",   date: "2026-09-10", rating: 4 },
+    { id: "SILAI28460", customer: "Sunita Mehta",    service: "Blouse Stitching", amount: 499, status: "completed",   date: "2026-09-09", rating: 5 },
+    { id: "SILAI28451", customer: "Deepa Iyer",      service: "Repair",           amount: 149, status: "pending",     date: "2026-09-15", rating: null },
+    { id: "SILAI28445", customer: "Rekha Das",       service: "Custom Design",    amount: 1299, status: "in-progress", date: "2026-09-13", rating: null },
+    { id: "SILAI28430", customer: "Meena Pillai",    service: "Alteration",       amount: 149, status: "completed",   date: "2026-09-08", rating: 5 },
+    { id: "SILAI28420", customer: "Shalini Verma",   service: "New Stitching",    amount: 699, status: "completed",   date: "2026-09-07", rating: 4 },
+    { id: "SILAI28410", customer: "Pooja Agarwal",   service: "Blouse Stitching", amount: 549, status: "completed",   date: "2026-09-06", rating: 5 },
+    { id: "SILAI28400", customer: "Nisha Bose",      service: "Repair",           amount: 99,  status: "completed",   date: "2026-09-05", rating: 4 },
+    { id: "SILAI28495", customer: "Asha Krishnan",   service: "Blouse Stitching", amount: 499, status: "pending",     date: "2026-09-16", rating: null },
+    { id: "SILAI28496", customer: "Fatima Sheikh",   service: "Custom Design",    amount: 999, status: "pending",     date: "2026-09-16", rating: null },
 ];
 
 const WEEKLY_REVENUE = [
