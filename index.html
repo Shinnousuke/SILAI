@@ -322,130 +322,8 @@
     </div>
 
 
-    <div class="tailor-grid">
-
-        <!-- Tailor 1 -->
-
-        <div class="tailor-card">
-
-            <div class="tailor-photo photo-one">
-                <span class="verified">✓</span>
-            </div>
-
-            <div class="tailor-content">
-
-                <div class="tailor-title">
-                    <div>
-                        <h3>Meera Studio</h3>
-                        <span>Women's tailoring</span>
-                    </div>
-
-                    <div class="rating">
-                        ★ 4.9
-                    </div>
-                </div>
-
-                <div class="tailor-tags">
-                    <span>Blouses</span>
-                    <span>Alterations</span>
-                    <span>Ethnic</span>
-                </div>
-
-                <div class="tailor-bottom">
-                    <span>📍 1.2 km away</span>
-                    <strong>From ₹150</strong>
-                </div>
-
-                <button class="book-btn" onclick="bookTailor('Meera Studio')">
-                    Book Tailor
-                </button>
-
-            </div>
-
-        </div>
-
-
-        <!-- Tailor 2 -->
-
-        <div class="tailor-card">
-
-            <div class="tailor-photo photo-two">
-                <span class="verified">✓</span>
-            </div>
-
-            <div class="tailor-content">
-
-                <div class="tailor-title">
-                    <div>
-                        <h3>Thread & Co.</h3>
-                        <span>Custom clothing</span>
-                    </div>
-
-                    <div class="rating">
-                        ★ 4.8
-                    </div>
-                </div>
-
-                <div class="tailor-tags">
-                    <span>Shirts</span>
-                    <span>Suits</span>
-                    <span>Western</span>
-                </div>
-
-                <div class="tailor-bottom">
-                    <span>📍 2.1 km away</span>
-                    <strong>From ₹299</strong>
-                </div>
-
-                <button class="book-btn" onclick="bookTailor('Thread & Co.')">
-                    Book Tailor
-                </button>
-
-            </div>
-
-        </div>
-
-
-        <!-- Tailor 3 -->
-
-        <div class="tailor-card">
-
-            <div class="tailor-photo photo-three">
-                <span class="verified">✓</span>
-            </div>
-
-            <div class="tailor-content">
-
-                <div class="tailor-title">
-                    <div>
-                        <h3>Needle House</h3>
-                        <span>Premium tailoring</span>
-                    </div>
-
-                    <div class="rating">
-                        ★ 4.9
-                    </div>
-                </div>
-
-                <div class="tailor-tags">
-                    <span>Bridal</span>
-                    <span>Embroidery</span>
-                    <span>Designer</span>
-                </div>
-
-                <div class="tailor-bottom">
-                    <span>📍 3.4 km away</span>
-                    <strong>From ₹699</strong>
-                </div>
-
-                <button class="book-btn" onclick="bookTailor('Needle House')">
-                    Book Tailor
-                </button>
-
-            </div>
-
-        </div>
-
+    <div class="tailor-grid" id="tailorGrid">
+        <div class="tailor-loading">Loading tailors...</div>
     </div>
 
 </section>
@@ -537,7 +415,7 @@
                 <em>on their way.</em>
             </h2>
 
-            <p>Order #SUI28491 · Meera Studio</p>
+            <p>Your latest order details will appear here.</p>
 
         </div>
 
@@ -728,44 +606,40 @@
 
         <button class="close-btn" onclick="closeBooking()">×</button>
 
-        <span class="section-label">BOOK YOUR TAILOR</span>
+        <span class="section-label">PLACE AN ORDER</span>
 
-        <h2 id="bookingTitle">
-            Book Tailor
-        </h2>
+        <h2 id="bookingTitle">Book Tailor</h2>
+        <p id="bookingSubtitle" style="color:#858179;font-size:13px;margin-bottom:20px;"></p>
 
-        <p>
-            Select your preferred service.
-        </p>
-
-
-        <div class="booking-options">
-
-            <button onclick="chooseBooking('Alteration', 150)">
-                <span>✂️</span>
-                <div>
-                    <strong>Alteration</strong>
-                    <small>From ₹150</small>
-                </div>
-            </button>
-
-            <button onclick="chooseBooking('New Stitching', 399)">
-                <span>🧵</span>
-                <div>
-                    <strong>New Stitching</strong>
-                    <small>From ₹399</small>
-                </div>
-            </button>
-
-            <button onclick="chooseBooking('Custom Design', 699)">
-                <span>✨</span>
-                <div>
-                    <strong>Custom Design</strong>
-                    <small>From ₹699</small>
-                </div>
-            </button>
-
+        <!-- SERVICE CHIPS -->
+        <div class="bk-section-label">What do you need?</div>
+        <div class="bk-chips">
+            <button class="bk-service-chip active" data-service="Alteration"    onclick="selectServiceChip(this)">✂️ Alteration</button>
+            <button class="bk-service-chip"        data-service="New Stitching" onclick="selectServiceChip(this)">🧵 New Stitching</button>
+            <button class="bk-service-chip"        data-service="Blouse"        onclick="selectServiceChip(this)">👗 Blouse</button>
+            <button class="bk-service-chip"        data-service="Custom Design" onclick="selectServiceChip(this)">✨ Custom Design</button>
+            <button class="bk-service-chip"        data-service="Repair"        onclick="selectServiceChip(this)">🪡 Repair</button>
         </div>
+
+        <!-- DESCRIPTION -->
+        <div class="field-group" style="margin-top:18px;">
+            <label>Describe what you need <span style="color:#e64c2b">*</span></label>
+            <textarea id="bkDescription" rows="3"
+                placeholder="e.g. I need a kurti stitched in navy blue, fitted at the waist..."></textarea>
+        </div>
+
+        <!-- MEASUREMENTS (optional) -->
+        <div class="field-group">
+            <label>Measurements <span style="color:#858179;font-weight:400;">(optional)</span></label>
+            <textarea id="bkMeasurements" rows="2"
+                placeholder="e.g. Chest 36, Waist 30, Length 42 inches..."></textarea>
+        </div>
+
+        <div class="auth-error" id="bkError"></div>
+
+        <button class="primary-btn bk-submit-btn" id="bkSubmitBtn" onclick="submitOrder()">
+            Place Order →
+        </button>
 
     </div>
 
@@ -924,7 +798,13 @@
         getFirestore,
         doc,
         setDoc,
-        getDoc
+        getDoc,
+        collection,
+        getDocs,
+        addDoc,
+        query,
+        where,
+        serverTimestamp
     } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
     const firebaseConfig = {
@@ -940,6 +820,280 @@
     const auth       = getAuth(app);
     const db         = getFirestore(app);
     const provider   = new GoogleAuthProvider();
+
+    // All loaded tailor docs — used for filtering
+    let allTailors = [];
+    // Currently logged-in customer data
+    let currentUser = null;
+    let currentCustomerData = {};
+
+    loadTailors();
+
+    async function loadTailors() {
+        const grid = document.getElementById("tailorGrid");
+        if (!grid) return;
+
+        try {
+            const snapshot = await getDocs(collection(db, "tailors"));
+            allTailors = snapshot.docs.map(tailorDoc => ({
+                id: tailorDoc.id,
+                ...tailorDoc.data()
+            }));
+            renderTailors(allTailors);
+        } catch (error) {
+            grid.innerHTML = "<p class=\"tailor-empty\">Tailors are unavailable right now.</p>";
+            console.error("Tailor directory loading failed:", error);
+        }
+    }
+
+    function renderTailors(tailors) {
+        const grid = document.getElementById("tailorGrid");
+        if (!tailors.length) {
+            grid.innerHTML = "<p class=\"tailor-empty\">No tailors found for this category.</p>";
+            return;
+        }
+
+        grid.innerHTML = tailors.map((tailor, index) => {
+            const name      = escapeHTML(tailor.shop || tailor.name || "Tailor");
+            const specialty = escapeHTML(tailor.specialty || "Tailoring");
+            const location  = escapeHTML(tailor.location || "Location not added");
+            const price     = Number(tailor.startingPrice || tailor.price || 150);
+            const rating    = Number(tailor.rating || 0);
+            const photoClass = ["photo-one", "photo-two", "photo-three"][index % 3];
+            const tailorId   = escapeHTML(tailor.id);
+
+            return `
+                <div class="tailor-card">
+                    <div class="tailor-photo ${photoClass}" id="tphoto-${tailorId}">
+                        <span class="verified">✓</span>
+                    </div>
+                    <div class="tailor-content">
+                        <div class="tailor-title">
+                            <div>
+                                <h3>${name}</h3>
+                                <span>${specialty}</span>
+                            </div>
+                            <div class="rating">${rating ? `★ ${rating.toFixed(1)}` : "New"}</div>
+                        </div>
+                        <div class="tailor-tags">
+                            <span>${specialty}</span>
+                            ${tailor.location ? `<span>📍 ${escapeHTML(tailor.location)}</span>` : ""}
+                        </div>
+                        <div class="tailor-bottom">
+                            <span>⏰ ${escapeHTML(tailor.openingTime || "9:00")}–${escapeHTML(tailor.closingTime || "19:00")}</span>
+                            <strong>From ₹${price.toLocaleString("en-IN")}</strong>
+                        </div>
+                        <button class="book-btn" onclick="openBookingModal('${tailorId}')">
+                            Book Tailor
+                        </button>
+                    </div>
+                </div>`;
+        }).join("");
+
+        // Apply photos
+        tailors.forEach((tailor) => {
+            if (tailor.photoURL) {
+                const el = document.getElementById("tphoto-" + tailor.id);
+                if (el) {
+                    el.style.backgroundImage  = `url("${String(tailor.photoURL).replace(/"/g, '\\"')}")`;
+                    el.style.backgroundSize   = "cover";
+                    el.style.backgroundPosition = "center";
+                }
+            }
+        });
+    }
+
+    /* =====================================================
+       SERVICE CATEGORY FILTERING
+    ===================================================== */
+
+    // Map display names → specialty values stored in Firestore
+    const SERVICE_MAP = {
+        "Stitching":  ["New Stitching", "Women's Tailoring", "Men's Tailoring", "Custom Design"],
+        "Alteration": ["Alterations", "Alteration"],
+        "Blouse":     ["Women's Tailoring", "Bridal & Ethnic", "Blouse Stitching"],
+        "Repair":     ["Alterations", "Alteration", "Repairs"],
+        "Custom":     ["Custom Design", "Bridal & Ethnic"],
+        "Bridal":     ["Bridal & Ethnic"],
+    };
+
+    window.selectService = function(service) {
+        const matchSpecialties = SERVICE_MAP[service];
+        const sectionLabel     = document.querySelector("#tailors .section-label");
+        const heading          = document.querySelector("#tailors h2");
+
+        if (matchSpecialties) {
+            const filtered = allTailors.filter(t =>
+                matchSpecialties.some(s =>
+                    (t.specialty || "").toLowerCase().includes(s.toLowerCase())
+                )
+            );
+            renderTailors(filtered);
+
+            // Update heading to reflect filter
+            if (sectionLabel) sectionLabel.textContent = `TAILORS FOR ${service.toUpperCase()}`;
+            if (heading) heading.innerHTML = `Tailors for <em>${service}.</em>`;
+
+            // Show clear filter button
+            showFilterBanner(service);
+        }
+
+        // Smooth scroll to tailors
+        document.getElementById("tailors").scrollIntoView({ behavior: "smooth" });
+    };
+
+    function showFilterBanner(service) {
+        let banner = document.getElementById("filterBanner");
+        if (!banner) {
+            banner = document.createElement("div");
+            banner.id = "filterBanner";
+            banner.className = "filter-banner";
+            document.getElementById("tailors").prepend(banner);
+        }
+        banner.innerHTML = `
+            <span>Showing tailors for <strong>${service}</strong></span>
+            <button onclick="clearFilter()">✕ Clear filter</button>`;
+    }
+
+    window.clearFilter = function() {
+        const sectionLabel = document.querySelector("#tailors .section-label");
+        const heading      = document.querySelector("#tailors h2");
+        if (sectionLabel) sectionLabel.textContent = "TOP TAILORS NEAR YOU";
+        if (heading)      heading.innerHTML = `Meet your <em>stitching experts.</em>`;
+        const banner = document.getElementById("filterBanner");
+        if (banner) banner.remove();
+        renderTailors(allTailors);
+    };
+
+    function escapeHTML(value) {
+        return String(value).replace(/[&<>'\"]/g, character => ({
+            "&": "&amp;", "<": "&lt;", ">": "&gt;", "'": "&#39;", "\"": "&quot;"
+        }[character]));
+    }
+
+    /* =====================================================
+       BOOKING MODAL
+    ===================================================== */
+
+    let bookingTailor = null; // the full tailor object currently being booked
+
+    window.openBookingModal = function(tailorId) {
+        // Must be logged in
+        if (!currentUser) {
+            showToast("Please log in to book a tailor.");
+            openAuth("login");
+            return;
+        }
+
+        bookingTailor = allTailors.find(t => t.id === tailorId);
+        if (!bookingTailor) return;
+
+        const name      = bookingTailor.shop || bookingTailor.name || "Tailor";
+        const specialty = bookingTailor.specialty || "Tailoring";
+
+        document.getElementById("bookingTitle").textContent = name;
+        document.getElementById("bookingSubtitle").textContent = specialty;
+
+        // Pre-select service chip that matches specialty
+        document.querySelectorAll(".bk-service-chip").forEach(chip => {
+            chip.classList.remove("active");
+        });
+        const matchChip = [...document.querySelectorAll(".bk-service-chip")]
+            .find(c => specialty.toLowerCase().includes(c.dataset.service.toLowerCase()));
+        if (matchChip) matchChip.classList.add("active");
+
+        // Clear previous inputs
+        document.getElementById("bkDescription").value  = "";
+        document.getElementById("bkMeasurements").value = "";
+        document.getElementById("bkError").textContent  = "";
+
+        document.getElementById("bookingModal").classList.add("show");
+    };
+
+    window.closeBooking = function() {
+        document.getElementById("bookingModal").classList.remove("show");
+    };
+
+    window.selectServiceChip = function(el) {
+        document.querySelectorAll(".bk-service-chip").forEach(c => c.classList.remove("active"));
+        el.classList.add("active");
+    };
+
+    window.submitOrder = async function() {
+        if (!currentUser || !bookingTailor) return;
+
+        const activeChip    = document.querySelector(".bk-service-chip.active");
+        const service       = activeChip ? activeChip.dataset.service : (bookingTailor.specialty || "Tailoring");
+        const description   = document.getElementById("bkDescription").value.trim();
+        const measurements  = document.getElementById("bkMeasurements").value.trim();
+        const errorEl       = document.getElementById("bkError");
+
+        if (!description) {
+            errorEl.textContent = "Please describe what you need.";
+            return;
+        }
+
+        const submitBtn = document.getElementById("bkSubmitBtn");
+        submitBtn.textContent = "Placing order...";
+        submitBtn.disabled    = true;
+        errorEl.textContent   = "";
+
+        try {
+            const orderData = {
+                customerId:    currentUser.uid,
+                customerName:  currentCustomerData.name || currentUser.displayName || currentUser.email,
+                tailorId:      bookingTailor.id,
+                tailorName:    bookingTailor.name || bookingTailor.shop || "Tailor",
+                tailorShop:    bookingTailor.shop || bookingTailor.name || "Tailor",
+                service,
+                description,
+                measurements:  measurements || "",
+                amount:        Number(bookingTailor.startingPrice || 150),
+                status:        "pending",
+                createdAt:     serverTimestamp()
+            };
+
+            await addDoc(collection(db, "orders"), orderData);
+
+            closeBooking();
+            showToast(`Order placed with ${bookingTailor.shop || bookingTailor.name} ✦`);
+
+        } catch (err) {
+            console.error("Order failed:", err);
+            errorEl.textContent = "Could not place order. Please try again.";
+        } finally {
+            submitBtn.textContent = "Place Order →";
+            submitBtn.disabled    = false;
+        }
+    };
+
+    async function saveTailorListing(uid, data) {
+        await setDoc(doc(db, "tailors", uid), {
+            uid,
+            name: data.name || "",
+            email: data.email || "",
+            shop: data.shop || data.name || "Tailor",
+            specialty: data.specialty || "Tailoring",
+            phone: data.phone || "",
+            location: data.location || "",
+            bio: data.bio || "",
+            photoURL: data.photoURL || "",
+            startingPrice: Number(data.startingPrice || 150),
+            rating: Number(data.rating || 0),
+            updatedAt: new Date().toISOString()
+        }, { merge: true });
+    }
+
+    async function saveCustomerProfile(uid, data) {
+        await setDoc(doc(db, "customers", uid), {
+            uid,
+            name: data.name || "",
+            email: data.email || "",
+            phone: data.phone || "",
+            createdAt: data.createdAt || new Date().toISOString(),
+            updatedAt: new Date().toISOString()
+        }, { merge: true });
+    }
 
     /* =====================================================
        STATE
@@ -1021,21 +1175,25 @@
         try {
             const cred = await signInWithEmailAndPassword(auth, email, password);
 
-            // verify role matches
-            const snap = await getDoc(doc(db, "users", cred.user.uid));
-            if (snap.exists() && snap.data().role !== currentRole) {
+            const userSnap = await getDoc(doc(db, "users", cred.user.uid));
+            const tailorSnap = await getDoc(doc(db, "tailors", cred.user.uid));
+            const storedRole = userSnap.exists()
+                ? userSnap.data().role
+                : tailorSnap.exists() ? "tailor" : "customer";
+
+            if (storedRole !== currentRole) {
                 await signOut(auth);
                 showError("loginError",
-                    `This account is registered as a ${snap.data().role}. Please select the correct role.`);
+                    `This account is registered as a ${storedRole}. Please select the correct role.`);
                 return;
             }
 
             closeAuth();
-            if (currentRole === "tailor") {
+            if (storedRole === "tailor") {
                 window.location.href = "tailor-dashboard.html";
                 return;
             }
-            showToast(`Welcome back! Logged in as ${currentRole}.`);
+            showToast(`Welcome back! Logged in as ${storedRole}.`);
 
         } catch (err) {
             showError("loginError", friendlyError(err.code));
@@ -1079,11 +1237,31 @@
             };
 
             if (currentRole === "tailor") {
-                userData.shop      = shop;
-                userData.specialty = specialty;
-            }
+                const accountData = {
+                    email,
+                    role: currentRole,
+                    createdAt: userData.createdAt
+                };
+                const tailorData = {
+                    ...userData,
+                    shop,
+                    specialty
+                };
 
-            await setDoc(doc(db, "users", cred.user.uid), userData);
+                await setDoc(doc(db, "users", cred.user.uid), accountData);
+                try {
+                    await saveTailorListing(cred.user.uid, tailorData);
+                } catch (listingError) {
+                    console.error("Tailor listing creation failed:", listingError);
+                }
+            } else {
+                await setDoc(doc(db, "users", cred.user.uid), {
+                    email,
+                    role: "customer",
+                    createdAt: userData.createdAt
+                });
+                await saveCustomerProfile(cred.user.uid, userData);
+            }
 
             closeAuth();
             if (currentRole === "tailor") {
@@ -1093,7 +1271,12 @@
             showToast(`Account created! Welcome, ${name} 🎉`);
 
         } catch (err) {
-            showError("signupError", friendlyError(err.code));
+            if (err.code === "permission-denied" && currentRole === "customer") {
+                showError("signupError",
+                    "Your account was created, but the customer profile could not be saved. Publish the customers rule in Firestore.");
+            } else {
+                showError("signupError", friendlyError(err.code));
+            }
         }
     };
 
@@ -1109,13 +1292,32 @@
 
             if (!snap.exists()) {
                 // first-time Google sign-in — save profile
-                await setDoc(doc(db, "users", uid), {
+                const googleData = {
                     name:      cred.user.displayName || "",
                     email:     cred.user.email || "",
                     phone:     "",
                     role:      currentRole,
                     createdAt: new Date().toISOString()
-                });
+                };
+                if (currentRole === "tailor") {
+                    await setDoc(doc(db, "users", uid), {
+                        email: googleData.email,
+                        role: googleData.role,
+                        createdAt: googleData.createdAt
+                    });
+                    try {
+                        await saveTailorListing(uid, googleData);
+                    } catch (listingError) {
+                        console.error("Tailor listing creation failed:", listingError);
+                    }
+                } else {
+                    await setDoc(doc(db, "users", uid), {
+                        email: googleData.email,
+                        role: "customer",
+                        createdAt: googleData.createdAt
+                    });
+                    await saveCustomerProfile(uid, googleData);
+                }
             } else if (snap.data().role !== currentRole) {
                 await signOut(auth);
                 showError("loginError",
@@ -1146,14 +1348,32 @@
         const navUser = document.getElementById("navUser");
 
         if (user) {
-            const snap = await getDoc(doc(db, "users", user.uid));
-            const data = snap.exists() ? snap.data() : {};
-            const name = data.name || user.displayName || user.email;
+            const userSnap     = await getDoc(doc(db, "users", user.uid));
+            const tailorSnap   = await getDoc(doc(db, "tailors", user.uid));
+            const customerSnap = await getDoc(doc(db, "customers", user.uid));
+            const data         = userSnap.exists() ? userSnap.data() : {};
+            const tailorData   = tailorSnap.exists() ? tailorSnap.data() : {};
+            const customerData = customerSnap.exists() ? customerSnap.data() : {};
+            const role = data.role || (tailorSnap.exists() ? "tailor" : "customer");
+            const name = tailorData.name || customerData.name || data.name || user.displayName || user.email;
 
             // Redirect tailors to their dashboard automatically
-            if (data.role === "tailor") {
+            if (role === "tailor") {
                 window.location.href = "tailor-dashboard.html";
                 return;
+            }
+
+            // Store for use in booking
+            currentUser         = user;
+            currentCustomerData = { ...customerData, name };
+
+            if (!customerSnap.exists() && (data.name || data.phone)) {
+                await saveCustomerProfile(user.uid, {
+                    name: data.name,
+                    email: data.email || user.email,
+                    phone: data.phone,
+                    createdAt: data.createdAt
+                });
             }
 
             navAuth.style.display = "none";
@@ -1166,6 +1386,8 @@
             document.getElementById("menuEmail").textContent = user.email;
 
         } else {
+            currentUser         = null;
+            currentCustomerData = {};
             navAuth.style.display = "flex";
             navUser.style.display = "none";
         }
@@ -1214,7 +1436,8 @@
             "auth/invalid-email":        "Please enter a valid email address.",
             "auth/weak-password":        "Password must be at least 6 characters.",
             "auth/too-many-requests":    "Too many attempts. Please try again later.",
-            "auth/invalid-credential":   "Incorrect email or password."
+            "auth/invalid-credential":   "Incorrect email or password.",
+            "permission-denied":         "Your account was created, but the profile could not be saved. Check your Firestore rules for the selected account type."
         };
         return map[code] || "Something went wrong. Please try again.";
     }
