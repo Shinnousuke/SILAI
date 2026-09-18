@@ -414,6 +414,7 @@ import {
     query,
     where,
     getDocs,
+    onSnapshot,
     updateDoc,
     setDoc,
     deleteField
@@ -517,47 +518,65 @@ onAuthStateChanged(auth, async (user) => {
     }
     applyTailorData(tailorData);
     await loadTailorOrders(user);
-    renderDashboard();
+    // renderDashboard() is now driven by the onSnapshot listener in loadTailorOrders
+    renderWeeklyChart(); // render chart immediately with empty data while orders load
+    buildDayChips();
 });
 
-function renderDashboard() {
-    buildDayChips();
-    renderStats();
-    renderWeeklyChart();
-    renderDonut();
-    renderRecentOrders();
-    renderFullOrders();
-    renderAnalytics();
-    renderRatings();
-}
+
 
 async function loadTailorOrders(user) {
     try {
-        const snapshot = await getDocs(collection(db, "orders"));
-        const loaded = snapshot.docs
-            .map(orderDoc => ({ id: orderDoc.id, ...orderDoc.data() }))
-            .filter(order => [order.tailorId, order.tailorUid, order.tailorID].includes(user.uid)
-                || order.tailorEmail === user.email
-                || order.tailor?.uid === user.uid);
+        // Targeted query — only this tailor's orders
+        const q = query(
+            collection(db, "orders"),
+            where("tailorId", "==", user.uid)
+        );
 
-        DASHBOARD_ORDERS.splice(0, DASHBOARD_ORDERS.length, ...loaded.map(normalizeOrder));
+        // Real-time listener — updates dashboard whenever an order changes
+        onSnapshot(q, (snapshot) => {
+            const loaded = snapshot.docs.map(d => ({ id: d.id, ...d.data() }));
+            DASHBOARD_ORDERS.splice(0, DASHBOARD_ORDERS.length, ...loaded.map(normalizeOrder));
+            renderStats();
+            renderWeeklyChart();
+            renderDonut();
+            renderRecentOrders();
+            renderFullOrders();
+            renderAnalytics();
+            renderRatings();
+        }, (error) => {
+            console.error("Orders listener error:", error);
+            showToast("Could not load your orders.");
+        });
+
     } catch (error) {
-        DASHBOARD_ORDERS.splice(0, DASHBOARD_ORDERS.length);
         showToast("Could not load your orders.");
         console.error("Order loading failed:", error);
     }
 }
 
 function normalizeOrder(order) {
+    // Handle Firestore Timestamp for createdAt
+    let dateStr = "—";
+    if (order.createdAt?.toDate) {
+        dateStr = order.createdAt.toDate().toISOString().slice(0, 10);
+    } else if (typeof order.createdAt === "string") {
+        dateStr = order.createdAt.slice(0, 10);
+    } else if (order.date) {
+        dateStr = order.date;
+    }
+
     return {
         ...order,
-        id: order.id || order.orderId || "—",
-        customer: order.customer || order.customerName || "Customer",
-        service: order.service || order.serviceType || "Tailoring",
-        amount: Number(order.amount || order.price || 0),
-        status: order.status || "pending",
-        date: order.date || order.createdAt?.toDate?.()?.toISOString?.().slice(0, 10) || "—",
-        rating: order.rating || null
+        id:           order.id || "—",
+        customer:     order.customerName || order.customer || "Customer",
+        service:      order.service || order.serviceType || "Tailoring",
+        amount:       Number(order.amount || order.price || 0),
+        status:       order.status || "pending",
+        date:         dateStr,
+        description:  order.description || "",
+        measurements: order.measurements || "",
+        rating:       order.rating || null
     };
 }
 
@@ -860,25 +879,42 @@ window.openOrderModal = function(id) {
             <div><span>Amount</span><strong>${fmt(order.amount)}</strong></div>
             <div><span>Date</span><strong>${order.date}</strong></div>
             <div><span>Status</span>${statusBadge(order.status)}</div>
-            <div><span>Rating</span><strong>${order.rating ? "★".repeat(order.rating) : "Pending"}</strong></div>
+            <div><span>Rating</span><strong>${order.rating ? "★".repeat(order.rating) : "—"}</strong></div>
         </div>
+        ${order.description ? `
+        <div class="td-modal-detail">
+            <span>What they need</span>
+            <p>${order.description}</p>
+        </div>` : ""}
+        ${order.measurements ? `
+        <div class="td-modal-detail">
+            <span>Measurements</span>
+            <p>${order.measurements}</p>
+        </div>` : ""}
     `;
 
     const actions = document.getElementById("modalActions");
     actions.innerHTML = "";
 
     if (order.status === "pending") {
-        const btn = document.createElement("button");
-        btn.className = "primary-btn";
-        btn.textContent = "Accept Order →";
-        btn.onclick = () => updateOrderStatus(id, "in-progress");
-        actions.appendChild(btn);
+        const acceptBtn = document.createElement("button");
+        acceptBtn.className   = "primary-btn";
+        acceptBtn.textContent = "Accept →";
+        acceptBtn.onclick     = () => updateOrderStatus(id, "in-progress");
+        actions.appendChild(acceptBtn);
+
+        const rejectBtn = document.createElement("button");
+        rejectBtn.className   = "td-reject-btn";
+        rejectBtn.textContent = "Reject";
+        rejectBtn.onclick     = () => updateOrderStatus(id, "cancelled");
+        actions.appendChild(rejectBtn);
     }
+
     if (order.status === "in-progress") {
         const btn = document.createElement("button");
-        btn.className = "primary-btn";
+        btn.className   = "primary-btn";
         btn.textContent = "Mark as Completed ✓";
-        btn.onclick = () => updateOrderStatus(id, "completed");
+        btn.onclick     = () => updateOrderStatus(id, "completed");
         actions.appendChild(btn);
     }
 
@@ -900,7 +936,13 @@ async function updateOrderStatus(id, newStatus) {
         renderStats();
         renderRecentOrders();
         renderFullOrders();
-        showToast(`Order #${id} marked as ${newStatus}.`);
+        renderDonut();
+        const labelMap = {
+            "in-progress": "accepted",
+            "completed":   "completed",
+            "cancelled":   "rejected"
+        };
+        showToast(`Order ${labelMap[newStatus] || newStatus} ✦`);
     } catch (error) {
         showToast("Could not update this order.");
         console.error("Order update failed:", error);
