@@ -47,7 +47,10 @@
     <div class="nav-links">
         <a href="#services">Services</a>
         <a href="#tailors">Tailors</a>
-        <a href="#orders">Orders</a>
+        <a href="#orders" class="nav-orders-link">
+            Orders
+            <span class="nav-order-badge" id="navOrderBadge" style="display:none">0</span>
+        </a>
         <!-- a href="tailor-dashboard.html" class="nav-tailor-link">✂️ Tailor Dashboard</a -->
     </div>
 
@@ -322,130 +325,8 @@
     </div>
 
 
-    <div class="tailor-grid">
-
-        <!-- Tailor 1 -->
-
-        <div class="tailor-card">
-
-            <div class="tailor-photo photo-one">
-                <span class="verified">✓</span>
-            </div>
-
-            <div class="tailor-content">
-
-                <div class="tailor-title">
-                    <div>
-                        <h3>Meera Studio</h3>
-                        <span>Women's tailoring</span>
-                    </div>
-
-                    <div class="rating">
-                        ★ 4.9
-                    </div>
-                </div>
-
-                <div class="tailor-tags">
-                    <span>Blouses</span>
-                    <span>Alterations</span>
-                    <span>Ethnic</span>
-                </div>
-
-                <div class="tailor-bottom">
-                    <span>📍 1.2 km away</span>
-                    <strong>From ₹150</strong>
-                </div>
-
-                <button class="book-btn" onclick="bookTailor('Meera Studio')">
-                    Book Tailor
-                </button>
-
-            </div>
-
-        </div>
-
-
-        <!-- Tailor 2 -->
-
-        <div class="tailor-card">
-
-            <div class="tailor-photo photo-two">
-                <span class="verified">✓</span>
-            </div>
-
-            <div class="tailor-content">
-
-                <div class="tailor-title">
-                    <div>
-                        <h3>Thread & Co.</h3>
-                        <span>Custom clothing</span>
-                    </div>
-
-                    <div class="rating">
-                        ★ 4.8
-                    </div>
-                </div>
-
-                <div class="tailor-tags">
-                    <span>Shirts</span>
-                    <span>Suits</span>
-                    <span>Western</span>
-                </div>
-
-                <div class="tailor-bottom">
-                    <span>📍 2.1 km away</span>
-                    <strong>From ₹299</strong>
-                </div>
-
-                <button class="book-btn" onclick="bookTailor('Thread & Co.')">
-                    Book Tailor
-                </button>
-
-            </div>
-
-        </div>
-
-
-        <!-- Tailor 3 -->
-
-        <div class="tailor-card">
-
-            <div class="tailor-photo photo-three">
-                <span class="verified">✓</span>
-            </div>
-
-            <div class="tailor-content">
-
-                <div class="tailor-title">
-                    <div>
-                        <h3>Needle House</h3>
-                        <span>Premium tailoring</span>
-                    </div>
-
-                    <div class="rating">
-                        ★ 4.9
-                    </div>
-                </div>
-
-                <div class="tailor-tags">
-                    <span>Bridal</span>
-                    <span>Embroidery</span>
-                    <span>Designer</span>
-                </div>
-
-                <div class="tailor-bottom">
-                    <span>📍 3.4 km away</span>
-                    <strong>From ₹699</strong>
-                </div>
-
-                <button class="book-btn" onclick="bookTailor('Needle House')">
-                    Book Tailor
-                </button>
-
-            </div>
-
-        </div>
-
+    <div class="tailor-grid" id="tailorGrid">
+        <div class="tailor-loading">Loading tailors...</div>
     </div>
 
 </section>
@@ -459,7 +340,7 @@
 
     <div class="how-header">
 
-        <span class="section-label">HOW SUI WORKS</span>
+        <span class="section-label">HOW SILAI WORKS</span>
 
         <h2>
             From idea to
@@ -524,56 +405,27 @@
      ORDERS
 ========================================================= -->
 
+<!-- =========================================================
+     ORDERS
+========================================================= -->
+
 <section class="section order-section" id="orders">
 
-    <div class="order-card">
-
-        <div class="order-left">
-
-            <span class="section-label">YOUR LATEST ORDER</span>
-
-            <h2>
-                Your clothes are
-                <em>on their way.</em>
-            </h2>
-
-            <p>Order #SUI28491 · Meera Studio</p>
-
+    <div class="section-heading">
+        <div>
+            <span class="section-label">YOUR ORDERS</span>
+            <h2>Track your <em>stitching.</em></h2>
         </div>
-
-
-        <div class="tracking">
-
-            <div class="track-step active">
-                <span>✓</span>
-                <small>Booked</small>
-            </div>
-
-            <div class="track-line active"></div>
-
-            <div class="track-step active">
-                <span>✓</span>
-                <small>Picked up</small>
-            </div>
-
-            <div class="track-line"></div>
-
-            <div class="track-step">
-                <span>03</span>
-                <small>Stitching</small>
-            </div>
-
-            <div class="track-line"></div>
-
-            <div class="track-step">
-                <span>04</span>
-                <small>Delivered</small>
-            </div>
-
-        </div>
-
     </div>
 
+    <!-- Shown when not logged in -->
+    <div class="orders-login-prompt" id="ordersLoginPrompt" style="display:none;">
+        <p>Log in to see your orders.</p>
+        <button class="primary-btn" onclick="openAuth('login')">Log in →</button>
+    </div>
+
+    <!-- Order list -->
+    <div class="customer-orders-list" id="customerOrdersList"></div>
 </section>
 
 
@@ -589,7 +441,7 @@
 
             <div class="logo">
                 <span class="logo-icon">✦</span>
-                SUI
+                SILAI
             </div>
 
             <p>
@@ -616,7 +468,7 @@
             <h4>For Tailors</h4>
 
             <a href="tailor-dashboard.html">Tailor Dashboard</a>
-            <a href="#">Join SUI</a>
+            <a href="#">Join SILAI</a>
             <a href="#">Partner with us</a>
 
         </div>
@@ -637,7 +489,7 @@
 
     <div class="footer-bottom">
 
-        <span>© 2026 SUI</span>
+        <span>© 2026 SILAI</span>
 
         <span>Made with ✦ for better fits.</span>
 
@@ -719,6 +571,24 @@
 
 
 <!-- =========================================================
+     SHOP CLOSED MODAL
+========================================================= -->
+
+<div class="modal-overlay" id="shopClosedModal">
+    <div class="shop-closed-modal">
+        <button class="close-btn" onclick="closeShopClosed()">×</button>
+        <div class="shop-closed-icon" id="shopClosedIcon">🔒</div>
+        <span class="section-label" id="shopClosedName">Shop name</span>
+        <h2 id="shopClosedLine1">Shop is Closed</h2>
+        <p id="shopClosedLine2">Check back later.</p>
+        <div class="shop-closed-actions">
+            <button class="primary-btn" onclick="closeShopClosed()">Got it</button>
+        </div>
+    </div>
+</div>
+
+
+<!-- =========================================================
      BOOKING MODAL
 ========================================================= -->
 
@@ -728,44 +598,41 @@
 
         <button class="close-btn" onclick="closeBooking()">×</button>
 
-        <span class="section-label">BOOK YOUR TAILOR</span>
+        <span class="section-label">PLACE AN ORDER</span>
 
-        <h2 id="bookingTitle">
-            Book Tailor
-        </h2>
+        <h2 id="bookingTitle">Book Tailor</h2>
+        <p id="bookingSubtitle" style="color:#858179;font-size:13px;margin-bottom:4px;"></p>
+        <p id="bookingLocation" style="color:#aaa49a;font-size:12px;margin-bottom:20px;display:none;">📍</p>
 
-        <p>
-            Select your preferred service.
-        </p>
-
-
-        <div class="booking-options">
-
-            <button onclick="chooseBooking('Alteration', 150)">
-                <span>✂️</span>
-                <div>
-                    <strong>Alteration</strong>
-                    <small>From ₹150</small>
-                </div>
-            </button>
-
-            <button onclick="chooseBooking('New Stitching', 399)">
-                <span>🧵</span>
-                <div>
-                    <strong>New Stitching</strong>
-                    <small>From ₹399</small>
-                </div>
-            </button>
-
-            <button onclick="chooseBooking('Custom Design', 699)">
-                <span>✨</span>
-                <div>
-                    <strong>Custom Design</strong>
-                    <small>From ₹699</small>
-                </div>
-            </button>
-
+        <!-- SERVICE CHIPS -->
+        <div class="bk-section-label">What do you need?</div>
+        <div class="bk-chips">
+            <button class="bk-service-chip active" data-service="Alteration"    onclick="selectServiceChip(this)">✂️ Alteration</button>
+            <button class="bk-service-chip"        data-service="New Stitching" onclick="selectServiceChip(this)">🧵 New Stitching</button>
+            <button class="bk-service-chip"        data-service="Blouse"        onclick="selectServiceChip(this)">👗 Blouse</button>
+            <button class="bk-service-chip"        data-service="Custom Design" onclick="selectServiceChip(this)">✨ Custom Design</button>
+            <button class="bk-service-chip"        data-service="Repair"        onclick="selectServiceChip(this)">🪡 Repair</button>
         </div>
+
+        <!-- DESCRIPTION -->
+        <div class="field-group" style="margin-top:18px;">
+            <label>Describe what you need <span style="color:#e64c2b">*</span></label>
+            <textarea id="bkDescription" rows="3"
+                placeholder="e.g. I need a kurti stitched in navy blue, fitted at the waist..."></textarea>
+        </div>
+
+        <!-- MEASUREMENTS (optional) -->
+        <div class="field-group">
+            <label>Measurements <span style="color:#858179;font-weight:400;">(optional)</span></label>
+            <textarea id="bkMeasurements" rows="2"
+                placeholder="e.g. Chest 36, Waist 30, Length 42 inches..."></textarea>
+        </div>
+
+        <div class="auth-error" id="bkError"></div>
+
+        <button class="primary-btn bk-submit-btn" id="bkSubmitBtn" onclick="submitOrder()">
+            Place Order →
+        </button>
 
     </div>
 
@@ -820,7 +687,7 @@
             <button class="back-btn" onclick="goBack()">← Back</button>
             <div class="modal-icon">✦</div>
             <span class="section-label" id="loginRoleLabel">CUSTOMER LOGIN</span>
-            <h2>Welcome <em>back.</em></h2>
+            <h2 id="authHeading">Welcome <em>back.</em></h2>
 
             <div class="auth-tabs">
                 <button class="auth-tab active" onclick="switchTab('login')">Log in</button>
@@ -840,6 +707,9 @@
                 <div class="auth-error" id="loginError"></div>
                 <button class="primary-btn auth-submit-btn" onclick="handleLogin()">
                     Log in →
+                </button>
+                <button class="forgot-password-btn" onclick="handleForgotPassword()">
+                    Forgot password?
                 </button>
             </div>
 
@@ -874,6 +744,30 @@
                             <option>Alterations</option>
                             <option>Custom Design</option>
                         </select>
+                    </div>
+                    <div class="field-group">
+                        <label>Shop Locality / Area</label>
+                        <div class="location-input-row">
+                            <input type="text" id="signupLocality" placeholder="e.g. Koramangala, SG Palya">
+                            <button type="button" class="location-pin-btn" onclick="getTailorLocation()" title="Use my current location">📍</button>
+                        </div>
+                        <small id="signupLocationStatus" class="location-status-text">Type your area or pinpoint your location.</small>
+                        <input type="hidden" id="shopLatitude">
+                        <input type="hidden" id="shopLongitude">
+                    </div>
+                    <div class="addr-grid">
+                        <div class="field-group">
+                            <label>Pincode</label>
+                            <input type="text" id="signupPincode" placeholder="e.g. 560034" maxlength="6" oninput="lookupPincode(this.value)">
+                        </div>
+                        <div class="field-group">
+                            <label>City / District</label>
+                            <input type="text" id="signupCity" placeholder="Auto-filled">
+                        </div>
+                        <div class="field-group">
+                            <label>State</label>
+                            <input type="text" id="signupState" placeholder="Auto-filled">
+                        </div>
                     </div>
                 </div>
 
@@ -915,6 +809,7 @@
         getAuth,
         createUserWithEmailAndPassword,
         signInWithEmailAndPassword,
+        sendPasswordResetEmail,
         signInWithPopup,
         GoogleAuthProvider,
         signOut,
@@ -924,7 +819,15 @@
         getFirestore,
         doc,
         setDoc,
-        getDoc
+        getDoc,
+        collection,
+        getDocs,
+        addDoc,
+        query,
+        where,
+        onSnapshot,
+        updateDoc,
+        serverTimestamp
     } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
     const firebaseConfig = {
@@ -940,6 +843,862 @@
     const auth       = getAuth(app);
     const db         = getFirestore(app);
     const provider   = new GoogleAuthProvider();
+
+    // All loaded tailor docs — used for filtering
+    let allTailors = [];
+    // Currently logged-in customer data
+    let currentUser = null;
+    let currentCustomerData = {};
+
+    // Show login prompt in orders section on initial load
+    renderCustomerOrders(null);
+
+    // Silently request user location — used for distance display on tailor cards
+    // No blocking, no error shown — just enriches cards if granted
+    let userLocation = null;
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+            (pos) => {
+                userLocation = { lat: pos.coords.latitude, lng: pos.coords.longitude };
+                updateDistancesOnCards();
+            },
+            () => { /* denied — cards just show hours instead */ },
+            { enableHighAccuracy: false, timeout: 8000, maximumAge: 60000 }
+        );
+    }
+
+    loadTailors();
+
+    async function loadTailors() {
+        const grid = document.getElementById("tailorGrid");
+        if (!grid) return;
+
+        try {
+            // Live listener — re-renders cards whenever any tailor doc changes
+            // (isOpen toggle, vacation dates, profile edits all propagate instantly)
+            onSnapshot(collection(db, "tailors"), (snapshot) => {
+                allTailors = snapshot.docs.map(tailorDoc => ({
+                    id: tailorDoc.id,
+                    ...tailorDoc.data()
+                }));
+                // Preserve any active category filter
+                const banner = document.getElementById("filterBanner");
+                if (banner) {
+                    // Re-apply the current filter against fresh data
+                    const activeService = banner.dataset.service;
+                    const matchSpecialties = SERVICE_MAP[activeService];
+                    if (matchSpecialties) {
+                        const filtered = allTailors.filter(t =>
+                            matchSpecialties.some(s =>
+                                (t.specialty || "").toLowerCase().includes(s.toLowerCase())
+                            )
+                        );
+                        renderTailors(filtered);
+                        return;
+                    }
+                }
+                renderTailors(allTailors);
+            }, (error) => {
+                grid.innerHTML = "<p class=\"tailor-empty\">Tailors are unavailable right now.</p>";
+                console.error("Tailor directory loading failed:", error);
+            });
+        } catch (error) {
+            grid.innerHTML = "<p class=\"tailor-empty\">Tailors are unavailable right now.</p>";
+            console.error("Tailor directory loading failed:", error);
+        }
+    }
+
+    function renderTailors(tailors) {
+        const grid = document.getElementById("tailorGrid");
+        if (!tailors.length) {
+            grid.innerHTML = "<p class=\"tailor-empty\">No tailors found for this category.</p>";
+            return;
+        }
+
+        grid.innerHTML = tailors.map((tailor, index) => {
+            const name      = escapeHTML(tailor.shop || tailor.name || "Tailor");
+            const specialty = escapeHTML(tailor.specialty || "Tailoring");
+            const location  = escapeHTML(tailor.location || "Location not added");
+            const price     = Number(tailor.startingPrice || tailor.price || 150);
+            const rating    = Number(tailor.rating || 0);
+            const photoClass = ["photo-one", "photo-two", "photo-three"][index % 3];
+            const tailorId   = escapeHTML(tailor.id);
+
+            // Availability indicator
+            const unavail = getShopUnavailableMessage(tailor);
+            const statusDot = unavail
+                ? `<span class="tailor-status-dot closed" title="${unavail.line1}"></span>`
+                : `<span class="tailor-status-dot open"   title="Open now"></span>`;
+            const bookBtnLabel = unavail ? "Closed" : "Book Tailor";
+            const vacationTag  = (tailor.vacationStart && tailor.vacationEnd && new Date().toISOString().slice(0,10) >= tailor.vacationStart && new Date().toISOString().slice(0,10) <= tailor.vacationEnd)
+                ? `<span class="tailor-vacation-tag">🏖️ On vacation</span>` : "";
+
+            // Show only the first segment of location (area name, not full address)
+            const locationShort = tailor.location
+                ? escapeHTML(tailor.location.split(",")[0].trim())
+                : "";
+            const phone = tailor.phone ? escapeHTML(tailor.phone) : "";
+
+            return `
+                <div class="tailor-card">
+                    <div class="tailor-photo ${photoClass}" id="tphoto-${tailorId}">
+                        <span class="verified">✓</span>
+                        ${statusDot}
+                    </div>
+                    <div class="tailor-content">
+                        <div class="tailor-title">
+                            <div>
+                                <h3>${name}</h3>
+                                <span>${specialty}</span>
+                            </div>
+                            <div class="rating">${rating ? `★ ${rating.toFixed(1)}` : "New"}</div>
+                        </div>
+                        <div class="tailor-tags">
+                            ${locationShort ? `<span>📍 ${locationShort}</span>` : ""}
+                            ${vacationTag}
+                        </div>
+                        <div class="tailor-bottom">
+                            <span id="tdist-${tailorId}">⏰ ${escapeHTML(tailor.openingTime || "9:00")}–${escapeHTML(tailor.closingTime || "19:00")}</span>
+                            <strong>From ₹${price.toLocaleString("en-IN")}</strong>
+                        </div>
+                        <div class="tailor-actions">
+                            <button class="book-btn ${unavail ? 'book-btn-closed' : ''}" onclick="openBookingModal('${tailorId}')">
+                                ${bookBtnLabel}
+                            </button>
+                            ${phone ? `<a class="tailor-call-btn" href="tel:${phone}" title="Call ${name}">📞</a>` : ""}
+                            ${tailor.lat && tailor.lng
+                                ? `<button class="visit-shop-btn" onclick="openShopDirections(${tailor.lat}, ${tailor.lng}, '${escapeHTML(name)}')" title="Get directions">📍</button>`
+                                : ""}
+                        </div>
+                    </div>
+                </div>`;
+        }).join("");
+
+        // Apply photos
+        tailors.forEach((tailor) => {
+            const el = document.getElementById("tphoto-" + tailor.id);
+            if (!el) return;
+            if (tailor.photoURL) {
+                el.style.backgroundImage    = `url("${String(tailor.photoURL).replace(/"/g, '\\"')}")`;
+                el.style.backgroundSize     = "cover";
+                el.style.backgroundPosition = "center";
+                // hide the decorative ✦ overlay when a real photo is present
+                el.classList.add("has-photo");
+            } else {
+                el.style.backgroundImage = "";
+                el.classList.remove("has-photo");
+            }
+        });
+
+        // Show distances if user location already available
+        updateDistancesOnCards();
+    }
+
+    /* =====================================================
+       SERVICE CATEGORY FILTERING
+    ===================================================== */
+
+    // Map display names → specialty values stored in Firestore
+    const SERVICE_MAP = {
+        "Stitching":  ["New Stitching", "Women's Tailoring", "Men's Tailoring", "Custom Design"],
+        "Alteration": ["Alterations", "Alteration"],
+        "Blouse":     ["Women's Tailoring", "Bridal & Ethnic", "Blouse Stitching"],
+        "Repair":     ["Alterations", "Alteration", "Repairs"],
+        "Custom":     ["Custom Design", "Bridal & Ethnic"],
+        "Bridal":     ["Bridal & Ethnic"],
+    };
+
+    window.selectService = function(service) {
+        const matchSpecialties = SERVICE_MAP[service];
+        const sectionLabel     = document.querySelector("#tailors .section-label");
+        const heading          = document.querySelector("#tailors h2");
+
+        if (matchSpecialties) {
+            const filtered = allTailors.filter(t =>
+                matchSpecialties.some(s =>
+                    (t.specialty || "").toLowerCase().includes(s.toLowerCase())
+                )
+            );
+            renderTailors(filtered);
+
+            // Update heading to reflect filter
+            if (sectionLabel) sectionLabel.textContent = `TAILORS FOR ${service.toUpperCase()}`;
+            if (heading) heading.innerHTML = `Tailors for <em>${service}.</em>`;
+
+            // Show clear filter button
+            showFilterBanner(service);
+        }
+
+        // Smooth scroll to tailors
+        document.getElementById("tailors").scrollIntoView({ behavior: "smooth" });
+    };
+
+    function showFilterBanner(service) {
+        let banner = document.getElementById("filterBanner");
+        if (!banner) {
+            banner = document.createElement("div");
+            banner.id = "filterBanner";
+            banner.className = "filter-banner";
+            document.getElementById("tailors").prepend(banner);
+        }
+        banner.dataset.service = service;
+        banner.innerHTML = `
+            <span>Showing tailors for <strong>${service}</strong></span>
+            <button onclick="clearFilter()">✕ Clear filter</button>`;
+    }
+
+    window.clearFilter = function() {
+        const sectionLabel = document.querySelector("#tailors .section-label");
+        const heading      = document.querySelector("#tailors h2");
+        if (sectionLabel) sectionLabel.textContent = "TOP TAILORS NEAR YOU";
+        if (heading)      heading.innerHTML = `Meet your <em>stitching experts.</em>`;
+        const banner = document.getElementById("filterBanner");
+        if (banner) banner.remove();
+        renderTailors(allTailors);
+    };
+
+    function escapeHTML(value) {
+        return String(value).replace(/[&<>'\"]/g, character => ({
+            "&": "&amp;", "<": "&lt;", ">": "&gt;", "'": "&#39;", "\"": "&quot;"
+        }[character]));
+    }
+
+    /* =====================================================
+       SHOP AVAILABILITY HELPERS
+    ===================================================== */
+
+    const DAY_NAMES = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
+
+    function getShopUnavailableMessage(tailor) {
+        const now   = new Date();
+        const today = now.toISOString().slice(0, 10);
+
+        // 1. Vacation window — highest priority
+        if (tailor.vacationStart && tailor.vacationEnd && tailor.vacationEnd >= today) {
+            if (today >= tailor.vacationStart && today <= tailor.vacationEnd) {
+                const endDate    = new Date(tailor.vacationEnd);
+                const endStr     = endDate.toLocaleDateString("en-IN", { day: "numeric", month: "long" });
+                const reopenDate = new Date(tailor.vacationEnd);
+                reopenDate.setDate(reopenDate.getDate() + 1);
+                const reopenStr  = reopenDate.toLocaleDateString("en-IN", { day: "numeric", month: "long" });
+                return {
+                    type: "vacation",
+                    line1: "Taking a break",
+                    line2: `On vacation until ${endStr}. Back and accepting orders from ${reopenStr}.`
+                };
+            }
+        }
+
+        // 2. Manual isOpen toggle — if explicitly set to false, shop is closed
+        // isOpen can be: true (open), false (closed), or undefined (never set = treat as open)
+        if (tailor.isOpen === false) {
+            return {
+                type: "closed",
+                line1: "Shop is Closed",
+                line2: getNextOpenMessage(tailor, now)
+            };
+        }
+
+        // 3. Working hours / day — only check if tailor has set working days
+        // If workingDays is not set, skip this check (don't block unnecessarily)
+        if (tailor.workingDays && tailor.workingDays.length > 0 && tailor.openingTime && tailor.closingTime) {
+            const dayName   = DAY_NAMES[now.getDay()];
+            const [openH, openM]   = tailor.openingTime.split(":").map(Number);
+            const [closeH, closeM] = tailor.closingTime.split(":").map(Number);
+            const nowMins   = now.getHours() * 60 + now.getMinutes();
+            const openMins  = openH * 60 + openM;
+            const closeMins = closeH * 60 + closeM;
+
+            if (!tailor.workingDays.includes(dayName) || nowMins < openMins || nowMins >= closeMins) {
+                return {
+                    type: "closed",
+                    line1: "Shop is Closed",
+                    line2: getNextOpenMessage(tailor, now)
+                };
+            }
+        }
+
+        return null; // shop is open
+    }
+
+    function getNextOpenMessage(tailor, now) {
+        const workingDays = tailor.workingDays || ["Mon","Tue","Wed","Thu","Fri","Sat"];
+        const openTime    = tailor.openingTime || "09:00";
+        const closeTime   = tailor.closingTime || "19:00";
+
+        // Check if shop opens later today
+        const dayName  = DAY_NAMES[now.getDay()];
+        const [openH, openM]   = openTime.split(":").map(Number);
+        const [closeH, closeM] = closeTime.split(":").map(Number);
+        const nowMins   = now.getHours() * 60 + now.getMinutes();
+        const openMins  = openH * 60 + openM;
+        const closeMins = closeH * 60 + closeM;
+
+        if (workingDays.includes(dayName) && nowMins < openMins) {
+            return `Opens today at ${fmtTime(openTime)}.`;
+        }
+
+        // Find next working day
+        for (let i = 1; i <= 7; i++) {
+            const nextDate = new Date(now);
+            nextDate.setDate(now.getDate() + i);
+            const nextDay = DAY_NAMES[nextDate.getDay()];
+            if (workingDays.includes(nextDay)) {
+                const label = i === 1 ? "tomorrow" : nextDay;
+                return `Next open ${label} at ${fmtTime(openTime)}.`;
+            }
+        }
+
+        return `Working hours: ${fmtTime(openTime)} – ${fmtTime(closeTime)}.`;
+    }
+
+    function fmtTime(t) {
+        if (!t) return "";
+        const [h, m] = t.split(":").map(Number);
+        const suffix = h >= 12 ? "PM" : "AM";
+        const h12    = h % 12 || 12;
+        return `${h12}:${String(m).padStart(2, "0")} ${suffix}`;
+    }
+
+    function showShopClosedModal(tailor, msg) {
+        const shopName = tailor.shop || tailor.name || "This shop";
+        const icon = msg.type === "vacation" ? "🏖️" : "🔒";
+        document.getElementById("shopClosedName").textContent = shopName;
+        document.getElementById("shopClosedIcon").textContent = icon;
+        document.getElementById("shopClosedLine1").textContent = msg.line1;
+        document.getElementById("shopClosedLine2").textContent = msg.line2;
+        document.getElementById("shopClosedModal").classList.add("show");
+    }
+
+    window.closeShopClosed = function() {
+        document.getElementById("shopClosedModal").classList.remove("show");
+    };
+
+    /* =====================================================
+       TAILOR LOCATION — GPS PINPOINT
+    ===================================================== */
+
+    window.getTailorLocation = function() {
+        if (!navigator.geolocation) {
+            showToast("Geolocation is not supported by your browser.");
+            return;
+        }
+        const statusEl = document.getElementById("signupLocationStatus");
+        const btn      = document.querySelector(".location-pin-btn");
+        if (statusEl) statusEl.textContent = "Getting your location...";
+        if (btn)      btn.textContent = "⏳";
+
+        navigator.geolocation.getCurrentPosition(
+            async (pos) => {
+                const lat = pos.coords.latitude;
+                const lng = pos.coords.longitude;
+
+                document.getElementById("shopLatitude").value  = lat;
+                document.getElementById("shopLongitude").value = lng;
+
+                // Reverse geocode to get a human-readable area name
+                try {
+                    const res  = await fetch(
+                        `https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lng}&format=json`
+                    );
+                    const data = await res.json();
+                    const area = data.address?.suburb
+                        || data.address?.neighbourhood
+                        || data.address?.town
+                        || data.address?.city
+                        || data.address?.county
+                        || "";
+                    const city = data.address?.city || data.address?.state_district || "";
+                    const label = [area, city].filter(Boolean).join(", ");
+
+                    // Fill structured address fields
+                    const localityEl = document.getElementById("signupLocality");
+                    const cityEl     = document.getElementById("signupCity");
+                    const stateEl    = document.getElementById("signupState");
+                    const pincodeEl  = document.getElementById("signupPincode");
+                    if (localityEl && !localityEl.value) localityEl.value = area;
+                    if (cityEl     && !cityEl.value)     cityEl.value     = city;
+                    if (stateEl    && !stateEl.value)    stateEl.value    = data.address?.state || "";
+                    if (pincodeEl  && !pincodeEl.value)  pincodeEl.value  = data.address?.postcode || "";
+
+                    if (statusEl) statusEl.textContent = `📍 ${label || `${lat.toFixed(4)}, ${lng.toFixed(4)}`}`;
+                    if (statusEl) statusEl.style.color = "#22b573";
+                } catch {
+                    if (statusEl) statusEl.textContent = `📍 Location pinpointed (${lat.toFixed(4)}, ${lng.toFixed(4)})`;
+                    if (statusEl) statusEl.style.color = "#22b573";
+                }
+
+                if (btn) btn.textContent = "✓";
+                showToast("Location pinpointed ✦");
+            },
+            (err) => {
+                if (btn) btn.textContent = "📍";
+                const msg = err.code === 1 ? "Location access denied." : "Could not get location.";
+                if (statusEl) { statusEl.textContent = msg; statusEl.style.color = "#e64c2b"; }
+                showToast(msg);
+            },
+            { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
+        );
+    };
+
+    /* =====================================================
+       PINCODE LOOKUP — India Post API (free, no key needed)
+    ===================================================== */
+
+    window.lookupPincode = async function(pin) {
+        if (pin.length !== 6 || !/^\d{6}$/.test(pin)) return;
+        const cityEl  = document.getElementById("signupCity");
+        const stateEl = document.getElementById("signupState");
+        if (cityEl)  cityEl.placeholder  = "Looking up...";
+        if (stateEl) stateEl.placeholder = "Looking up...";
+        try {
+            const res  = await fetch(`https://api.postalpincode.in/pincode/${pin}`);
+            const json = await res.json();
+            if (json[0]?.Status === "Success") {
+                const post = json[0].PostOffice[0];
+                if (cityEl)  { cityEl.value  = post.District || post.Division || ""; cityEl.placeholder  = "City / District"; }
+                if (stateEl) { stateEl.value = post.State || "";                     stateEl.placeholder = "State"; }
+            } else {
+                if (cityEl)  cityEl.placeholder  = "City / District";
+                if (stateEl) stateEl.placeholder = "State";
+            }
+        } catch {
+            if (cityEl)  cityEl.placeholder  = "City / District";
+            if (stateEl) stateEl.placeholder = "State";
+        }
+    };
+
+    /* =====================================================
+       VISIT SHOP — open Google Maps directions from user location
+    ===================================================== */
+
+    window.openShopDirections = function(shopLat, shopLng, shopName) {
+        if (!navigator.geolocation) {
+            window.open(`https://www.google.com/maps?q=${shopLat},${shopLng}`, "_blank");
+            return;
+        }
+        showToast("Getting your location...");
+        navigator.geolocation.getCurrentPosition(
+            (pos) => {
+                const url = `https://www.google.com/maps/dir/?api=1` +
+                    `&origin=${pos.coords.latitude},${pos.coords.longitude}` +
+                    `&destination=${shopLat},${shopLng}` +
+                    `&travelmode=driving`;
+                window.open(url, "_blank");
+            },
+            () => {
+                window.open(`https://www.google.com/maps?q=${shopLat},${shopLng}`, "_blank");
+            },
+            { enableHighAccuracy: true, timeout: 8000, maximumAge: 0 }
+        );
+    };
+
+    /* =====================================================
+       DISTANCE HELPERS
+    ===================================================== */
+
+    function haversineKm(lat1, lng1, lat2, lng2) {
+        const R    = 6371;
+        const dLat = (lat2 - lat1) * Math.PI / 180;
+        const dLng = (lng2 - lng1) * Math.PI / 180;
+        const a    = Math.sin(dLat / 2) ** 2
+                   + Math.cos(lat1 * Math.PI / 180)
+                   * Math.cos(lat2 * Math.PI / 180)
+                   * Math.sin(dLng / 2) ** 2;
+        return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    }
+
+    function updateDistancesOnCards() {
+        if (!userLocation) return;
+        allTailors.forEach(tailor => {
+            if (!tailor.lat || !tailor.lng) return;
+            const el = document.getElementById("tdist-" + tailor.id);
+            if (!el) return;
+            const km  = haversineKm(userLocation.lat, userLocation.lng, tailor.lat, tailor.lng);
+            const label = km < 1
+                ? `📍 ${Math.round(km * 1000)} m away`
+                : `📍 ${km.toFixed(1)} km away`;
+            el.textContent = label;
+        });
+    }
+
+    /* =====================================================
+       CUSTOMER ORDERS — LIVE LISTENER
+    ===================================================== */
+
+    let ordersUnsubscribe = null;
+
+    function listenToCustomerOrders(uid) {
+        // Detach any previous listener
+        if (ordersUnsubscribe) { ordersUnsubscribe(); ordersUnsubscribe = null; }
+
+        const q = query(
+            collection(db, "orders"),
+            where("customerId", "==", uid)
+        );
+
+        ordersUnsubscribe = onSnapshot(q, (snap) => {
+            const orders = snap.docs
+                .map(d => ({ id: d.id, ...d.data() }))
+                .sort((a, b) => {
+                    // Sort newest first using createdAt timestamp
+                    const ta = a.createdAt?.toMillis?.() || 0;
+                    const tb = b.createdAt?.toMillis?.() || 0;
+                    return tb - ta;
+                });
+            renderCustomerOrders(orders);
+        }, (err) => {
+            console.error("Customer orders listener:", err);
+        });
+    }
+
+    function renderCustomerOrders(orders) {
+        const list        = document.getElementById("customerOrdersList");
+        const loginPrompt = document.getElementById("ordersLoginPrompt");
+        if (!list) return;
+
+        // Not logged in
+        if (orders === null) {
+            loginPrompt.style.display = "block";
+            list.innerHTML = "";
+            return;
+        }
+        loginPrompt.style.display = "none";
+
+        // Update nav badge — show count of pending + in-progress
+        const activeCount = orders.filter(o => o.status === "pending" || o.status === "in-progress").length;
+        const badge = document.getElementById("navOrderBadge");
+        if (badge) {
+            badge.textContent   = activeCount;
+            badge.style.display = activeCount > 0 ? "inline-flex" : "none";
+        }
+
+        if (!orders.length) {
+            list.innerHTML = `
+                <div class="cust-orders-empty">
+                    <div class="cust-orders-empty-icon">🧵</div>
+                    <h3>No orders yet</h3>
+                    <p>Book a tailor to get started.</p>
+                    <button class="primary-btn" onclick="document.getElementById('tailors').scrollIntoView({behavior:'smooth'})">
+                        Find a Tailor →
+                    </button>
+                </div>`;
+            return;
+        }
+
+        list.innerHTML = orders.map(o => buildOrderCard(o)).join("");
+    }
+
+    const STATUS_CONFIG = {
+        "pending":            { cls: "orange", label: "Pending",            icon: "⏳", desc: "Waiting for tailor to accept" },
+        "in-progress":        { cls: "blue",   label: "In Progress",        icon: "✂️", desc: "Your tailor is working on it" },
+        "completed":          { cls: "green",  label: "Completed",          icon: "✓",  desc: "Ready for pickup / delivered" },
+        "cancelled":          { cls: "red",    label: "Rejected",           icon: "✕",  desc: "The tailor couldn't take this order" },
+        "customer-cancelled": { cls: "red",    label: "Cancelled by you",   icon: "✕",  desc: "You cancelled this order" },
+    };
+
+    function buildOrderCard(o) {
+        const cfg     = STATUS_CONFIG[o.status] || { cls: "grey", label: o.status, icon: "•", desc: "" };
+        const dateStr = o.createdAt?.toDate
+            ? o.createdAt.toDate().toLocaleDateString("en-IN", { day:"numeric", month:"short", year:"numeric" })
+            : (o.date || "—");
+        const amount  = o.amount ? "₹" + Number(o.amount).toLocaleString("en-IN") : "";
+
+        // 2-minute cancellation window — only for pending orders
+        const CANCEL_WINDOW_MS = 2 * 60 * 1000;
+        let cancelHtml = "";
+        if (o.status === "pending" && o.createdAt?.toDate) {
+            const ageMs = Date.now() - o.createdAt.toDate().getTime();
+            if (ageMs < CANCEL_WINDOW_MS) {
+                const secsLeft = Math.ceil((CANCEL_WINDOW_MS - ageMs) / 1000);
+                cancelHtml = `
+                    <div class="co-cancel-row">
+                        <button class="co-cancel-btn" onclick="cancelOrder('${o.id}')" id="cancel-${o.id}">
+                            Cancel order
+                        </button>
+                        <span class="co-cancel-timer" id="timer-${o.id}">${secsLeft}s left</span>
+                    </div>`;
+            }
+        }
+
+        // Rating UI — only for completed orders
+        let ratingHtml = "";
+        if (o.status === "completed") {
+            if (o.rating) {
+                ratingHtml = `
+                    <div class="co-rating-done">
+                        <span class="co-stars-display">${"★".repeat(o.rating)}${"☆".repeat(5 - o.rating)}</span>
+                        <span>Your rating</span>
+                    </div>`;
+            } else {
+                // Show star input
+                ratingHtml = `
+                    <div class="co-rating-prompt">
+                        <span>Rate your experience</span>
+                        <div class="co-stars" id="stars-${o.id}">
+                            ${[1,2,3,4,5].map(s =>
+                                `<button class="co-star" onclick="submitRating('${o.id}', ${s})" title="${s} star${s>1?'s':''}">☆</button>`
+                            ).join("")}
+                        </div>
+                    </div>`;
+            }
+        }
+
+        return `
+        <div class="co-card co-${cfg.cls}">
+            <div class="co-card-header co-header-${cfg.cls}">
+                <div class="co-header-left">
+                    <span class="co-status-icon">${cfg.icon}</span>
+                    <div>
+                        <div class="co-status-label">${cfg.label}</div>
+                        <div class="co-date">${dateStr}</div>
+                    </div>
+                </div>
+                <div class="co-amount">${amount}</div>
+            </div>
+            <div class="co-card-body">
+                <div class="co-tailor-name">${escapeHTML(o.tailorShop || o.tailorName || "Tailor")}</div>
+                <div class="co-meta-row">
+                    <span class="co-service-tag">${escapeHTML(o.service || "Tailoring")}</span>
+                    <span class="co-order-id">#${o.id.slice(-6).toUpperCase()}</span>
+                </div>
+                ${cfg.desc ? `<p class="co-status-desc">${cfg.desc}</p>` : ""}
+                <div class="co-progress-track">
+                    <div class="co-progress-step ${['pending','in-progress','completed'].includes(o.status) ? 'done' : ''}">
+                        <span></span><small>Placed</small>
+                    </div>
+                    <div class="co-progress-line ${['in-progress','completed'].includes(o.status) ? 'done' : ''}"></div>
+                    <div class="co-progress-step ${['in-progress','completed'].includes(o.status) ? 'done' : ''}">
+                        <span></span><small>Accepted</small>
+                    </div>
+                    <div class="co-progress-line ${o.status === 'completed' ? 'done' : ''}"></div>
+                    <div class="co-progress-step ${o.status === 'completed' ? 'done' : ''}">
+                        <span></span><small>Done</small>
+                    </div>
+                </div>
+            </div>
+            ${o.description ? `
+            <div class="co-detail">
+                <span>Your request</span>
+                <p>${escapeHTML(o.description)}</p>
+            </div>` : ""}
+            ${o.measurements ? `
+            <div class="co-detail">
+                <span>Measurements</span>
+                <p>${escapeHTML(o.measurements)}</p>
+            </div>` : ""}
+            ${ratingHtml}
+            ${cancelHtml}
+        </div>`;
+    }
+
+    window.submitRating = async function(orderId, stars) {
+        try {
+            await updateDoc(doc(db, "orders", orderId), { rating: stars });
+        } catch (err) {
+            showToast("Could not save rating. Please try again.");
+            console.error(err);
+        }
+    };
+
+    window.cancelOrder = async function(orderId) {
+        try {
+            await updateDoc(doc(db, "orders", orderId), { status: "customer-cancelled" });
+            showToast("Order cancelled.");
+        } catch (err) {
+            showToast("Could not cancel. Please try again.");
+            console.error(err);
+        }
+    };
+
+    // Live countdown timers — tick every second, remove cancel button when window expires
+    setInterval(() => {
+        document.querySelectorAll(".co-cancel-timer").forEach(timerEl => {
+            const orderId  = timerEl.id.replace("timer-", "");
+            const cancelBtn = document.getElementById("cancel-" + orderId);
+            const row       = timerEl.closest(".co-cancel-row");
+            const secsLeft  = parseInt(timerEl.textContent) - 1;
+            if (secsLeft <= 0) {
+                if (row) row.remove();
+            } else {
+                timerEl.textContent = secsLeft + "s left";
+            }
+        });
+    }, 1000);
+
+    // Star hover effect — delegate from document
+    document.addEventListener("mouseover", (e) => {
+        const star = e.target.closest(".co-star");
+        if (!star) return;
+        const container = star.closest(".co-stars");
+        if (!container) return;
+        const stars = [...container.querySelectorAll(".co-star")];
+        const idx   = stars.indexOf(star);
+        stars.forEach((s, i) => {
+            s.textContent = i <= idx ? "★" : "☆";
+            s.classList.toggle("hovered", i <= idx);
+        });
+    });
+
+    document.addEventListener("mouseout", (e) => {
+        const star = e.target.closest(".co-star");
+        if (!star) return;
+        const container = star.closest(".co-stars");
+        if (!container) return;
+        container.querySelectorAll(".co-star").forEach(s => {
+            s.textContent = "☆";
+            s.classList.remove("hovered");
+        });
+    });
+
+    /* =====================================================
+       BOOKING MODAL
+    ===================================================== */
+
+    let bookingTailor = null; // the full tailor object currently being booked
+
+    window.openBookingModal = function(tailorId) {
+        // Must be logged in
+        if (!currentUser) {
+            showToast("Please log in to book a tailor.");
+            openAuth("login");
+            return;
+        }
+
+        bookingTailor = allTailors.find(t => t.id === tailorId);
+        if (!bookingTailor) return;
+
+        // --- Shop availability check ---
+        const unavailMsg = getShopUnavailableMessage(bookingTailor);
+        if (unavailMsg) {
+            showShopClosedModal(bookingTailor, unavailMsg);
+            return;
+        }
+
+        const name      = bookingTailor.shop || bookingTailor.name || "Tailor";
+        const specialty = bookingTailor.specialty || "Tailoring";
+
+        document.getElementById("bookingTitle").textContent    = name;
+        document.getElementById("bookingSubtitle").textContent = specialty;
+
+        // Show full address in booking modal
+        const locFull = document.getElementById("bookingLocation");
+        if (locFull) {
+            const addr = bookingTailor.address;
+            const parts = addr
+                ? [addr.locality, addr.city, addr.state, addr.pincode].filter(Boolean)
+                : [bookingTailor.location].filter(Boolean);
+            if (parts.length) {
+                locFull.textContent   = "📍 " + parts.join(", ");
+                locFull.style.display = "block";
+            } else {
+                locFull.style.display = "none";
+            }
+        }
+
+        // Pre-select service chip that matches specialty
+        document.querySelectorAll(".bk-service-chip").forEach(chip => {
+            chip.classList.remove("active");
+        });
+        const matchChip = [...document.querySelectorAll(".bk-service-chip")]
+            .find(c => specialty.toLowerCase().includes(c.dataset.service.toLowerCase()));
+        if (matchChip) matchChip.classList.add("active");
+
+        // Clear previous inputs
+        document.getElementById("bkDescription").value  = "";
+        document.getElementById("bkMeasurements").value = "";
+        document.getElementById("bkError").textContent  = "";
+
+        document.getElementById("bookingModal").classList.add("show");
+    };
+
+    window.closeBooking = function() {
+        document.getElementById("bookingModal").classList.remove("show");
+    };
+
+    window.selectServiceChip = function(el) {
+        document.querySelectorAll(".bk-service-chip").forEach(c => c.classList.remove("active"));
+        el.classList.add("active");
+    };
+
+    window.submitOrder = async function() {
+        if (!currentUser || !bookingTailor) return;
+
+        const activeChip    = document.querySelector(".bk-service-chip.active");
+        const service       = activeChip ? activeChip.dataset.service : (bookingTailor.specialty || "Tailoring");
+        const description   = document.getElementById("bkDescription").value.trim();
+        const measurements  = document.getElementById("bkMeasurements").value.trim();
+        const errorEl       = document.getElementById("bkError");
+
+        if (!description) {
+            errorEl.textContent = "Please describe what you need.";
+            return;
+        }
+
+        const submitBtn = document.getElementById("bkSubmitBtn");
+        submitBtn.textContent = "Placing order...";
+        submitBtn.disabled    = true;
+        errorEl.textContent   = "";
+
+        try {
+            const orderData = {
+                customerId:    currentUser.uid,
+                customerName:  currentCustomerData.name || currentUser.displayName || currentUser.email,
+                tailorId:      bookingTailor.id,
+                tailorName:    bookingTailor.name || bookingTailor.shop || "Tailor",
+                tailorShop:    bookingTailor.shop || bookingTailor.name || "Tailor",
+                service,
+                description,
+                measurements:  measurements || "",
+                amount:        Number(bookingTailor.startingPrice || 150),
+                status:        "pending",
+                createdAt:     serverTimestamp()
+            };
+
+            await addDoc(collection(db, "orders"), orderData);
+
+            closeBooking();
+            showToast(`Order placed with ${bookingTailor.shop || bookingTailor.name} ✦`);
+
+        } catch (err) {
+            console.error("Order failed:", err);
+            errorEl.textContent = "Could not place order. Please try again.";
+        } finally {
+            submitBtn.textContent = "Place Order →";
+            submitBtn.disabled    = false;
+        }
+    };
+
+    async function saveTailorListing(uid, data) {
+        await setDoc(doc(db, "tailors", uid), {
+            uid,
+            name: data.name || "",
+            email: data.email || "",
+            shop: data.shop || data.name || "Tailor",
+            specialty: data.specialty || "Tailoring",
+            phone: data.phone || "",
+            location: data.location || "",
+            address:  data.address  || {},
+            lat: data.lat || null,
+            lng: data.lng || null,
+            bio: data.bio || "",
+            photoURL: data.photoURL || "",
+            startingPrice: Number(data.startingPrice || 150),
+            rating: Number(data.rating || 0),
+            updatedAt: new Date().toISOString()
+        }, { merge: true });
+    }
+
+    async function saveCustomerProfile(uid, data) {
+        await setDoc(doc(db, "customers", uid), {
+            uid,
+            name: data.name || "",
+            email: data.email || "",
+            phone: data.phone || "",
+            createdAt: data.createdAt || new Date().toISOString(),
+            updatedAt: new Date().toISOString()
+        }, { merge: true });
+    }
 
     /* =====================================================
        STATE
@@ -971,16 +1730,26 @@
         currentRole = role;
         document.getElementById("stepRole").style.display  = "none";
         document.getElementById("stepLogin").style.display = "block";
-        document.getElementById("loginRoleLabel").textContent =
-            role === "tailor" ? "TAILOR LOGIN" : "CUSTOMER LOGIN";
 
         // show/hide tailor-specific signup fields
         document.getElementById("tailorFields").style.display =
             role === "tailor" ? "block" : "none";
 
-        // go to the pending tab
+        // go to the pending tab — this will set heading + label
         switchTab(window._pendingTab || "login");
     };
+
+    function updateAuthLabels(tab) {
+        const isLogin  = tab === "login";
+        const isTailor = currentRole === "tailor";
+        const roleWord = isTailor ? "TAILOR" : "CUSTOMER";
+        document.getElementById("loginRoleLabel").textContent =
+            isLogin ? `${roleWord} LOGIN` : `${roleWord} SIGN UP`;
+        const heading = document.getElementById("authHeading");
+        if (heading) heading.innerHTML = isLogin
+            ? `Welcome <em>back.</em>`
+            : `Create your <em>account.</em>`;
+    }
 
     window.goBack = function() {
         document.getElementById("stepLogin").style.display = "none";
@@ -993,6 +1762,7 @@
         tabs[1].classList.toggle("active", tab === "signup");
         document.getElementById("loginFields").style.display  = tab === "login"  ? "block" : "none";
         document.getElementById("signupFields").style.display = tab === "signup" ? "block" : "none";
+        updateAuthLabels(tab);
         clearErrors();
     };
 
@@ -1021,24 +1791,48 @@
         try {
             const cred = await signInWithEmailAndPassword(auth, email, password);
 
-            // verify role matches
-            const snap = await getDoc(doc(db, "users", cred.user.uid));
-            if (snap.exists() && snap.data().role !== currentRole) {
+            const userSnap = await getDoc(doc(db, "users", cred.user.uid));
+            const tailorSnap = await getDoc(doc(db, "tailors", cred.user.uid));
+            const storedRole = userSnap.exists()
+                ? userSnap.data().role
+                : tailorSnap.exists() ? "tailor" : "customer";
+
+            if (storedRole !== currentRole) {
                 await signOut(auth);
-                showError("loginError",
-                    `This account is registered as a ${snap.data().role}. Please select the correct role.`);
+                // Generic error — don't reveal which role the account belongs to
+                showError("loginError", "Incorrect email or password.");
                 return;
             }
 
             closeAuth();
-            if (currentRole === "tailor") {
+            if (storedRole === "tailor") {
                 window.location.href = "tailor-dashboard.html";
                 return;
             }
-            showToast(`Welcome back! Logged in as ${currentRole}.`);
+            showToast(`Welcome back! Logged in as ${storedRole}.`);
 
         } catch (err) {
             showError("loginError", friendlyError(err.code));
+        }
+    };
+
+    /* =====================================================
+       AUTH — FORGOT PASSWORD
+    ===================================================== */
+
+    window.handleForgotPassword = async function() {
+        const email = document.getElementById("loginEmail").value.trim();
+        if (!email) {
+            showError("loginError", "Enter your email above, then click Forgot password.");
+            return;
+        }
+        try {
+            await sendPasswordResetEmail(auth, email);
+            showError("loginError", ""); // clear any error
+            showToast("Password reset email sent — check your inbox.");
+        } catch (err) {
+            // Don't reveal whether email exists — always show same message
+            showToast("If that email is registered, a reset link has been sent.");
         }
     };
 
@@ -1053,6 +1847,16 @@
         const password = document.getElementById("signupPassword").value;
         const shop     = document.getElementById("signupShop")?.value.trim();
         const specialty= document.getElementById("signupSpecialty")?.value;
+        const locality = document.getElementById("signupLocality")?.value.trim() || "";
+        const pincode  = document.getElementById("signupPincode")?.value.trim() || "";
+        const city     = document.getElementById("signupCity")?.value.trim() || "";
+        const state    = document.getElementById("signupState")?.value.trim() || "";
+        const lat      = parseFloat(document.getElementById("shopLatitude")?.value) || null;
+        const lng      = parseFloat(document.getElementById("shopLongitude")?.value) || null;
+        // Short display label: "Koramangala, Bangalore"
+        const location = [locality, city].filter(Boolean).join(", ");
+        // Full structured address stored separately
+        const address  = { locality, city, state, pincode };
 
         if (!name || !email || !phone || !password) {
             showError("signupError", "Please fill in all required fields.");
@@ -1079,11 +1883,35 @@
             };
 
             if (currentRole === "tailor") {
-                userData.shop      = shop;
-                userData.specialty = specialty;
-            }
+                const accountData = {
+                    email,
+                    role: currentRole,
+                    createdAt: userData.createdAt
+                };
+                const tailorData = {
+                    ...userData,
+                    shop,
+                    specialty,
+                    location,
+                    address,
+                    lat,
+                    lng
+                };
 
-            await setDoc(doc(db, "users", cred.user.uid), userData);
+                await setDoc(doc(db, "users", cred.user.uid), accountData);
+                try {
+                    await saveTailorListing(cred.user.uid, tailorData);
+                } catch (listingError) {
+                    console.error("Tailor listing creation failed:", listingError);
+                }
+            } else {
+                await setDoc(doc(db, "users", cred.user.uid), {
+                    email,
+                    role: "customer",
+                    createdAt: userData.createdAt
+                });
+                await saveCustomerProfile(cred.user.uid, userData);
+            }
 
             closeAuth();
             if (currentRole === "tailor") {
@@ -1093,7 +1921,12 @@
             showToast(`Account created! Welcome, ${name} 🎉`);
 
         } catch (err) {
-            showError("signupError", friendlyError(err.code));
+            if (err.code === "permission-denied" && currentRole === "customer") {
+                showError("signupError",
+                    "Your account was created, but the customer profile could not be saved. Publish the customers rule in Firestore.");
+            } else {
+                showError("signupError", friendlyError(err.code));
+            }
         }
     };
 
@@ -1109,13 +1942,32 @@
 
             if (!snap.exists()) {
                 // first-time Google sign-in — save profile
-                await setDoc(doc(db, "users", uid), {
+                const googleData = {
                     name:      cred.user.displayName || "",
                     email:     cred.user.email || "",
                     phone:     "",
                     role:      currentRole,
                     createdAt: new Date().toISOString()
-                });
+                };
+                if (currentRole === "tailor") {
+                    await setDoc(doc(db, "users", uid), {
+                        email: googleData.email,
+                        role: googleData.role,
+                        createdAt: googleData.createdAt
+                    });
+                    try {
+                        await saveTailorListing(uid, googleData);
+                    } catch (listingError) {
+                        console.error("Tailor listing creation failed:", listingError);
+                    }
+                } else {
+                    await setDoc(doc(db, "users", uid), {
+                        email: googleData.email,
+                        role: "customer",
+                        createdAt: googleData.createdAt
+                    });
+                    await saveCustomerProfile(uid, googleData);
+                }
             } else if (snap.data().role !== currentRole) {
                 await signOut(auth);
                 showError("loginError",
@@ -1146,14 +1998,32 @@
         const navUser = document.getElementById("navUser");
 
         if (user) {
-            const snap = await getDoc(doc(db, "users", user.uid));
-            const data = snap.exists() ? snap.data() : {};
-            const name = data.name || user.displayName || user.email;
+            const userSnap     = await getDoc(doc(db, "users", user.uid));
+            const tailorSnap   = await getDoc(doc(db, "tailors", user.uid));
+            const customerSnap = await getDoc(doc(db, "customers", user.uid));
+            const data         = userSnap.exists() ? userSnap.data() : {};
+            const tailorData   = tailorSnap.exists() ? tailorSnap.data() : {};
+            const customerData = customerSnap.exists() ? customerSnap.data() : {};
+            const role = data.role || (tailorSnap.exists() ? "tailor" : "customer");
+            const name = tailorData.name || customerData.name || data.name || user.displayName || user.email;
 
             // Redirect tailors to their dashboard automatically
-            if (data.role === "tailor") {
+            if (role === "tailor") {
                 window.location.href = "tailor-dashboard.html";
                 return;
+            }
+
+            // Store for use in booking
+            currentUser         = user;
+            currentCustomerData = { ...customerData, name };
+
+            if (!customerSnap.exists() && (data.name || data.phone)) {
+                await saveCustomerProfile(user.uid, {
+                    name: data.name,
+                    email: data.email || user.email,
+                    phone: data.phone,
+                    createdAt: data.createdAt
+                });
             }
 
             navAuth.style.display = "none";
@@ -1165,9 +2035,15 @@
             document.getElementById("menuName").textContent  = name;
             document.getElementById("menuEmail").textContent = user.email;
 
+            // Start live orders listener for this customer
+            listenToCustomerOrders(user.uid);
+
         } else {
+            currentUser         = null;
+            currentCustomerData = {};
             navAuth.style.display = "flex";
             navUser.style.display = "none";
+            renderCustomerOrders(null); // show login prompt
         }
     });
 
@@ -1214,7 +2090,8 @@
             "auth/invalid-email":        "Please enter a valid email address.",
             "auth/weak-password":        "Password must be at least 6 characters.",
             "auth/too-many-requests":    "Too many attempts. Please try again later.",
-            "auth/invalid-credential":   "Incorrect email or password."
+            "auth/invalid-credential":   "Incorrect email or password.",
+            "permission-denied":         "Your account was created, but the profile could not be saved. Check your Firestore rules for the selected account type."
         };
         return map[code] || "Something went wrong. Please try again.";
     }
