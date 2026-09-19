@@ -97,11 +97,9 @@ function sendAI() {
 
 
 /* =========================================================
-   BASIC AI CLASSIFICATION
-========================================================= */
-/* =========================================================
    AI TAILOR REQUIREMENT CLASSIFICATION
 ========================================================= */
+
 function generateAIResponse(message) {
 
     const text = message.toLowerCase();
@@ -128,29 +126,21 @@ function generateAIResponse(message) {
         return `
             ✂️ <strong>Alteration Service</strong>
             <br><br>
-
             It sounds like you need an <strong>alteration</strong>.
             Tailors on SILAI can help modify the fit, length or
             shape of an existing garment.
             <br><br>
-
             <strong>Common alteration services include:</strong>
             <br>
-            • Shortening or lengthening garments
-            <br>
-            • Waist adjustments
-            <br>
-            • Sleeve adjustments
-            <br>
-            • Tightening or loosening
-            <br>
+            • Shortening or lengthening garments<br>
+            • Waist adjustments<br>
+            • Sleeve adjustments<br>
+            • Tightening or loosening<br>
             • Size and fitting corrections
             <br><br>
-
             📌 <strong>Tip:</strong> Bring the garment and explain
             exactly where the fitting needs to be changed.
             <br><br>
-
             Would you like to <strong>find a nearby tailor</strong>
             for this service?
         `;
@@ -179,30 +169,20 @@ function generateAIResponse(message) {
         return `
             🪡 <strong>Clothing Repair</strong>
             <br><br>
-
-            This sounds like a <strong>garment repair</strong>
-            requirement.
+            This sounds like a <strong>garment repair</strong> requirement.
             <br><br>
-
             Tailors can commonly help with:
             <br>
-            • Torn or ripped fabric
-            <br>
-            • Broken or damaged zippers
-            <br>
-            • Loose seams
-            <br>
-            • Small holes
-            <br>
-            • Buttons and hooks
-            <br>
+            • Torn or ripped fabric<br>
+            • Broken or damaged zippers<br>
+            • Loose seams<br>
+            • Small holes<br>
+            • Buttons and hooks<br>
             • Minor stitching damage
             <br><br>
-
             📸 If the damage is difficult to describe,
             you can show the tailor a photo of the garment.
             <br><br>
-
             Would you like to <strong>find a tailor near you</strong>
             who can handle the repair?
         `;
@@ -229,33 +209,21 @@ function generateAIResponse(message) {
         return `
             ✨ <strong>Embroidery & Handwork</strong>
             <br><br>
-
             Your requirement sounds like <strong>embroidery or
             decorative handwork</strong>.
             <br><br>
-
             Depending on the design, a tailor or embroidery
             specialist may help with:
             <br>
-            • Thread embroidery
-            <br>
-            • Zari work
-            <br>
-            • Mirror work
-            <br>
-            • Sequin work
-            <br>
-            • Bead and stone work
-            <br>
+            • Thread embroidery<br>
+            • Zari work<br>
+            • Mirror work<br>
+            • Sequin work<br>
+            • Bead and stone work<br>
             • Custom decorative patterns
             <br><br>
-
             🎨 <strong>Tip:</strong> A reference image can help
             the tailor understand the exact design you want.
-            <br><br>
-
-            You can use SILAI to find a tailor who specializes
-            in the type of work you need.
         `;
 
     }
@@ -275,31 +243,21 @@ function generateAIResponse(message) {
         return `
             👗 <strong>Blouse Stitching</strong>
             <br><br>
-
             I can help you find the right type of blouse
             tailoring service.
             <br><br>
-
             You can choose based on requirements such as:
             <br>
-            • Basic blouse stitching
-            <br>
-            • Designer blouse
-            <br>
-            • Bridal blouse
-            <br>
-            • Back-neck designs
-            <br>
-            • Sleeveless or full-sleeve designs
-            <br>
+            • Basic blouse stitching<br>
+            • Designer blouse<br>
+            • Bridal blouse<br>
+            • Back-neck designs<br>
+            • Sleeveless or full-sleeve designs<br>
             • Embroidery and embellishments
             <br><br>
-
-            📸 Have a reference design?
-            Showing it to the tailor can make it easier to
-            achieve the style you want.
+            📸 Have a reference design? Showing it to the tailor
+            can make it easier to achieve the style you want.
             <br><br>
-
             Would you like to <strong>find blouse specialists
             near you</strong>?
         `;
@@ -325,32 +283,20 @@ function generateAIResponse(message) {
         return `
             🪷 <strong>Ethnic Wear Tailoring</strong>
             <br><br>
-
             SILAI can help you find tailors for
             <strong>traditional and ethnic wear</strong>.
             <br><br>
-
             This can include:
             <br>
-            • Saree blouse stitching
-            <br>
-            • Lehenga tailoring
-            <br>
-            • Anarkali suits
-            <br>
-            • Salwar suits
-            <br>
-            • Kurtas and kurtis
-            <br>
+            • Saree blouse stitching<br>
+            • Lehenga tailoring<br>
+            • Anarkali SILAIts<br>
+            • Salwar SILAIts<br>
+            • Kurtas and kurtis<br>
             • Traditional outfit alterations
             <br><br>
-
             ✨ If you have a particular design in mind,
             you can share a reference image with the tailor.
-            <br><br>
-
-            I can help you identify the type of tailoring
-            service you need.
         `;
 
     }
@@ -376,27 +322,19 @@ function generateAIResponse(message) {
         return `
             🧵 <strong>Custom Stitching</strong>
             <br><br>
-
-            It sounds like you need a <strong>stitching
-            service</strong>.
+            It sounds like you need a <strong>stitching service</strong>.
             <br><br>
-
             SILAI can help you find a tailor based on:
             <br>
-            • Garment type
-            <br>
-            • Tailor's specialty
-            <br>
-            • Location
-            <br>
+            • Garment type<br>
+            • Tailor's specialty<br>
+            • Location<br>
             • Your design requirements
             <br><br>
-
             📸 <strong>Best approach:</strong> If you have a
             reference image, keep it ready so the tailor can
             understand the design and fitting you want.
             <br><br>
-
             Tell me what garment you want stitched and
             I'll help you identify the appropriate service.
         `;
@@ -420,36 +358,25 @@ function generateAIResponse(message) {
         return `
             📏 <strong>Measurement Assistance</strong>
             <br><br>
-
             The measurements required depend on the garment
             you want to stitch.
             <br><br>
-
             <strong>Common measurements include:</strong>
             <br>
-            • Shoulder
-            <br>
-            • Bust / Chest
-            <br>
-            • Waist
-            <br>
-            • Hip
-            <br>
-            • Sleeve length
-            <br>
-            • Armhole
-            <br>
+            • Shoulder<br>
+            • Bust / Chest<br>
+            • Waist<br>
+            • Hip<br>
+            • Sleeve length<br>
+            • Armhole<br>
             • Garment length
             <br><br>
-
             📌 <strong>Tip:</strong> Use a soft measuring tape
             and avoid pulling it too tightly around the body.
             <br><br>
-
             Tell me what garment you're making
             <strong>(blouse, dress, shirt, kurti, etc.)</strong>
-            and I can tell you which measurements are usually
-            required.
+            and I can tell you which measurements are usually required.
         `;
 
     }
@@ -473,29 +400,21 @@ function generateAIResponse(message) {
         return `
             ✨ <strong>Custom Design</strong>
             <br><br>
-
             Want something made specifically for you?
             SILAI can connect you with tailors who work on
             <strong>custom-designed garments</strong>.
             <br><br>
-
             You can:
             <br>
-            • Share a reference image
-            <br>
-            • Describe your preferred style
-            <br>
-            • Choose the type of fabric
-            <br>
-            • Discuss fitting requirements
-            <br>
+            • Share a reference image<br>
+            • Describe your preferred style<br>
+            • Choose the type of fabric<br>
+            • Discuss fitting requirements<br>
             • Request embroidery or other details
             <br><br>
-
             🎨 The more details you provide, the easier it is
             for the tailor to understand your requirements.
             <br><br>
-
             What kind of outfit are you planning to create?
         `;
 
@@ -519,31 +438,22 @@ function generateAIResponse(message) {
         return `
             🧶 <strong>Fabric & Tailoring</strong>
             <br><br>
-
             The right fabric can make a big difference to
             the final fit and appearance of a garment.
             <br><br>
-
             Some common choices include:
             <br>
-            • Cotton — comfortable and breathable
-            <br>
-            • Linen — lightweight and breathable
-            <br>
-            • Silk — smooth and elegant
-            <br>
-            • Velvet — structured and rich
-            <br>
+            • Cotton — comfortable and breathable<br>
+            • Linen — lightweight and breathable<br>
+            • Silk — smooth and elegant<br>
+            • Velvet — structured and rich<br>
             • Chiffon — lightweight and flowy
             <br><br>
-
             The best fabric depends on the garment,
             design and desired fit.
             <br><br>
-
             Tell me what you're planning to stitch and
-            I can suggest what to consider when choosing
-            the fabric.
+            I can suggest what to consider when choosing the fabric.
         `;
 
     }
@@ -565,28 +475,21 @@ function generateAIResponse(message) {
         return `
             📍 <strong>Find a Tailor</strong>
             <br><br>
-
             SILAI can help you discover registered tailors
             based on their <strong>location and specialty</strong>.
             <br><br>
-
             You can look for tailors who specialize in:
             <br>
-            • Stitching
-            <br>
-            • Alterations
-            <br>
-            • Blouse stitching
-            <br>
-            • Repairs
-            <br>
-            • Embroidery
-            <br>
+            • Stitching<br>
+            • Alterations<br>
+            • Blouse stitching<br>
+            • Repairs<br>
+            • Embroidery<br>
             • Custom designs
             <br><br>
-
-            📍 Use <strong>"Find Near Me"</strong> to allow
-            SILAI to show nearby tailoring options.
+            Scroll down to the <strong>Tailors</strong> section
+            to see tailors near you, or use the service categories
+            to filter by what you need.
         `;
 
     }
@@ -606,28 +509,19 @@ function generateAIResponse(message) {
         return `
             📅 <strong>Booking a Tailor</strong>
             <br><br>
-
-            Once you find a suitable tailor on SILAI,
+            Once you find a SILAItable tailor on SILAI,
             you can check their profile and choose the
             service you need.
             <br><br>
-
-            Before confirming your request, it's useful to
-            discuss:
+            Before confirming your request, it's useful to have:
             <br>
-            • Garment type
-            <br>
-            • Design or reference
-            <br>
-            • Measurements
-            <br>
-            • Fabric requirements
-            <br>
+            • Garment type<br>
+            • Design or reference image<br>
+            • Measurements<br>
+            • Fabric requirements<br>
             • Any special instructions
             <br><br>
-
-            This helps the tailor understand your
-            requirements clearly.
+            This helps the tailor understand your requirements clearly.
         `;
 
     }
@@ -642,37 +536,26 @@ function generateAIResponse(message) {
         text.includes("fashion") ||
         text.includes("clothes") ||
         text.includes("clothing") ||
-        text.includes("garment") ||
-        text.includes("dress")
+        text.includes("garment")
     ) {
 
         return `
             👗 <strong>SILAI Tailoring Assistant</strong>
             <br><br>
-
             I can help you figure out what kind of tailoring
             service you need.
             <br><br>
-
             You can ask me about:
             <br>
-            ✂️ Alterations
-            <br>
-            🧵 Stitching
-            <br>
-            👗 Blouse & ethnic wear
-            <br>
-            🪡 Clothing repairs
-            <br>
-            ✨ Embroidery & custom designs
-            <br>
-            📏 Measurements
-            <br>
-            🧶 Fabric selection
-            <br>
+            ✂️ Alterations<br>
+            🧵 Stitching<br>
+            👗 Blouse & ethnic wear<br>
+            🪡 Clothing repairs<br>
+            ✨ Embroidery & custom designs<br>
+            📏 Measurements<br>
+            🧶 Fabric selection<br>
             📍 Finding nearby tailors
             <br><br>
-
             Tell me what you're trying to make, fix or alter.
         `;
 
@@ -684,85 +567,30 @@ function generateAIResponse(message) {
     ===================================================== */
 
     return `
-        ✦ <strong>I'm here to help with your tailoring
-        requirement.</strong>
+        ✦ <strong>I'm here to help with your tailoring requirement.</strong>
         <br><br>
-
         Tell me what you need in simple words. For example:
         <br><br>
-
-        ✂️ <strong>"My jeans are too long."</strong>
-        <br>
-        👗 <strong>"I need a bridal blouse stitched."</strong>
-        <br>
-        🪡 <strong>"My dress zip is broken."</strong>
-        <br>
-        ✨ <strong>"I want embroidery on my saree."</strong>
-        <br>
-        📏 <strong>"What measurements do I need for a kurti?"</strong>
-        <br>
-        📍 <strong>"Find a tailor near me."</strong>
-        <br>
+        ✂️ <strong>"My jeans are too long."</strong><br>
+        👗 <strong>"I need a bridal blouse stitched."</strong><br>
+        🪡 <strong>"My dress zip is broken."</strong><br>
+        ✨ <strong>"I want embroidery on my saree."</strong><br>
+        📏 <strong>"What measurements do I need for a kurti?"</strong><br>
+        📍 <strong>"Find a tailor near me."</strong><br>
         🧶 <strong>"Which fabric is good for a summer dress?"</strong>
         <br><br>
-
         Describe your requirement and I'll guide you
         to the right tailoring service.
     `;
 
 }
-/* =========================================================
-   BOOKING
-========================================================= */
-
-const bookingModal = document.getElementById("bookingModal");
-
-let selectedTailor = "";
-
-
-function bookTailor(tailor) {
-
-    selectedTailor = tailor;
-
-    document.getElementById("bookingTitle").textContent =
-        `Book ${tailor}`;
-
-    bookingModal.classList.add("show");
-
-}
-
-
-function closeBooking() {
-
-    bookingModal.classList.remove("show");
-
-}
-
-
-function chooseBooking(service, price) {
-
-    closeBooking();
-
-    showToast(
-        `${service} booked with ${selectedTailor} · ₹${price}`
-    );
-
-}
 
 
 /* =========================================================
-   SERVICES
+   BOOKING / SERVICES — handled in module script in index.html
+   openBookingModal, closeBooking, submitOrder, selectService,
+   selectServiceChip, clearFilter are all defined there.
 ========================================================= */
-
-function selectService(service) {
-
-    showToast(`${service} selected`);
-
-    setTimeout(() => {
-        openAI();
-    }, 500);
-
-}
 
 
 /* =========================================================
@@ -855,9 +683,9 @@ aiModal.addEventListener("click", function (event) {
 });
 
 
-bookingModal.addEventListener("click", function (event) {
+document.getElementById("bookingModal").addEventListener("click", function (event) {
 
-    if (event.target === bookingModal) {
+    if (event.target === this) {
         closeBooking();
     }
 
