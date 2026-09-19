@@ -271,7 +271,7 @@
     border-radius: 20px;
 }
 
-/* ===========================================================
+/* =========================================================
    STAT CARDS
 ========================================================= */
 
@@ -1100,4 +1100,114 @@
     .td-stats-grid {
         grid-template-columns: 1fr;
     }
+}
+
+/* =========================================================
+   ORDER MODAL — DETAIL BLOCKS & REJECT BUTTON
+========================================================= */
+
+.td-modal-detail {
+    margin-top: 18px;
+    padding: 14px 16px;
+    background: #f7f5f0;
+    border-radius: 12px;
+    border: 1px solid #e7e3da;
+}
+
+.td-modal-detail span {
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+    color: #858179;
+    display: block;
+    margin-bottom: 6px;
+}
+
+.td-modal-detail p {
+    font-size: 14px;
+    color: #171715;
+    line-height: 1.55;
+    margin: 0;
+}
+
+.td-reject-btn {
+    padding: 12px 22px;
+    border-radius: 12px;
+    border: 1.5px solid #e7e3da;
+    background: #fff;
+    color: #e64c2b;
+    font-size: 14px;
+    font-weight: 600;
+    font-family: inherit;
+    cursor: pointer;
+    transition: background 0.2s, border-color 0.2s;
+}
+
+.td-reject-btn:hover {
+    background: #fce8e6;
+    border-color: #e64c2b;
+}
+
+/* Pending orders get a subtle highlight in the table */
+.td-order-row:has(.td-status-badge.orange) {
+    background: #fffbf4;
+}
+
+.td-order-row:has(.td-status-badge.orange):hover {
+    background: #fef6e4;
+}
+
+/* =========================================================
+   ACCEPT ORDER — PRICE CONFIRM ROW
+========================================================= */
+
+.td-accept-price-row {
+    display: flex;
+    align-items: flex-end;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+/* Vacation date inputs */
+.td-availability-row input[type="date"] {
+    width: 100%;
+    padding: 11px 14px;
+    border: 1.5px solid #e7e3da;
+    border-radius: 10px;
+    font-size: 14px;
+    font-family: inherit;
+    color: #171715;
+    background: #faf9f6;
+    outline: none;
+    transition: border-color 0.2s;
+}
+
+.td-availability-row input[type="date"]:focus {
+    border-color: #2b6be6;
+    background: #fff;
+}
+
+/* Location input row inside profile form */
+.td-profile-form-card .location-input-row input {
+    flex: 1;
+    padding: 11px 14px;
+    border: 1.5px solid #e7e3da;
+    border-radius: 10px;
+    font-size: 14px;
+    font-family: inherit;
+    color: #171715;
+    background: #faf9f6;
+    outline: none;
+    transition: border-color 0.2s;
+}
+
+.td-profile-form-card .location-input-row input:focus {
+    border-color: #2b6be6;
+    background: #fff;
+}
+
+.td-profile-form-card .location-pin-btn {
+    height: 44px;
+    width: 44px;
 }
