@@ -33,6 +33,7 @@
         <a href="#" class="td-nav-item" data-section="orders" onclick="showSection('orders', this)">
             <span class="td-nav-icon">📋</span>
             Orders
+            <span class="td-pending-badge" id="pendingBadge" style="display:none">0</span>
         </a>
         <a href="#" class="td-nav-item" data-section="analytics" onclick="showSection('analytics', this)">
             <span class="td-nav-icon">📊</span>
@@ -45,11 +46,19 @@
     </nav>
 
     <div class="td-sidebar-footer">
+        <!-- Shop status toggle -->
+        <div class="td-shop-status" id="shopStatusRow">
+            <span class="td-shop-label" id="shopStatusLabel">Open</span>
+            <button class="td-status-toggle open" id="shopToggleBtn" onclick="toggleShopStatus()">
+                <span class="td-toggle-knob"></span>
+            </button>
+        </div>
+
         <div class="td-profile-pill">
-            <div class="td-profile-avatar">M</div>
+            <div class="td-profile-avatar" id="sidebarAvatar">T</div>
             <div class="td-profile-info">
-                <strong id="sidebarName">Meera Studio</strong>
-                <small>Women's Tailoring</small>
+                <strong id="sidebarName">Tailor</strong>
+                <small id="sidebarSpecialty">Tailoring</small>
             </div>
         </div>
         <button class="td-logout-btn" onclick="handleLogout()">
@@ -81,7 +90,7 @@
         <div class="td-section-header">
             <div>
                 <span class="section-label">TAILOR DASHBOARD</span>
-                <h1>Good morning, <em id="tailorGreeting">Meera</em> ✦</h1>
+                <h1>Good morning, <em id="tailorGreeting">Tailor</em> ✦</h1>
             </div>
             <div class="td-date-badge" id="todayDate"></div>
         </div>
@@ -296,11 +305,17 @@
 
             <div class="td-card td-profile-card">
                 <div class="td-profile-big-avatar" id="profileBigAvatar">M</div>
-                <h2 id="profileShopName">Meera Studio</h2>
-                <p id="profileSpecialty">Women's Tailoring</p>
+                <h2 id="profileShopName">Tailor</h2>
+                <p id="profileSpecialty">Tailoring</p>
                 <div class="td-profile-badges">
                     <span class="td-badge green">✓ Verified</span>
-                    <span class="td-badge gold">★ 4.9</span>
+                    <span class="td-badge gold" id="profileRatingBadge">★ —</span>
+                </div>
+                <div class="td-profile-shop-status">
+                    <span id="profileShopStatusLabel">Shop is Open</span>
+                    <button class="td-status-toggle open" id="profileToggleBtn" onclick="toggleShopStatus()">
+                        <span class="td-toggle-knob"></span>
+                    </button>
                 </div>
                 <input type="file" id="photoFileInput" accept="image/*" style="display:none" onchange="handlePhotoChange(event)">
                 <button class="primary-btn td-edit-photo-btn" onclick="document.getElementById('photoFileInput').click()">Change Photo</button>
@@ -311,24 +326,24 @@
                 <div class="td-form-grid">
                     <div class="field-group">
                         <label>Shop / Studio Name</label>
-                        <input type="text" id="pShopName" value="Meera Studio">
+                        <input type="text" id="pShopName" placeholder="Shop or studio name">
                     </div>
                     <div class="field-group">
                         <label>Owner Name</label>
-                        <input type="text" id="pOwnerName" value="Meera Patel">
+                        <input type="text" id="pOwnerName" placeholder="Your name">
                     </div>
                     <div class="field-group">
                         <label>Phone</label>
-                        <input type="tel" id="pPhone" value="+91 98765 43210">
+                        <input type="tel" id="pPhone" placeholder="Phone number">
                     </div>
                     <div class="field-group">
                         <label>Email</label>
-                        <input type="email" id="pEmail" value="meera@studio.com">
+                        <input type="email" id="pEmail" placeholder="Email address">
                     </div>
                     <div class="field-group">
                         <label>Specialty</label>
                         <select id="pSpecialty">
-                            <option selected>Women's Tailoring</option>
+                            <option value="">Select specialty</option>
                             <option>Men's Tailoring</option>
                             <option>Bridal & Ethnic</option>
                             <option>Alterations</option>
@@ -336,12 +351,30 @@
                         </select>
                     </div>
                     <div class="field-group">
-                        <label>Location</label>
-                        <input type="text" id="pLocation" value="Koramangala, Bangalore">
+                        <label>Locality / Area</label>
+                        <div class="location-input-row">
+                            <input type="text" id="pLocation" placeholder="e.g. Koramangala, SG Palya">
+                            <button type="button" class="location-pin-btn" onclick="pinTailorLocation()" title="Pinpoint my current location">📍</button>
+                        </div>
+                        <small id="pLocationStatus" class="location-status-text"></small>
+                        <input type="hidden" id="pLat">
+                        <input type="hidden" id="pLng">
+                    </div>
+                    <div class="field-group">
+                        <label>Pincode</label>
+                        <input type="text" id="pPincode" placeholder="e.g. 560034" maxlength="6" oninput="lookupPincodeProfile(this.value)">
+                    </div>
+                    <div class="field-group">
+                        <label>City / District</label>
+                        <input type="text" id="pCity" placeholder="Auto-filled from pincode">
+                    </div>
+                    <div class="field-group">
+                        <label>State</label>
+                        <input type="text" id="pState" placeholder="Auto-filled from pincode">
                     </div>
                     <div class="field-group" style="grid-column: 1 / -1;">
                         <label>About your shop</label>
-                        <textarea id="pBio" rows="3">Specialising in ethnic blouses, lehengas and alterations. 10+ years experience.</textarea>
+                        <textarea id="pBio" rows="3" placeholder="Tell customers about your shop"></textarea>
                     </div>
                 </div>
 
@@ -361,6 +394,24 @@
                     <span class="section-label" style="font-size: 10px;">WORKING DAYS</span>
                     <div class="td-day-chips" id="dayChips"></div>
                 </div>
+
+                <h3 style="margin-top: 28px;">Vacation / Break</h3>
+                <p style="font-size:13px;color:#858179;margin-bottom:16px;">
+                    Set a vacation window and your shop will show as unavailable to customers during those dates.
+                </p>
+                <div class="td-availability-row">
+                    <div class="field-group">
+                        <label>From</label>
+                        <input type="date" id="pVacationStart">
+                    </div>
+                    <div class="field-group">
+                        <label>Until</label>
+                        <input type="date" id="pVacationEnd">
+                    </div>
+                </div>
+                <button class="td-clear-vacation-btn" id="clearVacationBtn" onclick="clearVacation()" style="display:none">
+                    ✕ Clear vacation
+                </button>
 
                 <button class="primary-btn td-save-btn" onclick="saveProfile()">Save Changes →</button>
             </div>
@@ -386,7 +437,7 @@
     <div class="td-order-modal">
         <button class="close-btn" onclick="closeOrderModal()">×</button>
         <span class="section-label">ORDER DETAIL</span>
-        <h2 id="modalOrderId">Order #SILAI00000</h2>
+        <h2 id="modalOrderId">Order #SUI00000</h2>
         <div class="td-modal-body" id="modalBody"></div>
         <div class="td-modal-actions" id="modalActions"></div>
     </div>
@@ -414,7 +465,10 @@ import {
     query,
     where,
     getDocs,
-    updateDoc
+    onSnapshot,
+    updateDoc,
+    setDoc,
+    deleteField
 } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
 const firebaseConfig = {
@@ -433,48 +487,17 @@ const db   = getFirestore(app);
 /* =========================================================
    MOCK DATA  (replace with real Firestore queries)
 ========================================================= */
-const MOCK_ORDERS = [
-    { id: "SILAI28491", customer: "Priya Sharma",    service: "Blouse Stitching", amount: 549, status: "in-progress", date: "2026-09-14", rating: null },
-    { id: "SILAI28480", customer: "Ananya Reddy",    service: "New Stitching",    amount: 799, status: "completed",   date: "2026-09-12", rating: 5 },
-    { id: "SILAI28465", customer: "Kavitha Nair",    service: "Alteration",       amount: 199, status: "completed",   date: "2026-09-10", rating: 4 },
-    { id: "SILAI28460", customer: "Sunita Mehta",    service: "Blouse Stitching", amount: 499, status: "completed",   date: "2026-09-09", rating: 5 },
-    { id: "SILAI28451", customer: "Deepa Iyer",      service: "Repair",           amount: 149, status: "pending",     date: "2026-09-15", rating: null },
-    { id: "SILAI28445", customer: "Rekha Das",       service: "Custom Design",    amount: 1299, status: "in-progress", date: "2026-09-13", rating: null },
-    { id: "SILAI28430", customer: "Meena Pillai",    service: "Alteration",       amount: 149, status: "completed",   date: "2026-09-08", rating: 5 },
-    { id: "SILAI28420", customer: "Shalini Verma",   service: "New Stitching",    amount: 699, status: "completed",   date: "2026-09-07", rating: 4 },
-    { id: "SILAI28410", customer: "Pooja Agarwal",   service: "Blouse Stitching", amount: 549, status: "completed",   date: "2026-09-06", rating: 5 },
-    { id: "SILAI28400", customer: "Nisha Bose",      service: "Repair",           amount: 99,  status: "completed",   date: "2026-09-05", rating: 4 },
-    { id: "SILAI28495", customer: "Asha Krishnan",   service: "Blouse Stitching", amount: 499, status: "pending",     date: "2026-09-16", rating: null },
-    { id: "SILAI28496", customer: "Fatima Sheikh",   service: "Custom Design",    amount: 999, status: "pending",     date: "2026-09-16", rating: null },
-];
-
-const WEEKLY_REVENUE = [
-    { day: "Mon", amount: 549  },
-    { day: "Tue", amount: 0    },
-    { day: "Wed", amount: 748  },
-    { day: "Thu", amount: 1299 },
-    { day: "Fri", amount: 499  },
-    { day: "Sat", amount: 1248 },
-    { day: "Sun", amount: 0    },
-];
-
-const MONTHLY_REVENUE = [
-    { day: "Sep 1",  amount: 699  },
-    { day: "Sep 3",  amount: 549  },
-    { day: "Sep 5",  amount: 248  },
-    { day: "Sep 7",  amount: 1298 },
-    { day: "Sep 9",  amount: 348  },
-    { day: "Sep 11", amount: 998  },
-    { day: "Sep 13", amount: 1848 },
-    { day: "Sep 15", amount: 2343 },
-];
+const DASHBOARD_ORDERS = [];
 
 /* =========================================================
    STATE
 ========================================================= */
 let currentFilter  = "all";
 let analyticsPeriod = "week";
-let tailorData     = { name: "Meera Studio", specialty: "Women's Tailoring" };
+let tailorData      = {};
+let currentUserId   = null;
+let pendingPhotoFile = null;
+let pendingPhotoDataURL = null;
 
 /* =========================================================
    INIT
@@ -482,35 +505,174 @@ let tailorData     = { name: "Meera Studio", specialty: "Women's Tailoring" };
 window.addEventListener("DOMContentLoaded", () => {
     setTodayDate();
     buildDayChips();
-    renderStats();
-    renderWeeklyChart();
-    renderDonut();
-    renderRecentOrders();
-    renderFullOrders();
-    renderAnalytics();
-    renderRatings();
 });
 
 onAuthStateChanged(auth, async (user) => {
-    if (user) {
-        const snap = await getDoc(doc(db, "users", user.uid));
-        if (snap.exists()) {
-            const d = snap.data();
-            if (d.role !== "tailor") {
-                window.location.href = "dashboard.html";
-                return;
-            }
-            tailorData = d;
-            applyTailorData(d);
-        }
+    if (!user) {
+        window.location.href = "index.html";
+        return;
     }
-    // If not logged in, still show dashboard with mock data (demo mode)
+
+    const userSnap = await getDoc(doc(db, "users", user.uid));
+    const tailorSnap = await getDoc(doc(db, "tailors", user.uid));
+    const role = userSnap.exists() ? userSnap.data().role : tailorSnap.exists() ? "tailor" : "";
+    if (role !== "tailor") {
+        await signOut(auth);
+        window.location.href = "index.html";
+        return;
+    }
+
+    currentUserId = user.uid;
+    if (!userSnap.exists()) {
+        await setDoc(doc(db, "users", user.uid), {
+            email: user.email || "",
+            role: "tailor",
+            restoredAt: new Date().toISOString()
+        }, { merge: true });
+    }
+    tailorData = tailorSnap.exists()
+        ? { ...tailorSnap.data(), email: tailorSnap.data().email || user.email || "" }
+        : { ...userSnap.data(), email: userSnap.data().email || user.email || "" };
+    try {
+        await updateDoc(doc(db, "users", user.uid), {
+            name: deleteField(),
+            phone: deleteField(),
+            shop: deleteField(),
+            specialty: deleteField(),
+            location: deleteField(),
+            bio: deleteField(),
+            photoURL: deleteField(),
+            openingTime: deleteField(),
+            closingTime: deleteField(),
+            workingDays: deleteField()
+        });
+    } catch (cleanupError) {
+        console.warn("Legacy tailor fields could not be cleaned from users:", cleanupError);
+    }
+    try {
+        await setDoc(doc(db, "tailors", user.uid), {
+            uid:          user.uid,
+            name:         tailorData.name || "",
+            email:        tailorData.email,
+            shop:         tailorData.shop || tailorData.name || "Tailor",
+            specialty:    tailorData.specialty || "Tailoring",
+            phone:        tailorData.phone || "",
+            location:     tailorData.location || "",
+            address:      tailorData.address || {},
+            lat:          tailorData.lat || null,
+            lng:          tailorData.lng || null,
+            bio:          tailorData.bio || "",
+            startingPrice: Number(tailorData.startingPrice || 150),
+            rating:       Number(tailorData.rating || 0),
+            updatedAt:    new Date().toISOString()
+            // NOTE: photoURL intentionally omitted — only written by saveProfile
+            // to avoid overwriting a previously saved photo on login
+        }, { merge: true });
+    } catch (listingError) {
+        console.error("Tailor listing sync failed:", listingError);
+        showToast("Profile loaded, but public listing sync was blocked by Firestore rules.");
+    }
+    applyTailorData(tailorData);
+    await loadTailorOrders(user);
+    // renderDashboard() is now driven by the onSnapshot listener in loadTailorOrders
+    renderWeeklyChart(); // render chart immediately with empty data while orders load
+    buildDayChips();
 });
+
+
+
+async function loadTailorOrders(user) {
+    try {
+        // Targeted query — only this tailor's orders
+        const q = query(
+            collection(db, "orders"),
+            where("tailorId", "==", user.uid)
+        );
+
+        // Real-time listener — updates dashboard whenever an order changes
+        onSnapshot(q, (snapshot) => {
+            const loaded = snapshot.docs.map(d => ({ id: d.id, ...d.data() }));
+            DASHBOARD_ORDERS.splice(0, DASHBOARD_ORDERS.length, ...loaded.map(normalizeOrder));
+            renderStats();
+            renderWeeklyChart();
+            renderDonut();
+            renderRecentOrders();
+            renderFullOrders();
+            renderAnalytics();
+            renderRatings();
+        }, (error) => {
+            console.error("Orders listener error:", error);
+            showToast("Could not load your orders.");
+        });
+
+    } catch (error) {
+        showToast("Could not load your orders.");
+        console.error("Order loading failed:", error);
+    }
+}
+
+function normalizeOrder(order) {
+    // Use completedDate for revenue charts (money received date), fall back to createdAt
+    let dateStr = "—";
+    if (order.completedDate) {
+        dateStr = order.completedDate;
+    } else if (order.status === "completed" && order.createdAt?.toDate) {
+        // Orders completed before completedDate field existed — use createdAt as fallback
+        dateStr = order.createdAt.toDate().toISOString().slice(0, 10);
+    } else if (order.createdAt?.toDate) {
+        dateStr = order.createdAt.toDate().toISOString().slice(0, 10);
+    } else if (typeof order.createdAt === "string") {
+        dateStr = order.createdAt.slice(0, 10);
+    } else if (order.date) {
+        dateStr = order.date;
+    }
+
+    return {
+        ...order,
+        id:           order.id || "—",
+        customer:     order.customerName || order.customer || "Customer",
+        service:      order.service || order.serviceType || "Tailoring",
+        amount:       Number(order.amount || order.price || 0),
+        status:       order.status || "pending",
+        date:         dateStr,
+        description:  order.description || "",
+        measurements: order.measurements || "",
+        rating:       order.rating || null
+    };
+}
+
+function getRevenueData(period) {
+    const days = period === "week" ? 7 : 8;
+    const now  = new Date();
+    const points = [];
+
+    for (let index = days - 1; index >= 0; index--) {
+        const date = new Date(now);
+        date.setHours(0, 0, 0, 0);
+        date.setDate(now.getDate() - index * (period === "week" ? 1 : 4));
+        const key = date.toISOString().slice(0, 10);
+
+        // Only count COMPLETED orders — money actually received
+        const amount = DASHBOARD_ORDERS
+            .filter(o => o.status === "completed" && o.date === key)
+            .reduce((total, o) => total + o.amount, 0);
+
+        points.push({
+            day: period === "week"
+                ? date.toLocaleDateString("en-IN", { weekday: "short" })
+                : date.toLocaleDateString("en-IN", { month: "short", day: "numeric" }),
+            amount
+        });
+    }
+
+    return points;
+}
 
 function applyTailorData(d) {
     const firstName = (d.name || "Tailor").split(" ")[0];
     document.getElementById("tailorGreeting").textContent = firstName;
     document.getElementById("sidebarName").textContent    = d.shop || d.name || "Tailor";
+    document.getElementById("sidebarSpecialty").textContent = d.specialty || "Tailoring";
     document.getElementById("profileShopName").textContent = d.shop || d.name || "Tailor";
     document.getElementById("profileSpecialty").textContent = d.specialty || "Tailoring";
 
@@ -533,6 +695,33 @@ function applyTailorData(d) {
     if (document.getElementById("pOwnerName")) document.getElementById("pOwnerName").value = d.name || "";
     if (document.getElementById("pEmail"))     document.getElementById("pEmail").value     = d.email || "";
     if (document.getElementById("pPhone"))     document.getElementById("pPhone").value     = d.phone || "";
+    if (document.getElementById("pSpecialty")) document.getElementById("pSpecialty").value = d.specialty || "";
+    if (document.getElementById("pLocation"))  document.getElementById("pLocation").value  = d.location || d.address?.locality || "";
+    if (document.getElementById("pPincode"))   document.getElementById("pPincode").value   = d.address?.pincode || "";
+    if (document.getElementById("pCity"))      document.getElementById("pCity").value      = d.address?.city    || "";
+    if (document.getElementById("pState"))     document.getElementById("pState").value     = d.address?.state   || "";
+    if (document.getElementById("pLat"))       document.getElementById("pLat").value       = d.lat || "";
+    if (document.getElementById("pLng"))       document.getElementById("pLng").value       = d.lng || "";
+    if (d.lat && d.lng) {
+        const statusEl = document.getElementById("pLocationStatus");
+        if (statusEl) { statusEl.textContent = `📍 Location saved`; statusEl.style.color = "#22b573"; }
+    }
+    if (document.getElementById("pBio"))      document.getElementById("pBio").value      = d.bio || "";
+    if (document.getElementById("pOpen"))     document.getElementById("pOpen").value     = d.openingTime || "09:00";
+    if (document.getElementById("pClose"))    document.getElementById("pClose").value    = d.closingTime || "19:00";
+    activeDays = new Set(d.workingDays || DAYS.slice(0, 6));
+    buildDayChips();
+
+    // Apply shop open/closed status
+    applyShopStatus(d.isOpen !== false); // default to open
+
+    // Load vacation dates
+    if (document.getElementById("pVacationStart")) {
+        document.getElementById("pVacationStart").value = d.vacationStart || "";
+        document.getElementById("pVacationEnd").value   = d.vacationEnd   || "";
+        const clearBtn = document.getElementById("clearVacationBtn");
+        if (clearBtn) clearBtn.style.display = (d.vacationStart) ? "inline-flex" : "none";
+    }
 }
 
 /* =========================================================
@@ -591,14 +780,13 @@ window.toggleSidebar = function() {
    STATS
 ========================================================= */
 function renderStats() {
-    const totalEarnings = MOCK_ORDERS
-        .filter(o => o.status === "completed")
-        .reduce((s, o) => s + o.amount, 0);
+    const completedOrders = DASHBOARD_ORDERS.filter(o => o.status === "completed");
+    const totalEarnings   = completedOrders.reduce((s, o) => s + o.amount, 0);
+    const active          = DASHBOARD_ORDERS.filter(o => o.status === "in-progress" || o.status === "pending").length;
+    const completed       = completedOrders.length;
+    const pending         = DASHBOARD_ORDERS.filter(o => o.status === "pending").length;
 
-    const active    = MOCK_ORDERS.filter(o => o.status === "in-progress" || o.status === "pending").length;
-    const completed = MOCK_ORDERS.filter(o => o.status === "completed").length;
-
-    const ratings = MOCK_ORDERS.filter(o => o.rating).map(o => o.rating);
+    const ratings   = DASHBOARD_ORDERS.filter(o => o.rating).map(o => o.rating);
     const avgRating = ratings.length
         ? (ratings.reduce((a, b) => a + b, 0) / ratings.length).toFixed(1)
         : "—";
@@ -608,17 +796,28 @@ function renderStats() {
     document.getElementById("statCompleted").textContent = completed;
     document.getElementById("statRating").textContent    = avgRating !== "—" ? "★ " + avgRating : "—";
 
-    document.getElementById("trendEarnings").textContent  = "+12% this month";
-    document.getElementById("trendActive").textContent    = active + " need attention";
-    document.getElementById("trendCompleted").textContent = "+3 this week";
-    document.getElementById("trendRating").textContent    = "Based on " + ratings.length + " reviews";
+    document.getElementById("trendEarnings").textContent  = completedOrders.length ? "from " + completedOrders.length + " order" + (completedOrders.length > 1 ? "s" : "") : "No completed orders yet";
+    document.getElementById("trendActive").textContent    = active ? active + " need attention" : "All clear";
+    document.getElementById("trendCompleted").textContent = completed ? completed + " total" : "None yet";
+    document.getElementById("trendRating").textContent    = ratings.length ? "Based on " + ratings.length + " review" + (ratings.length > 1 ? "s" : "") : "No ratings yet";
+
+    // Update pending badge in sidebar
+    const badge = document.getElementById("pendingBadge");
+    if (badge) {
+        badge.textContent    = pending;
+        badge.style.display  = pending > 0 ? "flex" : "none";
+    }
+
+    // Update profile rating badge
+    const profileBadge = document.getElementById("profileRatingBadge");
+    if (profileBadge) profileBadge.textContent = avgRating !== "—" ? "★ " + avgRating : "★ New";
 }
 
 /* =========================================================
    WEEKLY BAR CHART
 ========================================================= */
 function renderWeeklyChart() {
-    const data = WEEKLY_REVENUE;
+    const data = getRevenueData("week");
     const max  = Math.max(...data.map(d => d.amount), 1);
     const total = data.reduce((s, d) => s + d.amount, 0);
 
@@ -650,18 +849,22 @@ function renderWeeklyChart() {
 ========================================================= */
 function renderDonut() {
     const services = {};
-    MOCK_ORDERS.forEach(o => {
+    DASHBOARD_ORDERS.forEach(o => {
         services[o.service] = (services[o.service] || 0) + 1;
     });
     const total   = Object.values(services).reduce((a, b) => a + b, 0);
-    const colors  = ["#2b6be6", "#f0a500", "#22b573", "#e64c2b", "#9b59b6", "#1abc9c"];
-    const entries = Object.entries(services);
-
     const svg     = document.getElementById("donutSvg");
     const legend  = document.getElementById("donutLegend");
     const center  = document.getElementById("donutCenter");
     svg.innerHTML = ""; legend.innerHTML = "";
 
+    if (!total) {
+        center.innerHTML = `<small style="color:#858179;font-size:11px;">No orders yet</small>`;
+        return;
+    }
+
+    const colors  = ["#2b6be6", "#f0a500", "#22b573", "#e64c2b", "#9b59b6", "#1abc9c"];
+    const entries = Object.entries(services);
     const cx = 60, cy = 60, r = 45, strokeW = 18;
     const circ = 2 * Math.PI * r;
     let offset = 0;
@@ -715,7 +918,7 @@ function renderOrderRow(o, compact = false) {
 
 function renderRecentOrders() {
     const el = document.getElementById("recentOrdersTable");
-    const recent = [...MOCK_ORDERS].slice(0, 5);
+    const recent = [...DASHBOARD_ORDERS].slice(0, 5);
     el.innerHTML = `
         <div class="td-order-head">
             <span>Order ID</span>
@@ -738,8 +941,8 @@ window.filterOrders = function(filter, btn) {
 function renderFullOrders() {
     const el = document.getElementById("fullOrdersTable");
     const filtered = currentFilter === "all"
-        ? MOCK_ORDERS
-        : MOCK_ORDERS.filter(o => o.status === currentFilter);
+        ? DASHBOARD_ORDERS
+        : DASHBOARD_ORDERS.filter(o => o.status === currentFilter);
 
     el.innerHTML = `
         <div class="td-order-head full">
@@ -761,7 +964,7 @@ function renderFullOrders() {
    ORDER MODAL
 ========================================================= */
 window.openOrderModal = function(id) {
-    const order = MOCK_ORDERS.find(o => o.id === id);
+    const order = DASHBOARD_ORDERS.find(o => o.id === id);
     if (!order) return;
 
     document.getElementById("modalOrderId").textContent = "Order #" + order.id;
@@ -773,25 +976,42 @@ window.openOrderModal = function(id) {
             <div><span>Amount</span><strong>${fmt(order.amount)}</strong></div>
             <div><span>Date</span><strong>${order.date}</strong></div>
             <div><span>Status</span>${statusBadge(order.status)}</div>
-            <div><span>Rating</span><strong>${order.rating ? "★".repeat(order.rating) : "Pending"}</strong></div>
+            <div><span>Rating</span><strong>${order.rating ? "★".repeat(order.rating) : "—"}</strong></div>
         </div>
+        ${order.description ? `
+        <div class="td-modal-detail">
+            <span>What they need</span>
+            <p>${order.description}</p>
+        </div>` : ""}
+        ${order.measurements ? `
+        <div class="td-modal-detail">
+            <span>Measurements</span>
+            <p>${order.measurements}</p>
+        </div>` : ""}
     `;
 
     const actions = document.getElementById("modalActions");
     actions.innerHTML = "";
 
     if (order.status === "pending") {
-        const btn = document.createElement("button");
-        btn.className = "primary-btn";
-        btn.textContent = "Accept Order →";
-        btn.onclick = () => updateOrderStatus(id, "in-progress");
-        actions.appendChild(btn);
+        const acceptBtn = document.createElement("button");
+        acceptBtn.className   = "primary-btn";
+        acceptBtn.textContent = "Accept →";
+        acceptBtn.onclick     = () => openAcceptModal(id);
+        actions.appendChild(acceptBtn);
+
+        const rejectBtn = document.createElement("button");
+        rejectBtn.className   = "td-reject-btn";
+        rejectBtn.textContent = "Reject";
+        rejectBtn.onclick     = () => updateOrderStatus(id, "cancelled");
+        actions.appendChild(rejectBtn);
     }
+
     if (order.status === "in-progress") {
         const btn = document.createElement("button");
-        btn.className = "primary-btn";
+        btn.className   = "primary-btn";
         btn.textContent = "Mark as Completed ✓";
-        btn.onclick = () => updateOrderStatus(id, "completed");
+        btn.onclick     = () => updateOrderStatus(id, "completed");
         actions.appendChild(btn);
     }
 
@@ -802,15 +1022,77 @@ window.closeOrderModal = function() {
     document.getElementById("orderModal").classList.remove("show");
 };
 
-function updateOrderStatus(id, newStatus) {
-    const order = MOCK_ORDERS.find(o => o.id === id);
-    if (order) {
+/* Accept order — lets tailor set final price before confirming */
+function openAcceptModal(id) {
+    const order = DASHBOARD_ORDERS.find(o => o.id === id);
+    if (!order) return;
+
+    const actions = document.getElementById("modalActions");
+    actions.innerHTML = `
+        <div class="td-accept-price-row">
+            <div class="field-group" style="flex:1;margin:0;">
+                <label style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:#858179;display:block;margin-bottom:6px;">
+                    Final Price (₹)
+                </label>
+                <input
+                    type="number"
+                    id="finalPriceInput"
+                    value="${order.amount || ""}"
+                    min="0"
+                    placeholder="e.g. 650"
+                    style="width:100%;padding:10px 14px;border:1.5px solid #e7e3da;border-radius:10px;font-size:15px;font-family:inherit;outline:none;"
+                    oninput="this.style.borderColor='#2b6be6'"
+                >
+            </div>
+            <button class="primary-btn" style="align-self:flex-end;white-space:nowrap;" onclick="confirmAccept('${id}')">
+                Confirm Accept →
+            </button>
+            <button class="td-reject-btn" style="align-self:flex-end;" onclick="openOrderModal('${id}')">
+                Back
+            </button>
+        </div>
+        <p style="font-size:11px;color:#aaa49a;margin-top:8px;">
+            This is the price the customer will see. Defaults to your starting price.
+        </p>
+    `;
+}
+
+window.confirmAccept = async function(id) {
+    const input  = document.getElementById("finalPriceInput");
+    const amount = parseFloat(input?.value);
+    if (!amount || amount <= 0) {
+        input.style.borderColor = "#e64c2b";
+        return;
+    }
+    await updateOrderStatus(id, "in-progress", amount);
+};
+
+async function updateOrderStatus(id, newStatus, finalAmount) {
+    const order = DASHBOARD_ORDERS.find(o => o.id === id);
+    if (!order || !currentUserId) return;
+
+    try {
+        const update = { status: newStatus };
+        if (finalAmount !== undefined) update.amount = finalAmount;
+        // Record the date the order was completed for revenue tracking
+        if (newStatus === "completed") {
+            update.completedDate = new Date().toISOString().slice(0, 10);
+            // Use completedDate as the date for revenue charts
+            order.date = update.completedDate;
+        }
+        await updateDoc(doc(db, "orders", id), update);
+        if (finalAmount !== undefined) order.amount = finalAmount;
         order.status = newStatus;
         closeOrderModal();
-        renderStats();
-        renderRecentOrders();
-        renderFullOrders();
-        showToast(`Order #${id} marked as ${newStatus}.`);
+        const labelMap = {
+            "in-progress": "accepted",
+            "completed":   "completed",
+            "cancelled":   "rejected"
+        };
+        showToast(`Order ${labelMap[newStatus] || newStatus} ✦`);
+    } catch (error) {
+        showToast("Could not update this order.");
+        console.error("Order update failed:", error);
     }
 }
 
@@ -825,14 +1107,34 @@ window.setAnalyticsPeriod = function(period, btn) {
 };
 
 function renderAnalytics() {
-    const data = analyticsPeriod === "week" ? WEEKLY_REVENUE : MONTHLY_REVENUE;
+    const data  = getRevenueData(analyticsPeriod);
     const total = data.reduce((s, d) => s + d.amount, 0);
 
+    // Count orders in the period window
+    const now     = new Date();
+    const cutoff  = new Date(now);
+    cutoff.setDate(now.getDate() - (analyticsPeriod === "week" ? 7 : 30));
+    const periodOrders = DASHBOARD_ORDERS.filter(o => {
+        if (!o.date || o.date === "—") return false;
+        return new Date(o.date) >= cutoff;
+    });
+
+    // Avg turnaround: days between createdAt and completed (not available client-side easily,
+    // so we show completed count as a proxy label)
+    const completedCount = DASHBOARD_ORDERS.filter(o => o.status === "completed").length;
+
+    // Repeat customers: customers with more than 1 order
+    const custFreq = {};
+    DASHBOARD_ORDERS.forEach(o => { custFreq[o.customerId || o.customer] = (custFreq[o.customerId || o.customer] || 0) + 1; });
+    const repeatCount = Object.values(custFreq).filter(v => v > 1).length;
+    const totalCusts  = Object.keys(custFreq).length;
+    const repeatPct   = totalCusts ? Math.round((repeatCount / totalCusts) * 100) + "%" : "—";
+
     document.getElementById("analyticsTotalBadge").textContent = fmt(total);
-    document.getElementById("aStatRevenue").textContent   = fmt(total);
-    document.getElementById("aStatOrders").textContent    = analyticsPeriod === "week" ? "7" : "24";
-    document.getElementById("aStatTurnaround").textContent = "2.4";
-    document.getElementById("aStatRepeat").textContent    = "38%";
+    document.getElementById("aStatRevenue").textContent        = fmt(total);
+    document.getElementById("aStatOrders").textContent         = periodOrders.length || DASHBOARD_ORDERS.length;
+    document.getElementById("aStatTurnaround").textContent     = completedCount ? completedCount + " done" : "—";
+    document.getElementById("aStatRepeat").textContent         = repeatPct;
 
     renderAreaChart(data);
     renderServiceRevenue();
@@ -914,13 +1216,16 @@ function renderServiceRevenue() {
     const el = document.getElementById("serviceRevenueBars");
     el.innerHTML = "";
     const services = {};
-    MOCK_ORDERS.forEach(o => {
+    DASHBOARD_ORDERS.forEach(o => {
         if (o.status === "completed")
             services[o.service] = (services[o.service] || 0) + o.amount;
     });
+    if (!Object.keys(services).length) {
+        el.innerHTML = `<p style="color:#858179;font-size:13px;padding:12px 0;">No completed orders yet.</p>`;
+        return;
+    }
     const max = Math.max(...Object.values(services), 1);
     const colors = ["#2b6be6", "#f0a500", "#22b573", "#e64c2b", "#9b59b6"];
-
     Object.entries(services).forEach(([svc, amt], i) => {
         const pct = (amt / max) * 100;
         el.innerHTML += `
@@ -935,21 +1240,26 @@ function renderServiceRevenue() {
 }
 
 function renderRatings() {
-    const el = document.getElementById("ratingsBreakdown");
+    const el    = document.getElementById("ratingsBreakdown");
     const badge = document.getElementById("avgRatingBadge");
     el.innerHTML = "";
 
     const counts = { 5: 0, 4: 0, 3: 0, 2: 0, 1: 0 };
-    MOCK_ORDERS.forEach(o => { if (o.rating) counts[o.rating]++; });
+    DASHBOARD_ORDERS.forEach(o => { if (o.rating) counts[o.rating]++; });
     const total = Object.values(counts).reduce((a, b) => a + b, 0);
     const avg   = total
         ? (Object.entries(counts).reduce((s, [k, v]) => s + (+k * v), 0) / total).toFixed(1)
-        : "—";
+        : null;
 
-    badge.textContent = "★ " + avg;
+    badge.textContent = avg ? "★ " + avg : "★ —";
+
+    if (!total) {
+        el.innerHTML = `<p style="color:#858179;font-size:13px;padding:12px 0;">No ratings yet.</p>`;
+        return;
+    }
 
     [5, 4, 3, 2, 1].forEach(star => {
-        const pct = total ? (counts[star] / total) * 100 : 0;
+        const pct = (counts[star] / total) * 100;
         el.innerHTML += `
             <div class="td-rating-row">
                 <span class="td-star-label">★ ${star}</span>
@@ -983,87 +1293,298 @@ function buildDayChips() {
     });
 }
 
-window.saveProfile = function() {
-    showToast("Profile saved successfully ✦");
+window.saveProfile = async function() {
+    if (!currentUserId) {
+        showToast("Please log in again to save your profile.");
+        return;
+    }
+
+    const profile = {
+        shop: document.getElementById("pShopName").value.trim(),
+        name: document.getElementById("pOwnerName").value.trim(),
+        phone: document.getElementById("pPhone").value.trim(),
+        email: document.getElementById("pEmail").value.trim(),
+        specialty: document.getElementById("pSpecialty").value,
+        location: document.getElementById("pLocation").value.trim(),
+        address: {
+            locality: document.getElementById("pLocation").value.trim(),
+            pincode:  document.getElementById("pPincode")?.value.trim() || "",
+            city:     document.getElementById("pCity")?.value.trim()    || "",
+            state:    document.getElementById("pState")?.value.trim()   || "",
+        },
+        bio: document.getElementById("pBio").value.trim(),
+        openingTime: document.getElementById("pOpen").value,
+        closingTime: document.getElementById("pClose").value,
+        workingDays: [...activeDays],
+        vacationStart: document.getElementById("pVacationStart")?.value || "",
+        vacationEnd:   document.getElementById("pVacationEnd")?.value   || "",
+        lat: parseFloat(document.getElementById("pLat")?.value) || tailorData.lat || null,
+        lng: parseFloat(document.getElementById("pLng")?.value) || tailorData.lng || null,
+    };
+
+    if (!profile.name || !profile.shop) {
+        showToast("Shop name and owner name are required.");
+        return;
+    }
+
+    const saveBtn = document.querySelector(".td-save-btn");
+
+    try {
+        if (saveBtn) { saveBtn.textContent = "Saving..."; saveBtn.disabled = true; }
+
+        await setDoc(doc(db, "tailors", currentUserId), {
+            uid: currentUserId,
+            name: profile.name,
+            email: profile.email,
+            shop: profile.shop,
+            specialty: profile.specialty,
+            phone: profile.phone,
+            location: profile.location,
+            address:  profile.address || {},
+            bio: profile.bio,
+            openingTime: profile.openingTime,
+            closingTime: profile.closingTime,
+            workingDays:   profile.workingDays,
+            vacationStart: profile.vacationStart || "",
+            vacationEnd:   profile.vacationEnd   || "",
+            lat:           profile.lat,
+            lng:           profile.lng,
+            updatedAt: new Date().toISOString()
+        }, { merge: true });
+
+        const savedPhotoURL = tailorData.photoURL || "";
+        tailorData = { ...tailorData, ...profile };
+        tailorData.photoURL = savedPhotoURL;
+        // Don't call applyTailorData here — it would reset the avatar
+        // Just update the text labels that changed
+        const shopNameEl = document.getElementById("profileShopName");
+        const specialtyEl = document.getElementById("profileSpecialty");
+        const sidebarNameEl = document.getElementById("sidebarName");
+        const sidebarSpecEl = document.getElementById("sidebarSpecialty");
+        if (shopNameEl)   shopNameEl.textContent   = tailorData.shop || tailorData.name || "";
+        if (specialtyEl)  specialtyEl.textContent  = tailorData.specialty || "";
+        if (sidebarNameEl) sidebarNameEl.textContent = tailorData.shop || tailorData.name || "";
+        if (sidebarSpecEl) sidebarSpecEl.textContent = tailorData.specialty || "";
+        if (saveBtn) { saveBtn.textContent = "Save Changes →"; saveBtn.disabled = false; }
+        showToast("Profile saved successfully ✦");
+    } catch (error) {
+        if (saveBtn) { saveBtn.textContent = "Save Changes →"; saveBtn.disabled = false; }
+        showToast("Could not save your profile.");
+        console.error("Profile update failed:", error);
+    }
 };
 
 /* =========================================================
    CHANGE PHOTO
 ========================================================= */
-window.handlePhotoChange = function(event) {
+
+window.handlePhotoChange = async function(event) {
     const file = event.target.files[0];
     if (!file) return;
 
-    // Validate — image only, max 5MB
-    if (!file.type.startsWith("image/")) {
-        showToast("Please select an image file.");
+    if (!file.type.startsWith("image/")) { showToast("Please select an image file."); return; }
+    if (file.size > 5 * 1024 * 1024)    { showToast("Image must be under 5MB."); return; }
+
+    // Read → resize → show preview immediately
+    const dataURL = await new Promise((res, rej) => {
+        const r = new FileReader();
+        r.onload  = e => res(e.target.result);
+        r.onerror = rej;
+        r.readAsDataURL(file);
+    });
+
+    const resized = await resizeDataURL(dataURL, 256, 0.75);
+    const imgTag  = `<img src="${resized}" alt="Profile photo" style="width:100%;height:100%;object-fit:cover;border-radius:50%;display:block;">`;
+
+    const profileBig = document.getElementById("profileBigAvatar");
+    const sidebarAv  = document.querySelector(".td-profile-avatar");
+    const topbarAv   = document.getElementById("topbarAvatar");
+    if (profileBig) profileBig.innerHTML = imgTag;
+    if (sidebarAv)  sidebarAv.innerHTML  = imgTag;
+    if (topbarAv)   topbarAv.innerHTML   = imgTag;
+
+    if (!currentUserId) {
+        pendingPhotoDataURL = resized;
+        showToast("Photo ready ✦");
+        event.target.value = "";
         return;
     }
-    if (file.size > 5 * 1024 * 1024) {
-        showToast("Image must be under 5MB.");
-        return;
+
+    showToast("Saving photo...");
+    try {
+        await setDoc(doc(db, "tailors", currentUserId), {
+            uid: currentUserId,
+            photoURL: resized,
+            updatedAt: new Date().toISOString()
+        }, { merge: true });
+
+        const savedPhoto = await getDoc(doc(db, "tailors", currentUserId));
+        if (!savedPhoto.exists() || savedPhoto.data().photoURL !== resized) {
+            throw new Error("Photo was not confirmed in the public tailor listing.");
+        }
+
+        tailorData.photoURL = resized;
+        showToast("Photo saved ✦");
+    } catch (err) {
+        console.error("Photo save failed:", err);
+        showToast("Could not save photo. Please try again.");
     }
 
-    const reader = new FileReader();
-    reader.onload = (e) => {
-        const src = e.target.result;
-        const avatar = document.getElementById("profileBigAvatar");
-
-        // Swap text initial for actual image
-        avatar.innerHTML = `<img src="${src}" alt="Profile photo" style="
-            width:100%; height:100%; object-fit:cover;
-            border-radius:50%; display:block;">`;
-
-        // Also update the sidebar avatar letter → image
-        const sidebarAvatar = document.querySelector(".td-profile-avatar");
-        if (sidebarAvatar) {
-            sidebarAvatar.innerHTML = `<img src="${src}" alt="Profile photo" style="
-                width:100%; height:100%; object-fit:cover;
-                border-radius:50%; display:block;">`;
-        }
-
-        // Update mobile topbar avatar too
-        const topbarAvatar = document.getElementById("topbarAvatar");
-        if (topbarAvatar) {
-            topbarAvatar.innerHTML = `<img src="${src}" alt="Profile photo" style="
-                width:100%; height:100%; object-fit:cover;
-                border-radius:50%; display:block;">`;
-        }
-
-        showToast("Photo updated ✦");
-
-        // Upload to Firebase Storage if user is logged in
-        const user = auth.currentUser;
-        if (user) {
-            uploadPhoto(file, user.uid);
-        }
-    };
-    reader.readAsDataURL(file);
-
-    // Reset input so same file can be picked again
     event.target.value = "";
 };
 
-async function uploadPhoto(file, uid) {
-    try {
-        const { getStorage, ref, uploadBytes, getDownloadURL } =
-            await import("https://www.gstatic.com/firebasejs/10.12.0/firebase-storage.js");
-        const { updateDoc } =
-            await import("https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js");
-
-        const storage  = getStorage(app);
-        const photoRef = ref(storage, `avatars/${uid}`);
-        await uploadBytes(photoRef, file);
-        const url = await getDownloadURL(photoRef);
-
-        // Save URL to Firestore user doc
-        await updateDoc(doc(db, "users", uid), { photoURL: url });
-        showToast("Photo saved to your profile ✦");
-    } catch (err) {
-        // Storage might not be configured — preview still works locally
-        console.warn("Photo upload skipped:", err.message);
-    }
+function resizeDataURL(dataURL, maxSize, quality) {
+    return new Promise((resolve, reject) => {
+        const img = new Image();
+        img.onload = () => {
+            const scale  = Math.min(maxSize / img.width, maxSize / img.height, 1);
+            const canvas = document.createElement("canvas");
+            canvas.width  = Math.max(1, Math.round(img.width  * scale));
+            canvas.height = Math.max(1, Math.round(img.height * scale));
+            canvas.getContext("2d").drawImage(img, 0, 0, canvas.width, canvas.height);
+            resolve(canvas.toDataURL("image/jpeg", quality));
+        };
+        img.onerror = reject;
+        img.src = dataURL;
+    });
 }
+
+window.clearVacation = async function() {
+    if (document.getElementById("pVacationStart")) {
+        document.getElementById("pVacationStart").value = "";
+        document.getElementById("pVacationEnd").value   = "";
+    }
+    const clearBtn = document.getElementById("clearVacationBtn");
+    if (clearBtn) clearBtn.style.display = "none";
+    if (currentUserId) {
+        try {
+            await updateDoc(doc(db, "tailors", currentUserId), { vacationStart: "", vacationEnd: "" });
+            showToast("Vacation cleared ✦");
+        } catch (e) { console.warn(e); }
+    }
+};
+
+/* =========================================================
+   PINCODE LOOKUP — PROFILE
+========================================================= */
+window.lookupPincodeProfile = async function(pin) {
+    if (pin.length !== 6 || !/^\d{6}$/.test(pin)) return;
+    const cityEl  = document.getElementById("pCity");
+    const stateEl = document.getElementById("pState");
+    if (cityEl)  cityEl.placeholder  = "Looking up...";
+    if (stateEl) stateEl.placeholder = "Looking up...";
+    try {
+        const res  = await fetch(`https://api.postalpincode.in/pincode/${pin}`);
+        const json = await res.json();
+        if (json[0]?.Status === "Success") {
+            const post = json[0].PostOffice[0];
+            if (cityEl)  { cityEl.value  = post.District || post.Division || ""; cityEl.placeholder  = "City / District"; }
+            if (stateEl) { stateEl.value = post.State || "";                     stateEl.placeholder = "State"; }
+        } else {
+            if (cityEl)  cityEl.placeholder  = "City / District";
+            if (stateEl) stateEl.placeholder = "State";
+        }
+    } catch {
+        if (cityEl)  cityEl.placeholder  = "City / District";
+        if (stateEl) stateEl.placeholder = "State";
+    }
+};
+
+/* =========================================================
+   LOCATION PINPOINT — PROFILE
+========================================================= */
+window.pinTailorLocation = function() {
+    if (!navigator.geolocation) {
+        showToast("Geolocation not supported by your browser.");
+        return;
+    }
+    const statusEl = document.getElementById("pLocationStatus");
+    const btn      = document.querySelector("#pLocation").closest(".location-input-row")
+                        ?.querySelector(".location-pin-btn");
+    if (statusEl) { statusEl.textContent = "Getting your location..."; statusEl.style.color = "#858179"; }
+    if (btn)      btn.textContent = "⏳";
+
+    navigator.geolocation.getCurrentPosition(
+        async (pos) => {
+            const lat = pos.coords.latitude;
+            const lng = pos.coords.longitude;
+
+            document.getElementById("pLat").value = lat;
+            document.getElementById("pLng").value = lng;
+
+            // Reverse geocode via Nominatim (free, no API key)
+            try {
+                const res  = await fetch(
+                    `https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lng}&format=json`
+                );
+                const data = await res.json();
+                const area   = data.address?.suburb || data.address?.neighbourhood || data.address?.town || data.address?.city || "";
+                const city   = data.address?.city || data.address?.state_district || "";
+                const label  = [area, city].filter(Boolean).join(", ");
+                const locEl  = document.getElementById("pLocation");
+                const cityEl = document.getElementById("pCity");
+                const stateEl= document.getElementById("pState");
+                const pinEl  = document.getElementById("pPincode");
+                if (locEl  && area)                  locEl.value   = area;
+                if (cityEl && !cityEl.value)         cityEl.value  = city;
+                if (stateEl && !stateEl.value)       stateEl.value = data.address?.state || "";
+                if (pinEl   && !pinEl.value)         pinEl.value   = data.address?.postcode || "";
+                if (statusEl) { statusEl.textContent = `📍 ${label || `${lat.toFixed(4)}, ${lng.toFixed(4)}`}`; statusEl.style.color = "#22b573"; }
+            } catch {
+                if (statusEl) { statusEl.textContent = `📍 Pinpointed (${lat.toFixed(4)}, ${lng.toFixed(4)})`; statusEl.style.color = "#22b573"; }
+            }
+            if (btn) btn.textContent = "✓";
+            showToast("Location pinpointed — save your profile to update ✦");
+        },
+        (err) => {
+            if (btn) btn.textContent = "📍";
+            const msg = err.code === 1 ? "Location access denied." : "Could not get location.";
+            if (statusEl) { statusEl.textContent = msg; statusEl.style.color = "#e64c2b"; }
+            showToast(msg);
+        },
+        { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
+    );
+};
+
+/* =========================================================
+   SHOP OPEN / CLOSED TOGGLE
+========================================================= */
+let shopIsOpen = true;
+
+function applyShopStatus(isOpen) {
+    shopIsOpen = isOpen;
+    const label        = document.getElementById("shopStatusLabel");
+    const sidebarBtn   = document.getElementById("shopToggleBtn");
+    const profileLabel = document.getElementById("profileShopStatusLabel");
+    const profileBtn   = document.getElementById("profileToggleBtn");
+
+    if (label)        label.textContent        = isOpen ? "Open" : "Closed";
+    if (profileLabel) profileLabel.textContent = isOpen ? "Shop is Open" : "Shop is Closed";
+
+    [sidebarBtn, profileBtn].forEach(btn => {
+        if (!btn) return;
+        btn.classList.toggle("open",   isOpen);
+        btn.classList.toggle("closed", !isOpen);
+    });
+}
+
+window.toggleShopStatus = async function() {
+    const newStatus = !shopIsOpen;
+    applyShopStatus(newStatus);
+    if (currentUserId) {
+        try {
+            await updateDoc(doc(db, "tailors", currentUserId), { isOpen: newStatus });
+            showToast(newStatus ? "Shop is now Open ✦" : "Shop marked as Closed");
+        } catch (e) {
+            console.error("toggleShopStatus failed:", e.code, e.message);
+            // Revert UI if write failed
+            applyShopStatus(!newStatus);
+            showToast("Could not update shop status. Check your connection.");
+        }
+    } else {
+        showToast("Not logged in — shop status not saved.");
+    }
+};
 
 /* =========================================================
    LOGOUT
